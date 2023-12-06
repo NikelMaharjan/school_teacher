@@ -66,7 +66,7 @@ class ClassSecSubjectService {
   Future<List<ClassSecSubject>> getClassSubjectInfo() async {
 
 
-    print("ID IS $id");
+
 
 
 
@@ -74,6 +74,7 @@ class ClassSecSubjectService {
     try {
       final response = await dio.get('${Api.classSecSubUrl}$id/',
           options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+
       final data = (response.data['data'] as List).map((e) => ClassSecSubject.fromJson(e)).toList();
       return data;
     } on DioException catch (err) {
@@ -156,10 +157,9 @@ class TeacherRoutineService{
 
 
     try {
-      // final response = await dio.get('${Api.teacherRoutine}$day/', options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+       final response = await dio.get('${Api.teacherRoutine}$day/', options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
 
-      final response = await dio.get('${Api.teacherRoutine1}', options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
-      
+
 
 
       final data = (response.data['data'] as List).map((e) => TeacherRoutine.fromJson(e)).toList();

@@ -52,7 +52,7 @@ class ClassNoticeService2 {
       final data = (response.data['navigation']['data'] as List).map((e) => ClassNotice.fromJson(e)).toList();
       return data;
     } on DioException catch (err) {
-      print(err.response);
+     // print(err.response);
       throw Exception('Unable to fetch data');
     }
   }
@@ -92,8 +92,8 @@ class NoticeService {
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(response.data);
-    } on DioError catch (err) {
-      print(err.response);
+    } on DioException catch (err) {
+     // print(err.response);
       throw Exception('Network error');
     }
   }
@@ -124,8 +124,8 @@ class NoticeService {
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(true);
-    } on DioError catch (err) {
-      print(err.response);
+    } on DioException catch (err) {
+    //  print(err.response);
       throw Exception('Network error');
     }
   }
@@ -141,8 +141,8 @@ class NoticeService {
           .map((e) => NoticeData.fromJson(e))
           .toList();
       return data;
-    } on DioError catch (err) {
-      print(err.response);
+    } on DioException catch (err) {
+    //  print(err.response);
       throw Exception('Unable to fetch data');
     }
   }
@@ -172,8 +172,8 @@ class ClassNoticeService {
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(response.data);
-    } on DioError catch (err) {
-      print(err.response);
+    } on DioException catch (err) {
+    //  print(err.response);
       throw Exception('Network error');
     }
   }
@@ -191,8 +191,8 @@ class ClassNoticeService {
           .toList();
       // print('success');
       return data;
-    } on DioError catch (err) {
-      print(err.response);
+    } on DioException catch (err) {
+    //  print(err.response);
       throw Exception('Unable to fetch data');
     }
   }
@@ -209,8 +209,8 @@ class ClassNoticeService {
       );
 
       return Right(true);
-    } on DioError catch (err) {
-      print(err.response);
+    } on DioException catch (err) {
+     // print(err.response);
       throw Exception('Unable to fetch data');
     }
   }
@@ -242,8 +242,8 @@ class SubjectNoticeService {
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(response.data);
-    } on DioError catch (err) {
-      print(err.response);
+    } on DioException catch (err) {
+     // print(err.response);
       throw Exception('Network error');
     }
   }
@@ -260,8 +260,8 @@ class SubjectNoticeService {
           .toList();
       // print('success');
       return data;
-    } on DioError catch (err) {
-      print(err.response);
+    } on DioException catch (err) {
+    //  print(err.response);
       throw Exception('Unable to fetch data');
     }
   }
@@ -278,8 +278,8 @@ class SubjectNoticeService {
       );
 
       return Right(true);
-    } on DioError catch (err) {
-      print(err.response);
+    } on DioException catch (err) {
+     // print (err.response);
       throw Exception('Unable to fetch data');
     }
   }
@@ -293,7 +293,7 @@ class SubjectNoticeService {
 
   }) async {
     try {
-      print('${Api.editSubNotices}$id/');
+     // print('${Api.editSubNotices}$id/');
       final response =  await dio.patch('${Api.editSubNotices}$id/', data: {
         'title': title,
         'message': message,
@@ -303,9 +303,8 @@ class SubjectNoticeService {
       ),
       );
 
-      print(response);
       return Right(true);
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       throw Exception(err.message);
     }
   }

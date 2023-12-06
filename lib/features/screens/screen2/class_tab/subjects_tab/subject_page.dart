@@ -125,15 +125,16 @@ class _SubjectsState extends ConsumerState<Subjects>
     final auth = ref.watch(authProvider);
     final schoolData = ref.watch(schoolInfo(auth.user.token));
 
-    print(subject_id);
+   // print(subject_id);
 
 
     return DefaultTabController(
       length: 2,
-      child: ConnectivityChecker(
-        child: Scaffold(
-            backgroundColor: Colors.white,
-            body:Column(
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          body:SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height * 1.3 / 5,
@@ -145,31 +146,31 @@ class _SubjectsState extends ConsumerState<Subjects>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              await ref.refresh(schoolInfo(auth.user.token));
-                              await ref.refresh(subNoticeList(auth.user.token));
-                              print('refreshed');
-                            },
-                            icon: Icon(
-                              Icons.refresh,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     IconButton(
+                      //       onPressed: () {
+                      //         Get.back();
+                      //       },
+                      //       icon: Icon(
+                      //         Icons.arrow_back,
+                      //         color: Colors.white,
+                      //       ),
+                      //     ),
+                      //     IconButton(
+                      //       onPressed: () async {
+                      //         await ref.refresh(schoolInfo(auth.user.token));
+                      //         await ref.refresh(subNoticeList(auth.user.token));
+                      //         print('refreshed');
+                      //       },
+                      //       icon: Icon(
+                      //         Icons.refresh,
+                      //         color: Colors.white,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
 
                       Center(
                         child: Column(
@@ -231,13 +232,15 @@ class _SubjectsState extends ConsumerState<Subjects>
                   // color: Colors.red,
                   child: TabBarView(
                       controller: _tabController,
-                      children: [Chapters(classSecSubject: classSecSubject,className: class_level_name,section: sec_name,), SubjectNotices(class_sec_sub_id:class_Sec_Sub_id,sub_id: subject_id, sub_name: subject_name, class_sec_id: class_sec_id, token: auth.user.token,teacher_id: teacher_id,)]),
+                      children: [
+                        Chapters(classSecSubject: classSecSubject,className: class_level_name,section: sec_name,),
+                        SubjectNotices(class_sec_sub_id:class_Sec_Sub_id,sub_id: subject_id, sub_name: subject_name, class_sec_id: class_sec_id, token: auth.user.token,teacher_id: teacher_id,)]),
                 )
               ],
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-            floatingActionButton:  _buildFloatingActionButton()
-        ),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton:  _buildFloatingActionButton()
       ),
     );
   }

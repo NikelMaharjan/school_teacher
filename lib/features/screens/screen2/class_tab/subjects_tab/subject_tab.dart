@@ -26,7 +26,9 @@ class MyClass extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,ref) {
+
     final auth = ref.watch(authProvider);
+
     final classSecSubjects = ref.watch(classSecSubjectProvider(class_sec_id));
 
     return Container(
@@ -42,7 +44,7 @@ class MyClass extends ConsumerWidget {
               EdgeInsets.symmetric(vertical: 8.h),
               child: Card(
                 elevation: 8,
-                color: Colors.white,
+                  color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.circular(10),

@@ -49,8 +49,8 @@ class _DefaultTeacherState extends ConsumerState<DefaultTeacher>
   double boxY = 2;
 
   final List<Widget> _pages = [
-    Overview(),
-    TimeTable1(),
+     Overview(),
+    TimeTable(),
 
     AssignmentPage(),
     Teacher(),

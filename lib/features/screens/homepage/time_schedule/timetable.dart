@@ -11,7 +11,8 @@ import '../default_teacher.dart';
 
 
 class TimeTable extends StatefulWidget {
-  const TimeTable({Key? key}) : super(key: key);
+
+
 
   @override
   State<TimeTable> createState() => _TimeTableState();
@@ -83,13 +84,13 @@ class _TimeTableState extends State<TimeTable> with TickerProviderStateMixin {
               width: 350.w,
               height: MediaQuery.of(context).size.height * 4 / 6,
               child: TabBarView(controller: _tabController, children: [
-                Routine(day: 'Monday',),
-                Routine(day: 'Tuesday',),
+                Routine(day: 'Monday', ),
+                Routine(day: 'Tuesday', ),
                 Routine(day: 'Wednesday',),
-                Routine(day: 'Thursday'),
-                Routine(day: 'Friday'),
-                Routine(day: 'Saturday'),
-                Routine(day: 'Sunday'),
+                Routine(day: 'Thursday',),
+                Routine(day: 'Friday',),
+                Routine(day: 'Saturday',),
+                Routine(day: 'Sunday',),
 
               ]),
             )

@@ -11,10 +11,12 @@ import '../../../model/teacher_features.dart';
 class Routine extends ConsumerWidget {
 
   final String day;
-  Routine({required this.day});
+  Routine({required this.day,});
 
   @override
   Widget build(BuildContext context,ref) {
+
+
 
     final auth = ref.watch(authProvider);
     final routine = ref.watch(teacherRoutineProvider(day));
@@ -29,8 +31,7 @@ class Routine extends ConsumerWidget {
             physics: BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               // Sort the class routine by start time
-              List<ClassRoutine> sortedRoutine =
-              List.from(routineInfo[index].classRoutine);
+              List<ClassRoutine> sortedRoutine = List.from(routineInfo[index].classRoutine);
               sortedRoutine.sort((a, b) => DateFormat('HH:mm').parse(a.startTime).compareTo(DateFormat('HH:mm').parse(b.startTime)));
 
               // Define the date format to show only the hour and minute

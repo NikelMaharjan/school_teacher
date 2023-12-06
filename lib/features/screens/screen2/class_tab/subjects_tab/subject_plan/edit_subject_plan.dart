@@ -4,10 +4,12 @@
 
 
 
+import 'package:eschool_teacher/constants/snack_show.dart';
 import 'package:eschool_teacher/features/providers/plan_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../../../constants/colors.dart';
 import '../../../../../authentication/providers/auth_provider.dart';
@@ -44,11 +46,24 @@ class _EditPlanState extends ConsumerState<EditPlan> {
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
+
+    ref.listen(planProvider, (previous, next) {
+      if(next.errorMessage.isNotEmpty){
+        SnackShow.showFailure(context, next.errorMessage);
+      }else if(next.isSuccess){
+        SnackShow.showSuccess(context, 'Successfully Added');
+        // ref.invalidate(subNoticeProvider);
+        ref.invalidate(subPlanList(auth.user.token));
+
+        Get.back();
+
+      }
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: primary,
-        title: Text('Edit plan'),
+        title: Text('Edit plan', style: TextStyle(color: Colors.white),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -146,6 +161,16 @@ class _EditPlanState extends ConsumerState<EditPlan> {
                     final teachingDuration = _teachingDurationController.text;
                     final description = _descriptionController.text;
                     final expectedOutcome = _expectedOutcomeController.text;
+                    // ref.read(planProvider.notifier).editPlan(
+                    //     token: auth.user.token,
+                    //     duration: teachingDuration,
+                    //     description: description,
+                    //     outcome: expectedOutcome,
+                    //     subject: widget.subjectPlan.classSubject!.id,
+                    //     id: widget.subjectPlan.id
+                    // ).then((value) => ref.refresh(subPlanList(auth.user.token))).then((value) => Navigator.pop(context));
+
+
                     ref.read(planProvider.notifier).editPlan(
                         token: auth.user.token,
                         duration: teachingDuration,
@@ -153,7 +178,7 @@ class _EditPlanState extends ConsumerState<EditPlan> {
                         outcome: expectedOutcome,
                         subject: widget.subjectPlan.classSubject!.id,
                         id: widget.subjectPlan.id
-                    ).then((value) => ref.refresh(subPlanList(auth.user.token))).then((value) => Navigator.pop(context));
+                    );
                   }
                 },
                 child: auth.isLoad?CircularProgressIndicator(): Text('Submit'),

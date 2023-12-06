@@ -51,9 +51,6 @@ class _TimeTable1State extends ConsumerState<TimeTable1>  {
                 data: (class_data){
 
 
-
-
-
                   return GridView.builder(
                       padding: EdgeInsets.zero,
                       physics: NeverScrollableScrollPhysics(),

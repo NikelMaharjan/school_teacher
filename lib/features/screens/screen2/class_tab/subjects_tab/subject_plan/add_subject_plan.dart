@@ -4,10 +4,13 @@
 
 
 
+import 'package:eschool_teacher/constants/snack_show.dart';
 import 'package:eschool_teacher/features/providers/plan_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../../../constants/colors.dart';
 import '../../../../../authentication/providers/auth_provider.dart';
@@ -41,120 +44,145 @@ class _AddPlanState extends ConsumerState<AddPlan> {
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
+
+    ref.listen(planProvider, (previous, next) {
+      if(next.errorMessage.isNotEmpty){
+        SnackShow.showFailure(context, next.errorMessage);
+      }else if(next.isSuccess){
+        SnackShow.showSuccess(context, 'Successfully Added');
+        // ref.invalidate(subNoticeProvider);
+        ref.invalidate(subPlanList(auth.user.token));
+
+        Get.back();
+
+      }
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: primary,
-        title: Text('Add a plan'),
+        title: Text('Add a plan', style: TextStyle(color: Colors.white),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.black
-                  )
-                ),
-                child: TextFormField(
-                  controller: _teachingDurationController,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
-                    border: InputBorder.none,
-                    hintText: 'Teaching Duration',
-                      hintStyle: TextStyle(color: Colors.black)
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter the teaching duration';
-                    }else if (value.length > 20){
-                      return 'Words exceeded the limit';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              SizedBox(height: 10.h,),
-              Container(
-                decoration: BoxDecoration(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                        color: Colors.black
+                      color: Colors.black
                     )
-                ),
-                child: TextFormField(
-                  controller: _expectedOutcomeController,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
+                  ),
+                  child: TextFormField(
+                    controller: _teachingDurationController,
+                    style: TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
                       border: InputBorder.none,
-                      hintText: 'Expected Outcome',
-                      hintStyle: TextStyle(color: Colors.black)
+                      hintText: 'Teaching Duration',
+                        hintStyle: TextStyle(color: Colors.black)
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter the teaching duration';
+                      }else if (value.length > 20){
+                        return 'Words exceeded the limit';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter the expected outcome';
-                    } else if (value.length > 30){
-                      return 'Words exceeded the limit';
-                    }
-                    return null;
-                  },
                 ),
-              ),
+                SizedBox(height: 10.h,),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: Colors.black
+                      )
+                  ),
+                  child: TextFormField(
+                    controller: _expectedOutcomeController,
+                    style: TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
+                        border: InputBorder.none,
+                        hintText: 'Expected Outcome',
+                        hintStyle: TextStyle(color: Colors.black)
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter the expected outcome';
+                      } else if (value.length > 30){
+                        return 'Words exceeded the limit';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
 
-              SizedBox(height: 10.h,),
-              Container(
-                height: 150.h,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        color: Colors.black
-                    )
-                ),
-                child: TextFormField(
-                  style: TextStyle(color: Colors.black),
-                  controller: _descriptionController,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
-                      border: InputBorder.none,
-                      hintText: 'Description',
-                      hintStyle: TextStyle(color: Colors.black)
+                SizedBox(height: 10.h,),
+                Container(
+                  height: 150.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: Colors.black
+                      )
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter a description';
-                    }
-                    return null;
-                  },
+                  child: TextFormField(
+                    style: TextStyle(color: Colors.black),
+                    controller: _descriptionController,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
+                        border: InputBorder.none,
+                        hintText: 'Description',
+                        hintStyle: TextStyle(color: Colors.black)
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a description';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Form is valid, do something with the data
-                    final teachingDuration = _teachingDurationController.text;
-                    final description = _descriptionController.text;
-                    final expectedOutcome = _expectedOutcomeController.text;
-                    ref.read(planProvider.notifier).addPlan(
-                        token: auth.user.token,
-                        duration: teachingDuration,
-                        description: description,
-                        outcome: expectedOutcome,
-                        subject: widget.class_id.id
-                    ).then((value) => ref.refresh(subPlanList(auth.user.token))).then((value) => Navigator.pop(context));
-                  }
-                },
-                child: auth.isLoad?CircularProgressIndicator(): Text('Submit'),
-              ),
-            ],
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // Form is valid, do something with the data
+                      final teachingDuration = _teachingDurationController.text;
+                      final description = _descriptionController.text;
+                      final expectedOutcome = _expectedOutcomeController.text;
+                      // ref.read(planProvider.notifier).addPlan(
+                      //     token: auth.user.token,
+                      //     duration: teachingDuration,
+                      //     description: description,
+                      //     outcome: expectedOutcome,
+                      //     subject: widget.class_id.id
+                      // ).then((value) => ref.refresh(subPlanList(auth.user.token))).then((value) => Navigator.pop(context));
+
+
+                      ref.read(planProvider.notifier).addPlan(
+                          token: auth.user.token,
+                          duration: teachingDuration,
+                          description: description,
+                          outcome: expectedOutcome,
+                          subject: widget.class_id.id
+                      );
+                    }
+                  },
+                  child: auth.isLoad?CircularProgressIndicator(): Text('Submit'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

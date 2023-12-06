@@ -25,10 +25,14 @@ class ApiStudents extends ConsumerWidget {
 
 
 
+
+
+
   @override
   Widget build(BuildContext context,ref) {
     final auth = ref.watch(authProvider);
     final studentList = ref.watch(classWiseStudentProvider(sec_id));
+
 
 
     return Container(
@@ -55,7 +59,18 @@ class ApiStudents extends ConsumerWidget {
                       child:ListTile(
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 8.w, vertical: 8.h),
-                        onTap: () => Get.to(() => StudentDetails(student_id: student_data[index].student.id, className: className, section: section,)),
+                        
+                          onTap: () => Get.to(() => StudentDetails(
+                            student_id: student_data[index].student.id,
+                            className: className,
+                            section: section,
+                            student: student_data[index],
+                          )),
+                        
+
+                        
+                        
+                        
                         leading:student_data[index].student.studentPhoto!=null?  CircleAvatar(
                           radius: 20.sp,
                           backgroundImage: NetworkImage('${Api.basePicUrl}${student_data[index].student.studentPhoto}'),

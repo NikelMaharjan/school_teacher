@@ -63,9 +63,9 @@ class SubjectPlanService{
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(response.data);
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
-      throw Exception('Network error');
+      return Left(err.response.toString());
     }
   }
 
@@ -88,9 +88,8 @@ class SubjectPlanService{
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(response.data);
-    } on DioError catch (err) {
-      print(err.response);
-      throw Exception('Network error');
+    } on DioException catch (err) {
+      return Left(err.response.toString());
     }
   }
 
@@ -112,9 +111,8 @@ class ClassSubService2 {
       final data = (response.data['navigation']['data'] as List)
           .map((e) => ClassSubject.fromJson(e))
           .toList();
-      print('success');
       return data;
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
       throw Exception('Unable to fetch data');
     }

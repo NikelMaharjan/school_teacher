@@ -86,15 +86,19 @@ class _SubjectNoticeFormState extends ConsumerState<EditSubNotice> {
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
-    print('${class_sec_id}');
+   // print('${class_sec_id}');
+
+    final loadData = ref.watch(subNoticeProvider);
 
     
     ref.listen(subNoticeProvider, (previous, next) {
       if(next.errorMessage.isNotEmpty){
         SnackShow.showFailure(context, next.errorMessage);
       }else if(next.isSuccess){
-        ref.refresh(subNoticeProvider);
         SnackShow.showSuccess(context, 'succesfully updated');
+       // ref.invalidate(subNoticeProvider);
+        ref.invalidate(subNoticeList(auth.user.token));
+
         Get.back();
       }
     });
@@ -105,7 +109,7 @@ class _SubjectNoticeFormState extends ConsumerState<EditSubNotice> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: primary,
-          title: Text('Edit Notice'),
+          title: Text('Edit Notice', style: TextStyle(color: Colors.white),),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -164,30 +168,29 @@ class _SubjectNoticeFormState extends ConsumerState<EditSubNotice> {
                   ),
                 ),
 
-                CommonTextButton(
-                  buttonText: 'Submit',
-                  onPressed: () async {
+                SizedBox(height: 20,),
 
-                    print('${widget.subjectNotice.id} token : ${auth.user.token} class SUB id : ${class_sub_id}');
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: bgColor
+                  ),
+                  onPressed:  loadData.isLoad ?  null : ()  async {
+
+                //    print('${widget.subjectNotice.id} token : ${auth.user.token} class SUB id : ${class_sub_id}');
 
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       final String auth_token = auth.user.token;
 
-                      print(auth_token);
 
-                      await ref.read(subNoticeProvider.notifier)
-                          .updateSubNotice(
+                      await ref.read(subNoticeProvider.notifier).updateSubNotice(
                         token: auth.user.token,
                         title: _titleController.text,
                         message: _messageController.text,
                          id: widget.subjectNotice.id,
                         class_subject: class_sub_id
 
-                      )
-                          .then((value) =>
-                          ref.refresh(subNoticeList(auth_token)))
-                          .then((value) => Navigator.pop(context));
+                      );
                     }
 
 
@@ -197,7 +200,7 @@ class _SubjectNoticeFormState extends ConsumerState<EditSubNotice> {
 
 
 
-                  },
+                  }, child:  Text("Edit", style: TextStyle(color: Colors.white),),
                 )
 
 

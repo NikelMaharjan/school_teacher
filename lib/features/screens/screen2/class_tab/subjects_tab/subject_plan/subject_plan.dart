@@ -155,7 +155,8 @@ class SubjectPlan extends ConsumerWidget {
                       ],
                     );
                   } else {
-                    return Center(child: Column(
+                    return Center(
+                        child: Column(
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 10.h),
@@ -195,12 +196,12 @@ class SubjectPlan extends ConsumerWidget {
                         SizedBox(height: 20.h,),
                         Container(
                             height: MediaQuery.of(context).size.height * 2.5/5,
-                            child: Text('Add a plan',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18.sp),)),
+                            child: Text('Nothing at the moment',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18.sp),)),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: FloatingActionButton(
                               backgroundColor: primary,
-                              child: Icon(Icons.edit,color: Colors.white,),
+                              child: Icon(Icons.add,color: Colors.white,),
                               onPressed: (){
                                 Get.to(()=>AddPlan(class_id: classSecSubject,));
                               }

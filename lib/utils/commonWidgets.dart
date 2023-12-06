@@ -138,11 +138,12 @@ class CommonCard extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.h),
                   height: 70.h,
                   width: 70.w,
-                  child: svgAsset != null
-                      ? SvgPicture.asset(svgAsset!,)
+                  child: svgAsset != null ? SvgPicture.asset(svgAsset!,)
                       : svgPath != null
                       ? SvgPicture.network(svgPath!,)
-                      : null,
+                      : Center(
+                    child: Text(subjectName.substring(0,1), style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),),
+                  ),
                 ),
                 Expanded(
                   child: ListTile(
@@ -309,6 +310,8 @@ class NoticeCard extends StatelessWidget {
                 context: context,
                 builder: (context){
                   return AlertDialog(
+                    shape:  RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     backgroundColor: Colors.white,
                     title: Text(
                       title,
@@ -327,7 +330,7 @@ class NoticeCard extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(left: 15.w),
                         child: Text(
-                          createdAt,
+                          createdAt.substring(0,10),
                           style: TextStyle(fontSize: 12.sp, color: Colors.black),
                         ),
                       )

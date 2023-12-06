@@ -85,7 +85,6 @@ class Api {
 
 
   static const teacherRoutine ='$baseUrl/teacher_class_routine/';
-  static const teacherRoutine1 ='$baseUrl/teacher_class_routine/all/';
 
 
 

@@ -178,9 +178,9 @@ class StudentAttendanceService {
     try {
       final response = await dio.get('${Api.studentAttendanceInfo}$id',
           options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
-      final data = (response.data['navigation']['data'] as List)
-          .map((e) => StudentAttendance.fromJson(e))
-          .toList();
+
+
+      final data = (response.data['navigation']['data'] as List).map((e) => StudentAttendance.fromJson(e)).toList();
       return data;
     } on DioException catch (err) {
       print(err.response);

@@ -31,19 +31,19 @@ class SubjectNotices extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final auth = ref.watch(authProvider);
     final subNotices = ref.watch(subNoticeList(auth.user.token));
-    print('sub ${sub_id}');
-    print('class ${class_sec_id}');
-    print(class_sec_sub_id);
+    // print('sub ${sub_id}');
+    // print('class ${class_sec_id}');
+    // print(class_sec_sub_id);
 
     return ConnectivityChecker(
       child: Scaffold(
         backgroundColor: Colors.white,
         body: subNotices.when(
           data: (subNotices_data){
-            print('sub plan ${class_sec_sub_id}');
+          //  print('sub plan ${class_sec_sub_id}');
             final sub_notices = subNotices_data.where((element) => element.subjectName?.id == class_sec_sub_id).toList();
             if(sub_notices.isNotEmpty){
-              return ListView.builder(
+              return ListView.builder (
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   itemCount: sub_notices.length,
@@ -70,7 +70,12 @@ class SubjectNotices extends ConsumerWidget {
                                 backgroundColor: primary,
                                 foregroundColor: Colors.white,
                                 icon: Icons.edit,
-                                onPressed: (context) => Get.to(()=>EditSubNotice(class_sec_id: class_sec_id, sub_id: sub_id, subjectNotice: sub_notices[index],class_sub_id: sub_notices[index].subjectName!.id,)),
+                                onPressed: (context) => Get.to(()=> EditSubNotice(
+                                  class_sec_id: class_sec_id,
+                                  sub_id: sub_id,
+                                  subjectNotice: sub_notices[index],class_sub_id:
+                                  sub_notices[index].subjectName!.id,)
+                                ),
 
                               ),
                               SizedBox(width: 5.w,),
@@ -96,8 +101,7 @@ class SubjectNotices extends ConsumerWidget {
                                                     backgroundColor: primary
                                                 ),
                                                 onPressed: () async {
-                                                  await ref.read(subNoticeProvider.notifier).deleteData(sub_notices[index].id, auth.user.token)
-                                                      .then((value) => ref.refresh(subNoticeList(auth.user.token))).then((value) => Navigator.pop(context));
+                                                  await ref.read(subNoticeProvider.notifier).deleteData(sub_notices[index].id, auth.user.token).then((value) => ref.refresh(subNoticeList(auth.user.token))).then((value) => Navigator.pop(context));
                                                 },
                                                 child: Text('Yes',style: TextStyle(color: Colors.white),)
                                             ),

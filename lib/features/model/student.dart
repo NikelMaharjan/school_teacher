@@ -164,6 +164,16 @@ class Student2 {
   final int id;
   final String studentName;
   final String? studentPhoto;
+  final String gender;
+  final String residental_address;
+  final int mobile_number;
+  final String father_name;
+  final String mother_name;
+  final String email;
+  final String date_of_birth_eng;
+  final String student_roll_no;
+
+
 
 
 
@@ -171,6 +181,14 @@ class Student2 {
     required this.id,
     required this.studentName,
     required this.studentPhoto,
+    required this.mother_name,
+    required this.father_name,
+    required this.email,
+    required this.student_roll_no,
+    required this.mobile_number,
+    required this.residental_address,
+    required this.gender,
+    required this.date_of_birth_eng
 
 
   });
@@ -179,6 +197,15 @@ class Student2 {
     return Student2(
       id: json['id'] ?? '',
       studentName: json['student_name'] ?? '',
+      mother_name: json['mother_name'] ?? '',
+      father_name: json['father_name'] ?? '',
+      email: json['email'] ?? '',
+      student_roll_no: json['student_roll_no'] ?? '',
+      mobile_number: json['mobile_number'] ?? '',
+      residental_address: json['residental_address'] ?? '',
+      gender: json['gender'] ?? '',
+      date_of_birth_eng: json['date_of_birth_eng'] ?? '',
+
       studentPhoto: json['student_photo'] ?? null,
 
     );
