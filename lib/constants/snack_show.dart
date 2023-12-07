@@ -7,7 +7,7 @@ class SnackShow {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: bgColor,
 
-      content: Text(message,style: TextStyle(color: Colors.black),),
+      content: Text(message,style: TextStyle(color: Colors.white),),
       duration: Duration(seconds: 2),
     ));
   }

@@ -111,6 +111,20 @@ class NoticeNotifier extends StateNotifier<CrudState>{
     });
   }
 
+  Future<void> deleteNotice(
+      int id, String token,
+      ) async {
+    state = state.copyWith(isLoad: true, errorMessage: '', isSuccess: false);
+    final response = await NoticeService(token).deleteNotice(id: id);
+
+    response.fold((l) {
+      state = state.copyWith(isLoad: false, errorMessage: l, isSuccess: false);
+    }, (r) {
+      state = state.copyWith(
+          isLoad: false, errorMessage: '', isSuccess: true);
+    });
+  }
+
   
   Future<void> addSubNotice({
     required String token,
@@ -173,3 +187,4 @@ class NoticeNotifier extends StateNotifier<CrudState>{
 
   
 }
+

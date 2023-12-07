@@ -1,10 +1,12 @@
 import 'package:eschool_teacher/exceptions/internet_exceptions.dart';
+import 'package:eschool_teacher/features/services/notice_services.dart';
 import 'package:eschool_teacher/utils/commonWidgets.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../api.dart';
 import '../../../../../../constants/colors.dart';
 import '../../../notification_service.dart';
@@ -109,8 +111,11 @@ class _OverviewState extends ConsumerState<Overview> {
     final String token = auth.user.token;
     final teacherClass = ref.watch(teacherSubList(token));
     final infoData = ref.watch(employeeList(auth.user.token));
-    
-    
+
+    final noticeData = ref.watch(noticeList(auth.user.token));
+
+
+
 
 
     return ConnectivityChecker(
@@ -216,8 +221,41 @@ class _OverviewState extends ConsumerState<Overview> {
 
                   )
               ),
-              
-              
+
+
+              Text("SCHOOL NOTICES", style: TextStyle(
+                fontSize: 18,
+              ),),
+
+              SizedBox(
+                height: 10,
+              ),
+
+              noticeData.when(
+                data: (data) {
+                  final allNotice = data.where((element) => element.forAllClass == true).toList();
+                  return ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: allNotice.length,
+                      itemBuilder: (context, index) {
+                        return NoticeCard3(
+                            title: allNotice[index].title,
+                            image: allNotice[index].image!=null?'${Api.basePicUrl}${allNotice[index].image}':null,
+                            description: allNotice[index].description,
+                            createdAt: '${DateFormat('MMMM dd').format(DateTime.parse(allNotice[index].createdAt))}');
+                      });
+                },
+                error: (err, stack) => Center(child: Text('$err')),
+                loading: () => NoticeShimmer(),
+              ),
+
+
+
+
+
+
 
 
 

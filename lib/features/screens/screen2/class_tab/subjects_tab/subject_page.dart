@@ -87,7 +87,10 @@ class _SubjectsState extends ConsumerState<Subjects>
     switch (_currentIndex) {
       case 0:
         return FloatingActionButton(
-          onPressed: () => Get.to(() => AddLessons()),
+          // onPressed: () => Get.to(() => AddLessons()),
+          onPressed: (){
+            
+          },
           backgroundColor: primary,
           child: Icon(
             Icons.add,

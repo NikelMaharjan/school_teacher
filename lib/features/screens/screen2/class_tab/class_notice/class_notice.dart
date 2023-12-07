@@ -32,69 +32,148 @@ class ClassNoticeBoard extends ConsumerWidget {
 
     return ConnectivityChecker(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: bgColor,
+          title: Text("Notice Board", style: TextStyle(color: Colors.white),),
+        ),
         backgroundColor: Colors.white,
         body: Stack(
           children: [
             Center(
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.8 / 5,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(
-                          bottom: Radius.circular(40),
-                        ),
-                        color: Color(0xff205578)),
-                    child: Center(
-                      child: Text('Notice Board',
-                          style: TextStyle(fontSize: 20.sp, color: Colors.white)),
-                    ),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 4 / 5,
-                    // color: Colors.red,
-                    child: noticeData.when(
-                      data: (data) {
-                        final allNotice = data.where((element) => element.notice.forAllClass == false).toList();
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    // Container(
+                    //   width: double.infinity,
+                    //   height: MediaQuery.of(context).size.height * 0.8 / 5,
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.vertical(
+                    //         bottom: Radius.circular(40),
+                    //       ),
+                    //       color: Color(0xff205578)),
+                    //   child: Center(
+                    //     child: Text('Notice Board',
+                    //         style: TextStyle(fontSize: 20.sp, color: Colors.white)),
+                    //   ),
+                    // ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 4 / 5,
+                      // color: Colors.red,
+                      child: noticeData.when(
+                        data: (data) {
+                          final allNotice = data.where((element) => element.notice.forAllClass == false).toList();
 
-                        return ListView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 15.w),
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: allNotice.length,
-                            itemBuilder: (context, index) {
-                              return NoticeCard(
-                                  title: allNotice[index].notice.title,
-                                  description: allNotice[index].notice.description,
-                                  createdAt: allNotice[index].createdAt);
-                            });
-                      },
-                      error: (err, stack) => Center(child: Text('$err')),
-                      loading: () => NoticeShimmer(),
-                    ),
-                  )
-                ],
+
+
+                          return ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 15.w),
+                              physics: BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: allNotice.length,
+                              itemBuilder: (context, index) {
+                                return Slidable(
+                                  closeOnScroll: true,
+                                  endActionPane: ActionPane(
+                                    motion: ScrollMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        borderRadius: BorderRadius.circular(10),
+                                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                        autoClose: true,
+                                        flex: 1,
+                                        backgroundColor: primary,
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.edit,
+                                        onPressed: (context) {
+
+                                        }
+
+                                      ),
+                                      SizedBox(width: 5.w,),
+                                      SlidableAction(
+                                          borderRadius: BorderRadius.circular(10),
+                                          padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                          flex: 1,
+                                          autoClose: true,
+                                          backgroundColor: abs_color,
+                                          foregroundColor: Colors.white,
+                                          icon: Icons.delete,
+                                          onPressed: (context) =>  showDialog(
+                                              context: context,
+                                              builder: (context){
+                                                return AlertDialog(
+                                                  backgroundColor: Colors.white,
+                                                  alignment: Alignment.center,
+                                                  title: Text('Do you want to delete the notice?',style: TextStyle(color: Colors.black),),
+                                                  actionsAlignment: MainAxisAlignment.spaceEvenly,
+                                                  actions: [
+                                                    TextButton(
+                                                        style: TextButton.styleFrom(
+                                                            backgroundColor: primary
+                                                        ),
+                                                        onPressed: () async {
+
+                                                       await ref.read(noticeProvider.notifier).delClassNotice(allNotice[index].id, auth.user.token)
+                                                           .then((value) => ref.refresh(classNoticeProvider2(class_sec_id)))
+                                                           .then((value) => Navigator.pop(context));
+
+
+                                                       await ref.read(noticeProvider.notifier).deleteNotice(allNotice[index].notice.id, auth.user.token);
+                                                        },
+                                                        child: Text('Yes',style: TextStyle(color: Colors.white),)
+                                                    ),
+                                                    TextButton(
+                                                        style: TextButton.styleFrom(
+                                                            backgroundColor: shimmerBaseColor
+                                                        ),
+                                                        onPressed: (){
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text('No',style: TextStyle(color: Colors.black),)
+                                                    ),
+                                                  ],
+                                                );
+                                              })
+
+
+
+                                      )
+                                    ],
+                                  ),
+                                  child: NoticeCard(
+                                      title: allNotice[index].notice.title,
+                                      description: allNotice[index].notice.description,
+                                      createdAt: allNotice[index].createdAt),
+                                );
+                              });
+                        },
+                        error: (err, stack) => Center(child: Text('$err')),
+                        loading: () => NoticeShimmer(),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-            Positioned(
-              left: 15.w,
-              top: 40.h,
-              child: IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.sp)),
-            ),
-            Positioned(
-              right: 15.w,
-              top: 40.h,
-              child: IconButton(
-                  onPressed: () async {
-                    ref.refresh(classNoticeList(auth.user.token));
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.white, size: 25.sp)),
-            ),
+            // Positioned(
+            //   left: 15.w,
+            //   top: 40.h,
+            //   child: IconButton(
+            //       onPressed: () {
+            //         Get.back();
+            //       },
+            //       icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.sp)),
+            // ),
+            // Positioned(
+            //   right: 15.w,
+            //   top: 40.h,
+            //   child: IconButton(
+            //       onPressed: () async {
+            //         ref.refresh(classNoticeList(auth.user.token));
+            //       },
+            //       icon: Icon(Icons.refresh, color: Colors.white, size: 25.sp)),
+            // ),
           ],
         ),
 

@@ -36,9 +36,16 @@ class ClassNoticeService2 {
   Future<List<ClassNotice>> getClassNotice() async {
 
 
+
+
+
+
     try {
       final response = await dio.get('${Api.classNotices}$id',
           options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+
+
+
 
       if(response.statusCode == 204){
         return [
@@ -49,10 +56,14 @@ class ClassNoticeService2 {
       }
 
 
+
       final data = (response.data['navigation']['data'] as List).map((e) => ClassNotice.fromJson(e)).toList();
+
+
+
       return data;
     } on DioException catch (err) {
-     // print(err.response);
+     print(err.response);
       throw Exception('Unable to fetch data');
     }
   }
@@ -91,9 +102,10 @@ class NoticeService {
           },
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+
+
       return Right(response.data);
     } on DioException catch (err) {
-     // print(err.response);
       throw Exception('Network error');
     }
   }
@@ -143,6 +155,25 @@ class NoticeService {
       return data;
     } on DioException catch (err) {
     //  print(err.response);
+      throw Exception('Unable to fetch data');
+    }
+  }
+
+
+  Future<Either<String, bool>> deleteNotice({
+    required int id,
+  }) async {
+    try {
+      final response = await dio.delete(
+        '${Api.delNotices}$id/',
+        options: Options(
+          headers: {HttpHeaders.authorizationHeader: 'token $token'},
+        ),
+      );
+
+      return Right(true);
+    } on DioException catch (err) {
+      // print(err.response);
       throw Exception('Unable to fetch data');
     }
   }

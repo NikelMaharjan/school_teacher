@@ -60,13 +60,27 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
     final noticeLoad = ref.watch(noticeList(auth.user.token));
 
 
+    ref.listen(classNoticeProvider, (previous, next) {
+      if(next.errorMessage.isNotEmpty){
+        SnackShow.showFailure(context, next.errorMessage);
+      }else if(next.isSuccess){
+        ref.invalidate(classNoticeProvider2(class_sec_id));
+        SnackShow.showSuccess(context, 'Successfully Added');
+        Get.back();
+
+      }
+    });
+
+
+
+
 
 
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: primary,
-          title: Text('Add Class Notice'),
+          title: Text('Add Class Notice' ,style: TextStyle(color: Colors.white),),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -149,6 +163,8 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                   ),
                 ),
 
+                SizedBox(height: 10,),
+
 
 
                 CommonTextButton(
@@ -157,8 +173,6 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       final String auth_token = auth.user.token;
-
-                      print(auth_token);
 
                       await ref.read(noticeProvider.notifier).addNotice(
                         token: auth.user.token,
@@ -178,25 +192,48 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                           final noticeData = ref.watch(noticeList(auth_token));
                           noticeData.when(
                             data: (notice_data) async {
-                              final lastAdded = notice_data.last.id;
-                              print('length ${notice_data.length}');
-                              print('last id ${lastAdded}');
+                              final lastAdded = notice_data.first.id;
+
+                              print('notice id ${lastAdded}');
                               print('class_Sec_id ${widget.class_sec_id}');
 
-                              ref.read(noticeProvider.notifier).addClassNotice(
-                                  token: auth.user.token,
-                                  notice: lastAdded,
+                              ref.read(classNoticeProvider.notifier).addClassNotice(
+                                token: auth.user.token,
+                                notice: lastAdded,
                                 classSection: widget.class_sec_id,
-                              ).then((value) => ref.refresh(noticeList(auth.user.token))).then((value) =>
-                                  ref.refresh(classNoticeList(auth.user.token)));
+                              );
                             },
                             error: (err, stack) => Center(child: Text('$err')),
                             loading: () => null,
                           );
                         });
-                      }).then((value) =>
-                          ref.refresh(classNoticeList(auth.user.token))).then((
-                          value) => Navigator.pop(context));
+                      });
+
+
+                      //
+                      // setState(() {
+                      //   final noticeData = ref.watch(noticeList(auth_token));
+                      //   noticeData.when(
+                      //     data: (notice_data) async {
+                      //       final lastAdded = notice_data.first.id;
+                      //
+                      //       print('notice id ${lastAdded}');
+                      //       print('class_Sec_id ${widget.class_sec_id}');
+                      //
+                      //       ref.read(classNoticeProvider.notifier).addClassNotice(
+                      //         token: auth.user.token,
+                      //         notice: lastAdded,
+                      //         classSection: widget.class_sec_id,
+                      //       );
+                      //     },
+                      //     error: (err, stack) => Center(child: Text('$err')),
+                      //     loading: () => null,
+                      //   );
+                      // });
+
+
+
+
                     }
 
 

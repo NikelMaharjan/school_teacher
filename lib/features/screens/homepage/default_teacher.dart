@@ -53,7 +53,7 @@ class _DefaultTeacherState extends ConsumerState<DefaultTeacher>
     TimeTable(),
 
     AssignmentPage(),
-    Teacher(),
+    //Teacher(),
     Settings_teacher()
   ];
 
@@ -153,16 +153,16 @@ class _DefaultTeacherState extends ConsumerState<DefaultTeacher>
                               label: 'Assignments'),
 
 
-                          BottomNavigationBarItem(
-                              icon: DecoratedIcon(
-                                icon: Icon(
-                                  EvaIcons.person,
-                                  size: 27.sp,
-                                ),
-                                decoration: IconDecoration(
-                                    border: IconBorder(width: 1.w)),
-                              ),
-                              label: 'Profile'),
+                          // BottomNavigationBarItem(
+                          //     icon: DecoratedIcon(
+                          //       icon: Icon(
+                          //         EvaIcons.person,
+                          //         size: 27.sp,
+                          //       ),
+                          //       decoration: IconDecoration(
+                          //           border: IconBorder(width: 1.w)),
+                          //     ),
+                          //     label: 'Profile'),
                           BottomNavigationBarItem(
                               icon: DecoratedIcon(
                                 icon: Icon(

@@ -145,34 +145,31 @@ class _AddLessonsState extends State<AddLessons> {
             dashPattern: [5, 5],
             color: primary,
             strokeWidth: 1,
-            child: InkWell(
-              onTap: () {},
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.1,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 20.sp,
-                      backgroundColor: primary,
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.1,
+              width: MediaQuery.of(context).size.width * 0.9,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 20.sp,
+                    backgroundColor: primary,
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
                     ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Text(
-                      'Study Materials',
-                      style: TextStyle(color: Colors.black, fontSize: 15.sp),
-                    )
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Text(
+                    'Study Materials',
+                    style: TextStyle(color: Colors.black, fontSize: 15.sp),
+                  )
+                ],
               ),
             ),
           ),
@@ -191,7 +188,9 @@ class _AddLessonsState extends State<AddLessons> {
                       side: BorderSide(
                         color: Colors.black,
                       ))),
-              onPressed: () {},
+              onPressed: () {
+
+              },
               child: Text(
                 'Add lesson',
                 style: TextStyle(
