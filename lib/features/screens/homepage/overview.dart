@@ -146,7 +146,6 @@ class _OverviewState extends ConsumerState<Overview> {
                 // color: Colors.blue,
                   height: MediaQuery.of(context).size.height * 1.2 / 4,
                   padding: EdgeInsets.only(left: 30.w),
-
                   child: teacherClass.when(
                     data: (class_data){
 

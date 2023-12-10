@@ -64,43 +64,16 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
 
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        title: Text("ADD ASSIGNMENT", style: TextStyle(color: Colors.white),) ,
+      ),
       // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            Container(
-                height: MediaQuery.of(context).size.height * 0.6 / 5,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: bgColor,
-                    borderRadius: BorderRadius.vertical(
-                        bottom: Radius.circular(25))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 80.w,
-                        ),
-                      ],
-                    ),
-                    Text('Add Assignments',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 18.sp)),
-                  ],
-                )),
             Form(
               key: _form,
               child: Container(
@@ -144,7 +117,9 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
                             controller: titleController,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return SnackShow.showFailure(context, 'Title cannot be empty');
+                               // return SnackShow.showFailure(context, 'Title cannot be empty');
+
+                                return "Field cannot be empty";
                               }
                               return null;
                             },
@@ -174,7 +149,9 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
                             controller: descController,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return SnackShow.showFailure(context, 'Description cannot be empty');
+                                //return SnackShow.showFailure(context, 'Description cannot be empty');
+
+                                return "Field cannot be empty";
                               }
                               return null;
                             },
@@ -355,7 +332,8 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
                               if (value == null || value.isEmpty) {
                                 return null; // return null if value is null or empty
                               } else if (!value.contains('www.')) {
-                                return SnackShow.showFailure(context, 'Link should be properly formatted');
+                           //     return SnackShow.showFailure(context, 'Link should be properly formatted');
+                                return "Field cannot be empty";
                               }
                               return null;
                             },
@@ -451,6 +429,7 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
                             _form.currentState!.save();
                             if(_form.currentState!.validate()) {
 
+
                               if(dropdownValue == ''){
 
                                 return SnackShow.showFailure(context, 'Select the type first');
@@ -530,8 +509,10 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
                               }
 
 
-                              print(image.toString());
-                              print(auth.user.token);
+                            }
+
+                            else {
+                              print("No Validation");
                             }
                             },
 

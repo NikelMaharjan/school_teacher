@@ -34,6 +34,9 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
 
   final int class_sec_id;
 
+
+  bool isTrue = true;
+
   _AddNoticeState({required this.teacher_id, required this.class_sec_id,});
   bool isSwitched = false;
 
@@ -86,7 +89,7 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Form(
             key: _formKey,
-            child: ListView(
+            child:  isTrue == true ? ListView(
               children: [
                 if (_error != null)
                   Text(
@@ -174,6 +177,10 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                       _formKey.currentState!.save();
                       final String auth_token = auth.user.token;
 
+                      setState(() {
+                        isTrue = false;
+                      });
+
                       await ref.read(noticeProvider.notifier).addNotice(
                         token: auth.user.token,
                         title: _titleController.text,
@@ -245,7 +252,7 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                 ),
 
               ],
-            ),
+            ) : Center(child: Text("Wait a moment......."),),
           ),
         ));
   }

@@ -107,7 +107,7 @@ class _AssignmentPageState extends ConsumerState<AssignmentPage> {
                 ),
                 dropdownDecoratorProps: const DropDownDecoratorProps(
                     textAlign: TextAlign.start,
-                    baseStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w500,color: Colors.black),
+                    baseStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.normal,color: Colors.black),
                     dropdownSearchDecoration: InputDecoration(
                         label: Text('Class'),
                         labelStyle: TextStyle(color: Colors.grey)
@@ -234,7 +234,7 @@ class _AssignmentPageState extends ConsumerState<AssignmentPage> {
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: EdgeInsets.only(left: 15.w),
-                  child: Text('Assignments',style: TextStyle(color: Colors.black,fontSize: 20.sp,fontWeight: FontWeight.bold),),
+                  child: Text('Assignments',style: TextStyle(color: Colors.black,fontSize: 20.sp,fontWeight: FontWeight.normal, letterSpacing: 2),),
                 )),
             Divider(
               height: 20.h,
@@ -308,41 +308,44 @@ class _AssignmentPageState extends ConsumerState<AssignmentPage> {
                                       }
                                   ),
                                 ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(right: 25.w),
-                                    child: FloatingActionButton(
-                                        backgroundColor: primary,
-                                        child: Icon(Icons.add,color: Colors.white,),
-                                        onPressed: (){
-                                          Get.to(()=>Add_Assignment(classSubject: subInfo.first));
-                                        }
-                                    ),
-                                  ),
-                                )
+                                // Align(
+                                //   alignment: Alignment.bottomRight,
+                                //   child: Padding(
+                                //     padding: EdgeInsets.only(right: 25.w),
+                                //     child: FloatingActionButton(
+                                //         backgroundColor: primary,
+                                //         child: Icon(Icons.add,color: Colors.white,),
+                                //         onPressed: (){
+                                //           Get.to(()=>Add_Assignment(classSubject: subInfo.first));
+                                //         }
+                                //     ),
+                                //   ),
+                                // )
                               ],
                             );
 
                           }
                           else{
-                            return Column(
-                              children: [
-                                Expanded(child: Center(child: Text('No assignment',style: TextStyle(color: Colors.black,fontSize: 30.sp),))),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(right: 25.w),
-                                    child: FloatingActionButton(
-                                        backgroundColor: primary,
-                                        child: Icon(Icons.add,color: Colors.white,),
-                                        onPressed: (){
-                                          Get.to(()=>Add_Assignment(classSubject: subInfo.first,));
-                                        }
-                                    ),
-                                  ),
-                                )
-                              ],
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 40.0),
+                              child: Column(
+                                children: [
+                                  Text('No assignment',style: TextStyle(color: Colors.black,fontSize: 20.sp, fontStyle: FontStyle.italic),),
+
+
+                                  TextButton(onPressed: (){
+                                    Get.to(()=>Add_Assignment(classSubject: subInfo.first,));
+
+                                  }, child: Text("Add Assignments", style: TextStyle(color: bgColor ),))
+                                  // FloatingActionButton.small(
+                                  //     backgroundColor: primary,
+                                  //     child: Icon(Icons.add,color: Colors.white,),
+                                  //     onPressed: (){
+                                  //       Get.to(()=>Add_Assignment(classSubject: subInfo.first,));
+                                  //     }
+                                  // )
+                                ],
+                              ),
                             );
 
 

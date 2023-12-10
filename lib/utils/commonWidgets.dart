@@ -971,7 +971,7 @@ class NoticeShimmer extends StatelessWidget {
     return ListView.builder(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
-      itemCount: 5, // You can set the number of shimmer items you want to show
+      itemCount: 2, // You can set the number of shimmer items you want to show
       itemBuilder: (context, index) => Padding(
         padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
         child: Shimmer.fromColors(
