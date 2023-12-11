@@ -78,7 +78,7 @@ class AssignmentDetails extends ConsumerWidget {
             },
             contentPadding: EdgeInsets.zero,
             title: Text('Link',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-            subtitle: Text(assignment.link!,style: TextStyle(color: Colors.black),),
+            subtitle: Text(assignment.link!,style: TextStyle(color: bgColor, fontStyle: FontStyle.italic, decoration: TextDecoration.underline),),
           ):SizedBox(),
           SizedBox(height: 5.h,),
           assignment.imageFile != null ? Container(
@@ -89,7 +89,7 @@ class AssignmentDetails extends ConsumerWidget {
             thickness: 1,
             color: Colors.black,
           ),
-          assignment.hasDeadline==true? Text('Deadline: ${DateFormat('MMMM dd').format(DateTime.parse(assignment.deadline!))}',style: TextStyle(color: Colors.black,fontSize: 20.sp),): Text(''),
+          assignment.hasDeadline==true? Text('Deadline: ${DateFormat('MMMM dd').format(DateTime.parse(assignment.deadline!))}',style: TextStyle(color: Colors.black,fontSize: 16.sp),): Text(''),
         ],
       ),
     );

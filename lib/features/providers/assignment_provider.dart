@@ -60,6 +60,9 @@ class AssignmentNotifier extends StateNotifier<CrudState>{
 
   }) async {
     state = state.copyWith(isLoad: true, errorMessage: '', isSuccess: false);
+
+
+
     final response = await AssignmentService(token).editAssignment(
         id: id,
         title: title,
@@ -67,9 +70,9 @@ class AssignmentNotifier extends StateNotifier<CrudState>{
         hasDeadline: hasDeadline,
         type: type,
         subject: subject,
-      deadline: deadline,
-      link: link,
-      image: image
+        deadline: deadline,
+        link: link,
+        image: image
     );
     response.fold((l) {
       state = state.copyWith(isLoad: false, errorMessage: l, isSuccess: false);

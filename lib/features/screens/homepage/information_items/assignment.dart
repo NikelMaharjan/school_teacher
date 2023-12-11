@@ -302,7 +302,10 @@ class _AssignmentPageState extends ConsumerState<AssignmentPage> {
 
                                             },
 
-                                            onTap:()=> Get.to(()=>AssignmentTabs(assignment: assignment_data[index])),
+                                            onTap:() {
+                                              print("NIKEL MAHARAJN IS ${assignment_data[index].classSubject.id}");
+                                              Get.to(AssignmentTabs(assignment: assignment_data[index]));
+                                            },
                                             title: assignment_data[index].title,
                                             createdAt: DateFormat('MMMM dd').format(DateTime.parse(assignment_data[index].createdAt)));
                                       }

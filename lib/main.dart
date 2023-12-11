@@ -1,4 +1,5 @@
 
+import 'package:eschool_teacher/firebase_options.dart';
 import 'package:eschool_teacher/status_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +12,6 @@ import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'firebase_options.dart';
 
 
 
@@ -64,6 +64,7 @@ void main() async {
     initializationSettings,
 
   );
+
 
   await Hive.initFlutter();
 

@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:eschool_teacher/api.dart';
 import 'package:eschool_teacher/constants/colors.dart';
 import 'package:eschool_teacher/features/authentication/providers/auth_provider.dart';
 import 'package:eschool_teacher/features/model/assignment.dart';
 import 'package:eschool_teacher/features/model/class_subject.dart';
 import 'package:eschool_teacher/features/providers/assignment_provider.dart';
+import 'package:eschool_teacher/features/screens/homepage/information_items/assignment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -81,44 +83,32 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
     final assignmentInfo = ref.watch(assignmentProvider);
 
 
+    // ref.listen(assignmentProvider, (previous, next) {
+    //   if(next.errorMessage.isNotEmpty){
+    //     SnackShow.showFailure(context, next.errorMessage);
+    //   }else if(next.isSuccess){
+    //     ref.invalidate(assignmentList(auth.user.token));
+    //     SnackShow.showSuccess(context, 'Successfully Edited');
+    //     Get.off(AssignmentPage());
+    //
+    //   }
+    // });
+    //
+    //
+
+
+
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        title: Text("Edit Assignment", style: TextStyle(color: Colors.white),),
+      ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            Container(
-                height: MediaQuery.of(context).size.height * 0.6 / 5,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: bgColor,
-                    borderRadius: BorderRadius.vertical(
-                        bottom: Radius.circular(25))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 80.w,
-                        ),
-                      ],
-                    ),
-                    Text('Edit Assignments',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 18.sp)),
-                  ],
-                )),
             Form(
               key: _form,
               child: Container(
@@ -242,12 +232,13 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                         onChanged: toggleSwitch),
                                   )
                                 ],
-                              )),
+                              )
+                          ),
                           SizedBox(width: 40.h,),
                           isSwitched== false ? SizedBox( width: MediaQuery.of(context).size.width*0.4,)
                               : Visibility(
-                            visible: isSwitched,
-                            child: Container(
+                              visible: isSwitched,
+                                child: Container(
                                 height:
                                 MediaQuery.of(context).size.height * 0.07,
                                 width:
@@ -437,18 +428,22 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                         ),
                       )
                           : Container(
-                        height:
-                        MediaQuery.of(context).size.height * 0.1,
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                           height: MediaQuery.of(context).size.height * 0.1,
+                           width: MediaQuery.of(context).size.width * 0.9,
+                           decoration: BoxDecoration(
+                           borderRadius: BorderRadius.circular(10),
                         ),
                            child: InkWell(
                             onTap: () {
                               ref.read(imageProvider.notifier).pickAnImage();
 
                             },
-                            child: widget.assignment.imageFile!=null? Image.network(widget.assignment.imageFile!,fit: BoxFit.contain,): Image.file(File(image!.path),fit: BoxFit.contain,)),
+
+                             child: image == null ? Image.network("${Api.basePicUrl}${widget.assignment.imageFile!}") : Image.file(File(image!.path))
+
+
+                             // child: widget.assignment.imageFile!=null? Image.network("${Api.basePicUrl}${widget.assignment.imageFile!}",fit: BoxFit.contain,): Image.file(File(image!.path),fit: BoxFit.contain,)
+                           ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -485,7 +480,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                       subject: widget.classSubject.id,
                                       token: auth.user.token,
                                       id: widget.assignment.id,
-                                    link: linkController.text.isEmpty? null : linkController.text.trim()
+                                      link: linkController.text.isEmpty? null : linkController.text.trim()
 
                                   ).then((value) => ref.invalidate(imageProvider))
                                       .then((value) => ref.refresh(
@@ -512,8 +507,8 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
 
                                 }
                                 else if (dueController.text.isEmpty){
-                                  ref.read(assignmentProvider.notifier)
-                                      .editAssignment(
+
+                                  ref.read(assignmentProvider.notifier).editAssignment(
                                     title: titleController.text.trim(),
                                     description: descController.text.trim(),
                                     hasDeadline: isSwitched,
@@ -543,7 +538,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                       id: widget.assignment.id,
                                       link: linkController.text.isEmpty? null : linkController.text.trim(),
                                       image: image,
-                                    deadline: dueController.text
+                                      deadline: dueController.text
 
 
                                   ).then((value) => ref.invalidate(imageProvider))

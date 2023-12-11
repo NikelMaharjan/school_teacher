@@ -86,23 +86,48 @@ class AssignmentService {
     required int subject
   }) async {
     try {
-      final formData = FormData.fromMap({
-        'title': title,
-        'description': description,
-        'image_file': image != null ? await MultipartFile.fromFile(image.path):null,
-        'class_subject':subject,
-        'assignment_type':type,
-        'link':link,
-        'has_deadline':hasDeadline,
-        'deadline':deadline
-      });
-      final response = await dio.patch(
-          '${Api.editAssignmentUrl}$id/',
-          data: formData,options: Options(
-          headers: {HttpHeaders.authorizationHeader: 'token $token'}));
 
-      return Right(response.data);
-    } on DioError catch (err) {
+      if(image == null) {
+        final formData = FormData.fromMap({
+          'title': title,
+          'description': description,
+          'class_subject':subject,
+          'assignment_type':type,
+          'link':link,
+          'has_deadline':hasDeadline,
+          'deadline':deadline
+        });
+        final response = await dio.patch(
+            '${Api.editAssignmentUrl}$id/',
+            data: formData,options: Options(
+            headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+          return Right(response.data);
+
+
+      }
+
+      else{
+        final formData = FormData.fromMap({
+          'title': title,
+          'description': description,
+          'image_file': await MultipartFile.fromFile(image.path),
+          'class_subject':subject,
+          'assignment_type':type,
+          'link':link,
+          'has_deadline':hasDeadline,
+          'deadline':deadline
+        });
+        final response = await dio.patch(
+            '${Api.editAssignmentUrl}$id/',
+            data: formData,options: Options(
+            headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+        return Right(response.data);
+
+
+      }
+
+
+    } on DioException catch (err) {
       print(err.response);
       throw Exception('Dio error: ${err.message}');
     } on SocketException catch (err) {

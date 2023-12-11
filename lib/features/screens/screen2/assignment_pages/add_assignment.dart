@@ -332,8 +332,7 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
                               if (value == null || value.isEmpty) {
                                 return null; // return null if value is null or empty
                               } else if (!value.contains('www.')) {
-                           //     return SnackShow.showFailure(context, 'Link should be properly formatted');
-                                return "Field cannot be empty";
+                                return SnackShow.showFailure(context, 'Link should be properly formatted');
                               }
                               return null;
                             },

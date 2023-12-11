@@ -46,9 +46,9 @@ class _OverviewState extends ConsumerState<Overview> {
 
     FirebaseMessaging.instance.getInitialMessage().then(
           (message) {
-        print("FirebaseMessaging.instance.getInitialMessage");
+       // print("FirebaseMessaging.instance.getInitialMessage");
         if (message != null) {
-          print("New Notification");
+        //  print("New Notification");
           // if (message.data['_id'] != null) {
           //   Navigator.of(context).push(
           //     MaterialPageRoute(
@@ -66,11 +66,11 @@ class _OverviewState extends ConsumerState<Overview> {
     // 2. This method only call when App in foreground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
           (message) {
-        print("FirebaseMessaging.onMessage.listen");
+    //    print("FirebaseMessaging.onMessage.listen");
         if (message.notification != null) {
-          print(message.notification!.title);
-          print(message.notification!.body);
-          print("message.data11 ${message.data}");
+       //   print(message.notification!.title);
+       //   print(message.notification!.body);
+      //    print("message.data11 ${message.data}");
           LocalNotificationService.createanddisplaynotification(message);
 
         }
@@ -80,11 +80,11 @@ class _OverviewState extends ConsumerState<Overview> {
     // 3. This method only call when App in background and not terminated(not closed)
     FirebaseMessaging.onMessageOpenedApp.listen(
           (message) {
-        print("FirebaseMessaging.onMessageOpenedApp.listen");
+      //  print("FirebaseMessaging.onMessageOpenedApp.listen");
         if (message.notification != null) {
-          print(message.notification!.title);
-          print(message.notification!.body);
-          print("message.data22 ${message.data['_id']}");
+        //  print(message.notification!.title);
+      //    print(message.notification!.body);
+      //   print("message.data22 ${message.data['_id']}");
           LocalNotificationService.createanddisplaynotification(message);
         }
       },
@@ -97,7 +97,7 @@ class _OverviewState extends ConsumerState<Overview> {
 
   Future<void> getToken()async{
     final response = await FirebaseMessaging.instance.getToken();
-    print(response);
+    print("Token is $response");
   }
 
 
