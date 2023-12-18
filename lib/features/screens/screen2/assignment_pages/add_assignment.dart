@@ -238,7 +238,15 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
                                       
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 15.sp),
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+
+                                            return "Field cannot be empty";
+                                          }
+                                          return null;
+                                        },
                                         decoration: InputDecoration(
+
                                             focusedBorder: InputBorder.none,
                                             border: InputBorder.none,
                                             hintText: 'Due Date',

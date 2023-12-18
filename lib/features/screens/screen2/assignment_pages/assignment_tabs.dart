@@ -21,7 +21,8 @@ class AssignmentTabs extends ConsumerStatefulWidget {
 
 
   final Assignment assignment;
-  AssignmentTabs({required this.assignment});
+  final int class_subject_id;
+  AssignmentTabs({required this.assignment, required this.class_subject_id});
 
   @override
   ConsumerState<AssignmentTabs> createState() => _AssignmentTabState();
@@ -30,6 +31,9 @@ class AssignmentTabs extends ConsumerStatefulWidget {
 class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
+
+
+
 
 
 
@@ -116,17 +120,14 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
             Container(
               // color: Colors.red,
                 height: MediaQuery.of(context).size.height * 3.6 / 5,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 15.w),
-                  child: TabBarView(
-                    // physics: NeverScrollableScrollPhysics(),
+                child: TabBarView(
+                  // physics: NeverScrollableScrollPhysics(),
 
-                    controller: _tabController,
-                    children: [
-                      AssignmentDetails(assignment: widget.assignment,classSubject : widget.assignment.classSubject),
-                      Student_Assignment(assignment: widget.assignment, class_id: widget.assignment.classSubject.classSection!.id, section: widget.assignment.classSubject.classSection!.section.sectionName, className: widget.assignment.classSubject.classSection!.className.classLevel.name,)],
-                    //MyClass(id: class_id, school_id: school_id, class_teacher: class_teacher, teacher_subject: teacher_subject, classSub_id: classSub_id,)
-                  ),
+                  controller: _tabController,
+                  children: [
+                    AssignmentDetails(assignment: widget.assignment,classSubject : widget.assignment.classSubject, class_subject_id: widget.class_subject_id,),
+                    Student_Assignment(assignment: widget.assignment, class_id: widget.assignment.classSubject.classSection!.id, section: widget.assignment.classSubject.classSection!.section.sectionName, className: widget.assignment.classSubject.classSection!.className.classLevel.name,)],
+                  //MyClass(id: class_id, school_id: school_id, class_teacher: class_teacher, teacher_subject: teacher_subject, classSub_id: classSub_id,)
                 )),
           ],
         ),

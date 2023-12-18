@@ -25,9 +25,10 @@ class Edit_Assignment extends ConsumerStatefulWidget {
 
   final Assignment assignment;
   final ClassSubject classSubject;
+  final int class_subject_id;
 
 
-  const Edit_Assignment({super.key,required this.assignment,required this.classSubject});
+  const Edit_Assignment({super.key,required this.assignment,required this.classSubject, required this.class_subject_id});
 
   @override
   ConsumerState<Edit_Assignment> createState() => _Edit_Assignment_State();
@@ -83,18 +84,19 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
     final assignmentInfo = ref.watch(assignmentProvider);
 
 
-    // ref.listen(assignmentProvider, (previous, next) {
-    //   if(next.errorMessage.isNotEmpty){
-    //     SnackShow.showFailure(context, next.errorMessage);
-    //   }else if(next.isSuccess){
-    //     ref.invalidate(assignmentList(auth.user.token));
-    //     SnackShow.showSuccess(context, 'Successfully Edited');
-    //     Get.off(AssignmentPage());
-    //
-    //   }
-    // });
-    //
-    //
+    ref.listen(assignmentProvider, (previous, next) {
+      if(next.errorMessage.isNotEmpty){
+        SnackShow.showFailure(context, next.errorMessage);
+      }else if(next.isSuccess){
+        ref.invalidate(assignmentDetailProvider(widget.class_subject_id));
+        ref.invalidate(assignmentList(auth.user.token));
+        SnackShow.showSuccess(context, 'Successfully Edited');
+        Get.back();
+
+      }
+    });
+
+
 
 
 
@@ -261,8 +263,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                         firstDate: DateTime(2020),
                                         lastDate: DateTime(2030));
 
-                                    dueController.text =
-                                    "${date!.year}-${date.month}-${date.day}";
+                                    dueController.text = "${date!.year}-${date.month}-${date.day}";
 
                                   },
 
@@ -458,7 +459,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                   side: BorderSide(
                                     color: Colors.black,
                                   ))),
-                          onPressed: () async {
+                          onPressed:  assignmentInfo.isLoad ? null : () async {
 
 
 
@@ -482,10 +483,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                       id: widget.assignment.id,
                                       link: linkController.text.isEmpty? null : linkController.text.trim()
 
-                                  ).then((value) => ref.invalidate(imageProvider))
-                                      .then((value) => ref.refresh(
-                                      assignmentList(auth.user.token)))
-                                      .then((value) => Navigator.pop(context));
+                                  );
                                 }
                                 else if (image==null){
                                   ref.read(assignmentProvider.notifier)
@@ -496,14 +494,12 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                       type: dropdownValue,
                                       subject: widget.classSubject.id,
                                       token: auth.user.token,
-                                      deadline: dueController.text, id: widget.assignment.id,
+                                      deadline: dueController.text,
+                                     id: widget.assignment.id,
                                       link: linkController.text.isEmpty? null : linkController.text.trim(),
 
 
-                                  ).then((value) => ref.invalidate(imageProvider))
-                                      .then((value) => ref.refresh(
-                                      assignmentList(auth.user.token)))
-                                      .then((value) => Navigator.pop(context));
+                                  );
 
                                 }
                                 else if (dueController.text.isEmpty){
@@ -520,10 +516,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                     image: image
 
 
-                                  ).then((value) => ref.invalidate(imageProvider))
-                                      .then((value) => ref.refresh(
-                                      assignmentList(auth.user.token)))
-                                      .then((value) => Navigator.pop(context));
+                                  );
 
                                 }
                                 else {
@@ -541,10 +534,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                       deadline: dueController.text
 
 
-                                  ).then((value) => ref.invalidate(imageProvider))
-                                      .then((value) => ref.refresh(
-                                      assignmentList(auth.user.token)))
-                                      .then((value) => Navigator.pop(context));
+                                  );
 
                                 }
 
@@ -559,7 +549,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
 
 
 
-                          child: auth.isLoad? CircularProgressIndicator():Text(
+                          child: assignmentInfo.isLoad ? Center(child: CircularProgressIndicator(color: Colors.white,),) : Text(
                             'Update Assignments',
                             style: TextStyle(
                               fontSize: 20.sp,

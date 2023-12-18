@@ -60,12 +60,18 @@ class AttendanceService {
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
 
+
+      if(response.statusCode == 204) {
+        return [
+
+        ];
+      }
+
       final data = (response.data['navigation']['data'] as List)
           .map((e) => Attendance.fromJson(e))
           .toList();
-      // print('success');
       return data;
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
 
       throw Exception('Unable to fetch data');
@@ -87,10 +93,9 @@ class AttendanceService {
             "class_section": classSection,
             "added_by": teacher_id
           },
-          options: Options(
-              headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+          options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(response.data);
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
       throw Exception('Network error');
     }
@@ -175,9 +180,15 @@ class StudentAttendanceService {
   final dio = Dio();
 
   Future<List<StudentAttendance>> getStudentAttendance() async {
+
+
     try {
       final response = await dio.get('${Api.studentAttendanceInfo}$id',
           options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+
+      if(response.statusCode == 204){
+        throw "Nothing at the moment";
+      }
 
 
       final data = (response.data['navigation']['data'] as List).map((e) => StudentAttendance.fromJson(e)).toList();
@@ -203,6 +214,13 @@ class StudentClassAttendanceService {
     try {
       final response = await dio.get('${Api.studentClassAttendanceUrl}$id',
           options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+
+      if(response.statusCode == 204){
+        return [
+
+        ];
+      }
+
       final data = (response.data['navigation']['data'] as List).map((e) => StudentAttendance.fromJson(e)).toList();
       return data;
     } on DioException catch (err) {

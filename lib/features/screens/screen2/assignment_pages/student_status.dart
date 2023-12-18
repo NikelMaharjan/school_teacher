@@ -63,69 +63,27 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
 
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        title: Text(widget.studentName, style: TextStyle(color: Colors.white),),
+      ),
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-              height: MediaQuery.of(context).size.height * 0.7 / 5,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: bgColor,
-                  borderRadius:
-                  BorderRadius.vertical(bottom: Radius.circular(25))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          widget.studentName,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.sp,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          ref.refresh(studentAssignmentProvider(auth.user.token));
-                          ref.refresh(assignmentStatusList(auth.user.token));
-                        },
-                        icon: Icon(
-                          Icons.refresh,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
 
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                ],
-              )),
+
           SizedBox(height: 20.h,),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 15.w),
 
-              child: Text(widget.assignment.title,style: TextStyle(color: Colors.black,fontSize: 15.sp),maxLines: null,)),
+              child: Column(
+                children: [
+                  Text("Title", style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(widget.assignment.title,style: TextStyle(color: Colors.black,fontSize: 15.sp),maxLines: null,),
+                ],
+              )),
           Divider(
             thickness: 1,
             color: Colors.black,
@@ -139,6 +97,8 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                   final stud_data = data.firstWhereOrNull((element) => element.assignment.id == widget.assignment.id&& element.student.id == widget.student_id);
                   if(stud_data != null ){
                     final url = Uri.parse('${Api.basePicUrl}${stud_data.studentAssignment.path}');
+
+
 
                     return Column(
                       mainAxisSize: MainAxisSize.min,
@@ -304,7 +264,8 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                                 notifications: false,
                                                                 studentAssignment: stud_data.id,
                                                                 token: auth.user.token
-                                                            ).then((value) => ref.refresh(assignmentStatusList(auth.user.token))).then((value) => Navigator.pop(context));
+                                                            ).then((value) => ref.refresh(assignmentStatusList(auth.user.token)))
+                                                                .then((value) => Navigator.pop(context));
                                                           }
                                                           }
                                                         },
@@ -347,7 +308,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                             )
                                         ),
                                         child: ListTile(
-                                            onLongPress: (){
+                                            onTap: (){
                                               showDialog(
                                                   context: context,
                                                   builder: (context){
@@ -450,7 +411,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                                   }
                                                                   else {
                                                                     ref.read(assignmentProvider.notifier).editStatus(
-                                                                      id: status.id,
+                                                                         id: status.id,
                                                                         remarks: remarkController.text.trim(),
                                                                         status: _accepted == true? 'Accepted' : 'Unaccepted',
                                                                         notifications: false,

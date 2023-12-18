@@ -41,6 +41,9 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
           final attendDate = data.firstWhereOrNull((element) => element.date == date && element.addedBy.id == widget.teacher_id);
           if(attendDate == null){
             return AlertDialog(
+
+              shape: RoundedRectangleBorder(borderRadius:
+              BorderRadius.all(Radius.circular(10))),
               backgroundColor: Colors.white,
               title: Text("Create Attendance",style: TextStyle(color: Colors.black),),
               content: Column(
@@ -54,9 +57,7 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: attend.isLoad
-                      ? CircularProgressIndicator()
-                      : Text("Yes"),
+                  child: attend.isLoad ? CircularProgressIndicator() : Text("Yes"),
                   onPressed: () {
                     ref.read(attendanceProvider.notifier).addDate(
                         token: auth.user.token,
@@ -88,6 +89,8 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
           }
           else {
             return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius:
+              BorderRadius.all(Radius.circular(15))),
               backgroundColor: Colors.white,
               title: Text("Attendance Already Added",style: TextStyle(color: Colors.black),),
               content: Column(
@@ -111,7 +114,7 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
                       : Text("Yes",style: TextStyle(color: Colors.white),),
                   onPressed: () {
                     Navigator.pop(context);
-                    Get.to(()=>EditAttendance(class_id: widget.class_sec_id,attendance: attendDate,));
+                    Get.to(()=>EditAttendance(class_id: widget.class_sec_id ,attendance: attendDate,));
                   },
                 ),
                 TextButton(

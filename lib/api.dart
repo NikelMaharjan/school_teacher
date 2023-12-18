@@ -33,6 +33,8 @@ class Api {
 
 
   static const assignmentUrl = '$baseUrl/assignment/all/';
+
+  static const assignmentDetailUrl = '$baseUrl/assignment/all/?class_subject=';
   static const editAssignmentUrl = '$baseUrl/assignment/';
   static const studentAssignmentUrl = '$baseUrl/student_assignment/all/';
   static const assignmentStatus = '$baseUrl/assignment_status/all/';

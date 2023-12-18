@@ -25,6 +25,8 @@ import 'information_items/lessons.dart';
 import 'information_items/results.dart';
 import 'information_items/topics.dart';
 import 'notice_page.dart';
+import 'dart:developer' as logDev;
+
 
 // OVERVIEW TEACHER
 
@@ -98,6 +100,8 @@ class _OverviewState extends ConsumerState<Overview> {
   Future<void> getToken()async{
     final response = await FirebaseMessaging.instance.getToken();
     print("Token is $response");
+
+
   }
 
 
@@ -105,11 +109,12 @@ class _OverviewState extends ConsumerState<Overview> {
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
-    
-    
-    
+
+
+
     final String token = auth.user.token;
     final teacherClass = ref.watch(teacherSubList(token));
+
     final infoData = ref.watch(employeeList(auth.user.token));
 
     final noticeData = ref.watch(noticeList(auth.user.token));
@@ -144,7 +149,6 @@ class _OverviewState extends ConsumerState<Overview> {
 
               Container(
                 // color: Colors.blue,
-                  height: MediaQuery.of(context).size.height * 1.2 / 4,
                   padding: EdgeInsets.only(left: 30.w),
                   child: teacherClass.when(
                     data: (class_data){
@@ -174,7 +178,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                       sec_name: class_data[index].classSection.section.sectionName,
                                       class_level_name: class_data[index].classSection.className.classLevel.name,
                                       teacher_id: class_data[index].classSection.classTeacher.id,
-                                      class_teacher: false,
+                                      class_teacher: auth.user.userInfo.name == class_data[index].classSection.classTeacher.employeeName ? true : false,
                                       class_id: class_data[index].classSection.className.id,
                                     )
                                     ),

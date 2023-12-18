@@ -6,6 +6,7 @@ import 'package:eschool_teacher/constants/snack_show.dart';
 import 'package:eschool_teacher/features/authentication/providers/auth_provider.dart';
 import 'package:eschool_teacher/features/screens/screen2/assignment_pages/add_assignment.dart';
 import 'package:eschool_teacher/features/screens/screen2/assignment_pages/assignment_tabs.dart';
+import 'package:eschool_teacher/features/screens/screen2/assignment_pages/edit_assignment.dart';
 import 'package:eschool_teacher/features/screens/screen2/class_tab/subjects_tab/subject_announcements/add_announcements.dart';
 import 'package:eschool_teacher/features/services/assignment_services.dart';
 import 'package:eschool_teacher/features/services/feature_services.dart';
@@ -26,6 +27,8 @@ import '../../../model/teacher_features.dart';
 import '../../../providers/assignment_provider.dart';
 import '../../../services/notice_services.dart';
 import '../../../services/subject_class_service.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
 
 class AssignmentPage extends ConsumerStatefulWidget {
   @override
@@ -269,45 +272,92 @@ class _AssignmentPageState extends ConsumerState<AssignmentPage> {
                                       shrinkWrap: true,
                                       itemCount: assignment_data.length,
                                       itemBuilder: (context,index){
-                                        return NoticeCard2(
-                                            onLongPress: ()async{
 
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context){
-                                                    return AlertDialog(
-                                                      backgroundColor: Colors.white,
-                                                      title: Text('Do you want to delete the assignment',style: TextStyle(color: Colors.black),),
-                                                      actions: [
-                                                        TextButton(
-                                                            style: TextButton.styleFrom(
-                                                                backgroundColor: primary,
-                                                                foregroundColor: Colors.white
-                                                            ),
-                                                            onPressed: (){
-                                                              ref.read(assignmentProvider.notifier).delAssignment(assignment_data[index].id, auth.user.token).then((value) => ref.refresh(assignmentList(auth.user.token))).then((value) => Navigator.pop(context));
-                                                            },
-                                                            child: Text('Yes')
-                                                        ),
-                                                        TextButton(
-                                                            onPressed: (){
-                                                              Navigator.pop(context);
-                                                            },
-                                                            child: Text('No',style: TextStyle(color: Colors.black),)
+
+
+
+                                        return Padding(
+                                          padding: const EdgeInsets.only(right: 8.0),
+                                          child: Slidable(
+                                            closeOnScroll: true,
+                                              endActionPane: ActionPane(
+                                                  motion: ScrollMotion(),
+                                                  children: [
+                                                    SlidableAction(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                                      autoClose: true,
+                                                      flex: 1,
+                                                      backgroundColor: primary,
+                                                      foregroundColor: Colors.white,
+                                                      icon: Icons.edit,
+                                                      onPressed: (context) => Get.to(()=> Edit_Assignment(
+                                                          assignment: data[index],
+                                                          classSubject: data[index].classSubject,
+                                                          class_subject_id: data[index].classSubject.id
+                                                      )
+                                                      ),
+
+                                                    ),
+                                                    SizedBox(width: 5.w,),
+                                                    SlidableAction(
+                                                        borderRadius: BorderRadius.circular(10),
+                                                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                                        flex: 1,
+                                                        autoClose: true,
+                                                        backgroundColor: abs_color,
+                                                        foregroundColor: Colors.white,
+                                                        icon: Icons.delete,
+                                                        onPressed: (context) =>   showDialog(
+                                                            context: context,
+                                                            builder: (context){
+                                                              return AlertDialog(
+
+                                                                backgroundColor: Colors.white,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.all(Radius.circular(10.0))
+                                                                ),
+                                                                title: Text('Do you want to delete the assignment',style: TextStyle(color: Colors.black),),
+                                                                actions: [
+                                                                  TextButton(
+                                                                      style: TextButton.styleFrom(
+                                                                          backgroundColor: primary,
+                                                                          foregroundColor: Colors.white
+                                                                      ),
+                                                                      onPressed: (){
+                                                                        ref.read(assignmentProvider.notifier).delAssignment(assignment_data[index].id, auth.user.token).then((value) => ref.refresh(assignmentList(auth.user.token))).then((value) => Navigator.pop(context));
+                                                                      },
+                                                                      child: Text('Yes')
+                                                                  ),
+                                                                  TextButton(
+                                                                      onPressed: (){
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                      child: Text('No',style: TextStyle(color: Colors.black),)
+                                                                  )
+                                                                ],
+                                                              );
+                                                            }
                                                         )
-                                                      ],
+
+                                                    )
+                                                  ]
+                                              ),
+
+                                              child: NoticeCard2(
+
+
+                                                  onTap:() {
+                                                    Get.to(AssignmentTabs(
+                                                      assignment: assignment_data[index],
+                                                      class_subject_id: assignment_data[index].classSubject.id,
+                                                    ),
                                                     );
-                                                  }
-                                              );
-
-                                            },
-
-                                            onTap:() {
-                                              print("NIKEL MAHARAJN IS ${assignment_data[index].classSubject.id}");
-                                              Get.to(AssignmentTabs(assignment: assignment_data[index]));
-                                            },
-                                            title: assignment_data[index].title,
-                                            createdAt: DateFormat('MMMM dd').format(DateTime.parse(assignment_data[index].createdAt)));
+                                                  },
+                                                  title: assignment_data[index].title,
+                                                  createdAt: DateFormat('MMMM dd').format(DateTime.parse(assignment_data[index].createdAt)))
+                                          ),
+                                        );
                                       }
                                   ),
                                 ),

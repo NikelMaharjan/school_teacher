@@ -30,6 +30,9 @@ class StudentDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+
+    print("STUDENT ID IS $student_id");
+
     final auth = ref.watch(authProvider);
 
     final attendanceStatus = ref.watch(studentAttendanceProvider(student_id));
@@ -46,7 +49,9 @@ class StudentDetails extends ConsumerWidget {
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+
 
             // studentInfo.when(
             //     data: (data) {
@@ -266,125 +271,14 @@ class StudentDetails extends ConsumerWidget {
             //     loading: () => Container(
             //         height: MediaQuery.of(context).size.height*1/2,
             //         child: ShimmerListTile2())),
-            //
-            //
-            // attendanceStatus.when(
-            //     data: (data){
-            //
-            //       int presentCount = 0;
-            //       int absentCount = 0;
-            //
-            //       for(int i=0; i<data.length; i++) {
-            //         if(data[i].status == 'Present') {
-            //           presentCount++;
-            //         } else if(data[i].status == 'Absent') {
-            //           absentCount++;
-            //         }
-            //       }
-            //
-            //       return InkWell(
-            //         onTap: ()=>Get.to(()=>AttendanceStatus(student_id: student_id)),
-            //         child: Padding(
-            //           padding: EdgeInsets.symmetric(vertical: 5.h),
-            //           child: Card(
-            //               elevation: 0,
-            //               color: Colors.grey.withOpacity(0.1),
-            //               shape: RoundedRectangleBorder(
-            //                   side: BorderSide(
-            //                       color: Colors.black
-            //                   ),
-            //                   borderRadius: BorderRadius.circular(10)),
-            //               child: SizedBox(
-            //                 height: 110.h,
-            //                 width: 350.w,
-            //                 child: ListTile(
-            //                   contentPadding: EdgeInsets.symmetric(vertical: 0.h),
-            //                   title: Padding(
-            //                     padding:
-            //                     EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-            //                     child: Column(
-            //                       // mainAxisAlignment: MainAxisAlignment.center,
-            //                       crossAxisAlignment: CrossAxisAlignment.center,
-            //                       mainAxisSize: MainAxisSize.min,
-            //                       children: [
-            //                         Text(
-            //                           'Attendance Stat',
-            //                           style: TextStyle(
-            //                               color: Colors.black,
-            //                               fontSize: 15.sp,
-            //                               fontWeight: FontWeight.bold),
-            //                         ),
-            //                         SizedBox(
-            //                           height: 10.h,
-            //                         ),
-            //                         Row(
-            //                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //                           children: [
-            //                             Container(
-            //                               height: 40.h,
-            //                               width: 150.w,
-            //                               decoration: BoxDecoration(
-            //                                   borderRadius: BorderRadius.circular(10),
-            //                                   border:
-            //                                   Border.all(width: 1.w, color: primary)),
-            //                               child: Column(
-            //                                 mainAxisAlignment: MainAxisAlignment.center,
-            //                                 children: [
-            //                                   Text(
-            //                                     'Total Present',
-            //                                     style: TextStyle(
-            //                                         color: Colors.black, fontSize: 12.sp),
-            //                                   ),
-            //                                   Text(
-            //                                     '$presentCount',
-            //                                     style: TextStyle(
-            //                                         color: Colors.black, fontSize: 10.sp),
-            //                                   )
-            //                                 ],
-            //                               ),
-            //                             ),
-            //                             Container(
-            //                               height: 40.h,
-            //                               width: 150.w,
-            //                               decoration: BoxDecoration(
-            //                                   borderRadius: BorderRadius.circular(10),
-            //                                   border:
-            //                                   Border.all(width: 1.w, color: primary)),
-            //                               child: Column(
-            //                                 mainAxisAlignment: MainAxisAlignment.center,
-            //                                 children: [
-            //                                   Text(
-            //                                     'Total Absent',
-            //                                     style: TextStyle(
-            //                                         color: Colors.black, fontSize: 12.sp),
-            //                                   ),
-            //                                   Text(
-            //                                     '$absentCount',
-            //                                     style: TextStyle(
-            //                                         color: Colors.black, fontSize: 10.sp),
-            //                                   )
-            //                                 ],
-            //                               ),
-            //                             ),
-            //                           ],
-            //                         ),
-            //                       ],
-            //                     ),
-            //                   ),
-            //                 ),
-            //               )),
-            //         ),
-            //       );
-            //     },
-            //   error: (err, stack) => Center(child: Text('$err')),
-            //   loading: () => Center(child: CircularProgressIndicator(),),
-            // ),
+
+
 
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Container(
                 height: 150,
-                  child: CachedNetworkImage(imageUrl: "${Api.basePicUrl}${student.student.studentPhoto}")),
+                  child: CachedNetworkImage(imageUrl: "${Api.basePicUrl}${student.student.studentPhoto}", fit: BoxFit.fill,)),
             ),
 
             DataTable(
@@ -455,6 +349,122 @@ class StudentDetails extends ConsumerWidget {
                 ),
               ],
             ),
+
+
+            Container(
+              height: 140.h,
+              child: attendanceStatus.when(
+                data: (data){
+
+                  int presentCount = 0;
+                  int absentCount = 0;
+
+                  for(int i=0; i<data.length; i++) {
+                    if(data[i].status == 'Present') {
+                      presentCount++;
+                    } else if(data[i].status == 'Absent') {
+                      absentCount++;
+                    }
+                  }
+
+                  return InkWell(
+                    onTap: ()=>Get.to(()=>AttendanceStatus(student_id: student_id)),
+                    child: Padding(
+                      padding: EdgeInsets.all(10.h),
+                      child: Card(
+                          elevation: 0,
+                          color: Colors.grey.withOpacity(0.1),
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: Colors.black
+                              ),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: SizedBox(
+                            width: 350.w,
+                            child: ListTile(
+                              contentPadding: EdgeInsets.symmetric(vertical: 0.h),
+                              title: Padding(
+                                padding:
+                                EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                                child: Column(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Attendance Stat',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Container(
+                                          height: 40.h,
+                                          width: 150.w,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              border:
+                                              Border.all(width: 1.w, color: primary)),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Total Present',
+                                                style: TextStyle(
+                                                    color: Colors.black, fontSize: 12.sp),
+                                              ),
+                                              Text(
+                                                '$presentCount',
+                                                style: TextStyle(
+                                                    color: Colors.black, fontSize: 10.sp),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 40.h,
+                                          width: 150.w,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              border:
+                                              Border.all(width: 1.w, color: primary)),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Total Absent',
+                                                style: TextStyle(
+                                                    color: Colors.black, fontSize: 12.sp),
+                                              ),
+                                              Text(
+                                                '$absentCount',
+                                                style: TextStyle(
+                                                    color: Colors.black, fontSize: 10.sp),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )),
+                    ),
+                  );
+                },
+                error: (err, stack) => Center(child: Text('$err')),
+                loading: () => Center(child: CircularProgressIndicator(),),
+              ),
+            ),
+
 
 
             // Padding(

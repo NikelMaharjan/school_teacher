@@ -19,6 +19,13 @@ final assignmentStatusList = FutureProvider.family(
 final studentAssignmentProvider = FutureProvider.family(
         (ref, String token) => StudentAssignmentService(token).getStudents());
 
+final assignmentDetailProvider = FutureProvider.family.autoDispose<List<Assignment>, int>((ref, id) async {
+  final token = ref.watch(authProvider);
+  final assignmentDetail = AssignmentDetail(token.user.token, id);
+  return await assignmentDetail.getAssignmentDetail();
+});
+
+
 
 
 class AssignmentService {
@@ -183,12 +190,17 @@ class AssignmentService {
       final response = await dio.get(Api.assignmentStatus,
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+
+      if(response.statusCode == 204) {
+        return [
+
+        ];
+      }
       final data = (response.data['navigation']['data'] as List)
           .map((e) => StudentAssignmentStatus.fromJson(e))
           .toList();
-      // print('success');
       return data;
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
       throw Exception('Unable to fetch data');
     }
@@ -274,3 +286,30 @@ class StudentAssignmentService {
 
 
 }
+
+
+
+class AssignmentDetail {
+  String token;
+  int id;
+
+  AssignmentDetail(this.token, this.id);
+
+  final dio = Dio();
+
+  Future<List<Assignment>> getAssignmentDetail() async {
+    try {
+      final response = await dio.get('${Api.assignmentDetailUrl}$id',
+          options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+      final data = (response.data['navigation']['data'] as List)
+          .map((e) => Assignment.fromJson(e))
+          .toList();
+      print('success');
+      return data;
+    } on DioException catch (err) {
+      print(err.response);
+      throw Exception('Unable to fetch data');
+    }
+  }
+}
+

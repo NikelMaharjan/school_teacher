@@ -46,6 +46,8 @@ void main() async {
   await Future.delayed(Duration(milliseconds: 50));
 
 
+
+
   FlutterError.demangleStackTrace = (StackTrace stack) {
     if (stack is stack_trace.Trace) return stack.vmTrace;
     if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
@@ -64,6 +66,9 @@ void main() async {
     initializationSettings,
 
   );
+
+
+
 
 
   await Hive.initFlutter();

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../../../api.dart';
 
@@ -61,6 +62,8 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
     String _error = '';
     final auth = ref.watch(authProvider);
     final noticeLoad = ref.watch(noticeList(auth.user.token));
+
+
 
 
     ref.listen(classNoticeProvider, (previous, next) {
@@ -252,7 +255,7 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                 ),
 
               ],
-            ) : Center(child: Text("Wait a moment......."),),
+            ) : Center(child: Lottie.asset('assets/jsons/loading.json'),)
           ),
         ));
   }
