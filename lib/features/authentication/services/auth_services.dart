@@ -45,7 +45,7 @@ class AuthService {
 
       print(err.response);
 
-      return Left(err.response?.data['message']);
+      return Left(err.response?.data['data']);
     } on FirebaseException catch (err){
       await FirebaseInstances.firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       print('firebase error : $err');

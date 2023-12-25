@@ -77,19 +77,23 @@ class ClassNoticeBoard extends ConsumerWidget {
                                   endActionPane: ActionPane(
                                     motion: ScrollMotion(),
                                     children: [
-                                      SlidableAction(
-                                        borderRadius: BorderRadius.circular(10),
-                                        padding: EdgeInsets.symmetric(horizontal: 5.w),
-                                        autoClose: true,
-                                        flex: 1,
-                                        backgroundColor: primary,
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.edit,
-                                        onPressed: (context) {
-
-                                        }
-
-                                      ),
+                                      // SlidableAction(
+                                      //   borderRadius: BorderRadius.circular(10),
+                                      //   padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                      //   autoClose: true,
+                                      //   flex: 1,
+                                      //   backgroundColor: primary,
+                                      //   foregroundColor: Colors.white,
+                                      //   icon: Icons.edit,
+                                      //   onPressed: (context) {
+                                      //
+                                      //
+                                      //
+                                      //
+                                      //
+                                      //   }
+                                      //
+                                      // ),
                                       SizedBox(width: 5.w,),
                                       SlidableAction(
                                           borderRadius: BorderRadius.circular(10),

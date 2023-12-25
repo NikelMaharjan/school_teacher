@@ -1,4 +1,6 @@
 
+import 'package:eschool_teacher/features/authentication/providers/auth_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../exceptions/internet_exceptions.dart';
-import '../../../authentication/providers/auth_provider.dart';
 import '../../../model/calendar_event.dart';
 import '../../../services/calendar_services.dart';
 
@@ -52,6 +53,7 @@ class _CalenderState extends ConsumerState<Calender> {
             ),
             Center(
               child: Column(
+
                 children: [
                   SizedBox(height: 70.h),
                   Text('School Calendar',
@@ -173,24 +175,125 @@ class _CalenderState extends ConsumerState<Calender> {
                         DateFormat('yyyy-MM-dd').format(_selectedDate!);
                         final String _events =
                         DateFormat('yyyy-MM-dd').format(now);
-                        final eventWall = event_data.firstWhereOrNull(
-                                (element) => element.dateEng == _formatted);
+                        final eventWall = event_data.firstWhereOrNull((element) => element.dateEng == _formatted);
 
                         if (eventWall != null) {
                           final eventDate = DateTime.parse(eventWall.dateEng);
-
                           String startTime = eventWall.startTime;
                           String endTime = eventWall.endTime;
                           DateTime dt =
-                          DateTime.parse(_formatted + "T" + startTime)
-                              .toLocal();
+                          DateTime.parse(_formatted + "T" + startTime).toLocal();
                           DateTime dt2 =
-                          DateTime.parse(_formatted + "T" + endTime)
-                              .toLocal();
+                          DateTime.parse(_formatted + "T" + endTime).toLocal();
                           String eventStart = DateFormat('HH:mm').format(dt);
                           String eventEnd = DateFormat('HH:mm').format(dt2);
 
                           print(_selectedDate);
+
+
+                          return InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                                      title:   DataTable(
+                                        columns:  [
+
+                                          DataColumn(
+                                            label: Text(
+                                              'Date',
+                                              style: TextStyle(),
+                                            ),
+                                          ),
+                                          DataColumn(
+                                            label: Text(
+                                                eventWall.dateEng
+                                            ),
+                                          ),
+
+                                        ],
+                                        rows: [
+
+                                          DataRow(cells: [
+                                            DataCell(Text('Title')),
+                                            DataCell(Text(eventWall.title)),
+                                          ]),
+
+
+
+
+                                          DataRow(cells: [
+                                            DataCell(Text('Location')),
+                                            DataCell(Text(eventWall.location)),
+                                          ]),
+
+                                          DataRow(cells: [
+                                            DataCell(Text('Start Time')),
+                                            DataCell(Text(eventWall.startTime)),
+                                          ]),
+
+
+                                          DataRow(cells: [
+                                            DataCell(Text('End Time')),
+                                            DataCell(Text(eventWall.endTime)),
+                                          ]),
+
+
+
+
+
+
+
+
+
+                                        ],
+                                      ),
+
+                                    );
+                                  });
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+
+                                Container(
+                                  width:200.w,
+                                  child: Text(
+                                    eventWall.event_type.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Text(
+                                  eventWall.description,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15.sp),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  '$eventStart \- $eventEnd',
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12.sp),
+                                ),
+                              ],
+                            ),
+                          );
+
+
 
                           return Container(
                             height: MediaQuery.of(context).size.height * 1.1 / 3,
@@ -202,9 +305,8 @@ class _CalenderState extends ConsumerState<Calender> {
                                       EdgeInsets.symmetric(horizontal: 12.w),
                                       height: 130.h,
                                       width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          border:
-                                          Border.all(color: Colors.blueGrey)),
+                                      decoration: BoxDecoration(border:
+                                      Border.all(color: Colors.blueGrey)),
                                       child: Row(
                                         children: [
                                           Column(
@@ -212,11 +314,10 @@ class _CalenderState extends ConsumerState<Calender> {
                                             MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                DateFormat('MMMM yyyy')
-                                                    .format(eventDate),
+                                                DateFormat('MMMM yyyy').format(eventDate),
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 20.sp,
+                                                    fontSize: 18.sp,
                                                     fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -235,35 +336,114 @@ class _CalenderState extends ConsumerState<Calender> {
                                             indent: 15.h,
                                             endIndent: 15.h,
                                           ),
-                                          Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                eventWall.title,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 20.sp,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                              Text(
-                                                eventWall.description,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15.sp),
-                                              ),
-                                              SizedBox(
-                                                height: 10.h,
-                                              ),
-                                              Text(
-                                                '$eventStart \- $eventEnd',
-                                                style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 12.sp),
-                                              ),
-                                            ],
+                                          InkWell(
+                                            onTap: () {
+                                              print('tapped');
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      backgroundColor:
+                                                      Colors.white,
+                                                      title: Column(
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                            children: [
+                                                              Flexible(
+                                                                child: Text(
+                                                                  eventWall.title,
+                                                                  overflow: TextOverflow.visible,
+                                                                  style: TextStyle(
+                                                                      color: Colors.black,
+                                                                      fontSize:
+                                                                      20.sp,
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                '${DateFormat('yy-MM-dd').format(eventDate)}',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                    12.sp),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                          Divider(
+                                                            height: 15.h,
+                                                            color:
+                                                            Colors.black,
+                                                          ),
+                                                          Text(
+                                                            'Detail: ${eventWall.description}',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize:
+                                                                15.sp),
+                                                          ),
+
+                                                          SizedBox(
+                                                            height: 5.h,
+                                                          ),
+                                                          Text(
+                                                            'Location: ${eventWall.location}',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize:
+                                                                12.sp),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  });
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width:200.w,
+                                                  child: Text(
+                                                    eventWall.title,
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20.sp,
+                                                        fontWeight: FontWeight.bold),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  eventWall.description,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15.sp),
+                                                ),
+                                                SizedBox(
+                                                  height: 10.h,
+                                                ),
+                                                Text(
+                                                  '$eventStart \- $eventEnd',
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 12.sp),
+                                                ),
+                                              ],
+                                            ),
                                           )
                                         ],
                                       )),
@@ -416,214 +596,94 @@ class _CalenderState extends ConsumerState<Calender> {
                             ),
                           );
                         } else {
-                          return Container(
-                            height: MediaQuery.of(context).size.height * 1.1 / 3,
-                            child: SingleChildScrollView(
+
+
+
+                          return Padding(
+                              padding: const EdgeInsets.all(20.0),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                      padding:
-                                      EdgeInsets.symmetric(horizontal: 12.w),
-                                      height: 130.h,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          border:
-                                          Border.all(color: Colors.blueGrey)),
-                                      child: Row(
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                DateFormat('MMMM yyyy')
-                                                    .format(_selectedDate!),
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 20.sp,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                              Text(
-                                                DateFormat('E')
-                                                    .format(_selectedDate!),
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 25.sp,
-                                                    fontWeight: FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
-                                          VerticalDivider(
-                                            width: 20.w,
-                                            thickness: 2.w,
-                                            color: Colors.grey,
-                                            indent: 15.h,
-                                            endIndent: 15.h,
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'No Events',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 25.sp,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      )),
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
+                                  // Row(
+                                  //   children: [
+                                  //     Text(
+                                  //       DateFormat('MMMM yyyy').format(_selectedDate!), style: TextStyle(
+                                  //         fontWeight: FontWeight.bold,
+                                  //        fontSize: 18
+                                  //     ),),
+                                  //
+                                  //     SizedBox(width: 8,),
+                                  //     Text(
+                                  //       DateFormat('E').format(_selectedDate!), style: TextStyle(
+                                  //         fontWeight: FontWeight.bold,
+                                  //         fontSize: 18
+                                  //     ),
+                                  //     ),
+                                  //
+                                  //
+                                  //
+                                  //   ],
+                                  // ),
+
+
+
+
+                                  SizedBox(height: 10,),
+                                  Text("No Event Today", style: TextStyle(fontSize: 20, letterSpacing: 2),),
+
+                                  SizedBox(height: 30,),
+
+
                                   Container(
                                     width: 360.w,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.black)),
+
                                     child: Column(
                                       children: [
-                                        Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 15.w,
-                                                  vertical: 8.h),
-                                              child: Text(
-                                                'Upcoming Events',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 20.sp,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                            )),
                                         ListView.builder(
                                             padding: EdgeInsets.zero,
                                             physics: BouncingScrollPhysics(),
                                             shrinkWrap: true,
                                             itemCount: data.length,
                                             itemBuilder: (context, index) {
-                                              DateTime dt = DateTime.parse(
-                                                  data[index].dateEng);
-                                              var eventDate =
-                                              DateFormat('yyyy-MM-dd')
-                                                  .format(dt);
+                                              DateTime dt = DateTime.parse(data[index].dateEng);
+                                              var eventDate = DateFormat('yyyy-MM-dd').format(dt);
 
-                                              return ListTile(
-                                                contentPadding: EdgeInsets.zero,
-                                                onTap: () {
-                                                  print('tapped');
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return AlertDialog(
-                                                          backgroundColor:
-                                                          Colors.white,
-                                                          title: Column(
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                                children: [
-                                                                  Text(
-                                                                    data[index]
-                                                                        .title,
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                        20.sp,
-                                                                        fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                                  ),
-                                                                  Text(
-                                                                    eventDate
-                                                                        .toString(),
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                        12.sp),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              Divider(
-                                                                height: 15.h,
-                                                                color:
-                                                                Colors.black,
-                                                              ),
-                                                              Text(
-                                                                'Detail: ${data[index].description}',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                    15.sp),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5.h,
-                                                              ),
-                                                              Text(
-                                                                'Location: ${data[index].location}',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                    12.sp),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      });
-                                                },
-                                                title: Column(
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                                  children: [
-                                                    Divider(
-                                                      color: Colors.black,
+                                              return Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+
+                                                children: [
+
+                                                  Text("Upcoming Events", style: TextStyle(fontSize: 20, letterSpacing: 2),),
+
+                                                  ListTile(
+
+                                                    title: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Text(data[index].event_type.name, style: TextStyle(fontWeight: FontWeight.bold),),
+                                                        Text(eventDate, style: TextStyle(fontSize: 14),)
+                                                      ],
                                                     ),
-                                                    Padding(
-                                                      padding:
-                                                      EdgeInsets.symmetric(
-                                                          horizontal: 12.w),
-                                                      child: Text(
-                                                        '${1 + index}\. ${data[index].title}',
-                                                        style: TextStyle(
-                                                            color: Colors.black),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                subtitle: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 24.w),
-                                                  child: Text(
-                                                    '${eventDate.toString()}',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 12.sp),
+                                                    subtitle: Text(data[index].description),
+
                                                   ),
-                                                ),
+                                                ],
                                               );
+
+
+
                                             }),
                                       ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 50.h,
-                                  )
+
+
+
+
+
+
                                 ],
-                              ),
-                            ),
+                              )
                           );
                         }
                       },

@@ -1,11 +1,15 @@
+
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:eschool_teacher/constants/snack_show.dart';
 import 'package:eschool_teacher/features/providers/attendance_provider.dart';
+import 'package:eschool_teacher/features/screens/homepage/overview.dart';
 import 'package:eschool_teacher/features/screens/homepage/teacher_attendance/leave_note.dart';
 import 'package:eschool_teacher/features/services/teacher_attendance_service.dart';
+import 'package:eschool_teacher/teacher_attendance_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:wifi_info_flutter/wifi_info_flutter.dart';
@@ -22,6 +26,9 @@ class TeacherAttendanceDialog extends ConsumerStatefulWidget {
 
 class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
   String _ipAddress = '';
+   double? longitiude;
+   double? latitude;
+
 
   @override
   void initState() {
@@ -36,9 +43,16 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
     });
   }
 
+  Future getLocation() async {
+    await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+
+    longitiude = position.longitude;
+    latitude = position.latitude;
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.teacher_id);
     final String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
     final auth = ref.watch(authProvider);
     final attend = ref.watch(attendanceProvider);
@@ -46,7 +60,124 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
     final attendanceInfo = ref.watch(teacherAttendanceProvider(widget.teacher_id));
     // List<String> parts = _ipAddress.split('.');
     // String ipWifi = parts.getRange(0,3).join('.');
+
+    ref.listen(attendanceProvider, (previous, next) {
+
+      print("1");
+      if(next.isAttendanceSuccess == false){
+
+        showDialog(
+          barrierDismissible: false,
+
+            context: context,
+            builder: (context){
+              return AlertDialog(
+
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+
+                backgroundColor: Colors.white,
+                title: Text(
+                  "Error",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),),
+                content: Container(
+                  child:Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        next.attendanceErrorMessage!,
+                        style: TextStyle(color: Colors.red),
+                        maxLines: null,
+                      ),
+                      SizedBox(height: 5.h,),
+
+                    ],
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: (){
+
+                      Get.offAll(()=> Overview());
+
+
+
+                    },
+                    child: Text("Ok"),
+                  )
+                ],
+                actionsAlignment: MainAxisAlignment.start,
+              );
+            }
+        );
+      }
+      else if(next.isAttendanceSuccess == true){
+
+        print("2");
+        // ref.invalidate(subNoticeProvider);
+        // ref.invalidate(subNoticeList(auth.user.token));
+        //
+        // ref.invalidate(attendanceDateTeacher(auth.user.token));
+        // ref.invalidate(teacherAttendanceProvider(widget.teacher_id));
+
+        showDialog(
+            barrierDismissible: false,
+
+            context: context,
+            builder: (context){
+              return AlertDialog(
+
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+
+                backgroundColor: Colors.white,
+                title: Text(
+                  "Success",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),),
+                content: Container(
+                  child:Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                       "Your Attendance was Submitted",
+                        style: TextStyle(color: bgColor),
+                        maxLines: null,
+                      ),
+                      SizedBox(height: 5.h,),
+
+                    ],
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: (){
+
+                      Get.offAll(()=> Overview());
+
+                    },
+                    child: Text("Ok"),
+                  )
+                ],
+                actionsAlignment: MainAxisAlignment.start,
+              );
+            }
+        );
+        // SnackShow.showSuccess(context, "Succefully Added");
+        // Get.off(Overview());
+      }
+    });
+
+
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
       backgroundColor: Colors.white,
       content: attendanceDate.when(
           data: (attend_data){
@@ -104,14 +235,23 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
                                           side: BorderSide(
                                             color: Colors.black,
                                           ))),
-                                  onPressed: () {
+                                  onPressed: () async {
+
+
+
+                                    await getLocation();
+
                                     ref.read(attendanceProvider.notifier).addAttendanceTeacher(
                                         attendance: data.id,
                                         ip_address: _ipAddress,
                                         employee: widget.teacher_id,
                                         status: 'Present',
-                                        token: auth.user.token
-                                    ).then((value) => ref.refresh(attendanceDateTeacher(auth.user.token))).then((value) => ref.refresh(teacherAttendanceProvider(widget.teacher_id))).then((value) => Navigator.pop(context)).then((value) => SnackShow.showSuccess(context, 'successful attendance'));
+                                        token: auth.user.token,
+                                        long:  longitiude!,
+                                        lat:  latitude!
+                                    );
+
+
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
@@ -125,7 +265,49 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
                                   ),
                                 ),
                               ),
+
                               SizedBox(height: 5.h,),
+
+
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8.h, horizontal: 8.w),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                      backgroundColor: primary,
+                                      foregroundColor: Colors.white,
+                                      fixedSize: Size.fromWidth(320.w),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          side: BorderSide(
+                                            color: Colors.black,
+                                          ))),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+
+
+
+                                  Get.to(()=> TeacherAttendaceStatus(teacher_id: widget.teacher_id, teacher_name: "test"));
+
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5.h, horizontal: 8.w),
+                                    child: auth.isLoad?CircularProgressIndicator(): Text(
+                                      'View Attendance History',
+                                      style: TextStyle(
+                                        fontSize: 18.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+
+
+                              SizedBox(height: 5.h,),
+
                               Padding(
                                 padding: EdgeInsets.symmetric(
                                     vertical: 8.h, horizontal: 8.w),
@@ -162,17 +344,29 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
                         }
                         else{
                           return Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text('Attendance already taken',style: TextStyle(color: Colors.black,fontSize: 20.sp),),
                               SizedBox(height: 5.h),
                               TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: primary
-                                ),
+
+
                                 onPressed: (){
                                   Navigator.pop(context);
+
                                 },
-                                child: Text('Ok',style: TextStyle(color: Colors.white),),
+                                child: Text('Ok',style: TextStyle(color: bgColor),),
+                              ),
+                              TextButton(
+
+                                onPressed: (){
+                                  Navigator.pop(context);
+
+                                  Get.to(()=> TeacherAttendaceStatus(teacher_id: widget.teacher_id, teacher_name: "Nikel"));
+
+
+                                },
+                                child: Text('View Attendance History',style: TextStyle(color: bgColor),),
                               )
                             ],
                           );

@@ -66,10 +66,6 @@ class _ClassTabsState extends ConsumerState<ClassPage>
 
 
 
-
-
-
-
     TabController _tabController = TabController(length: 2, vsync: this);
     return ConnectivityChecker(
       child: Scaffold(
@@ -106,7 +102,8 @@ class _ClassTabsState extends ConsumerState<ClassPage>
                             Get.to(() => ClassNoticeBoard(
                                   class_sec_id: widget.class_sec_id,
                                   teacher_id: widget.teacher_id,
-                                ));
+                                )
+                            );
                           },
                           icon: Icon(
                             Icons.notifications,

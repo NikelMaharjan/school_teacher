@@ -3,7 +3,7 @@ class EmployeeData {
   final String name;
   final String current_address;
   final String permanent_address;
-  final String mobile_no;
+  final int mobile_no;
   final String email;
   final String picture;
   final String salary;
@@ -15,8 +15,8 @@ class EmployeeData {
   final String education;
   final String father_name;
   final String mother_name;
-  final String father_phone_no;
-  final String mother_phone_no;
+  final int father_phone_no;
+  final int mother_phone_no;
   final String employee_photo;
   final String employee_type;
 

@@ -191,6 +191,8 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
                       }
                     }
                     ref.invalidate(studentClassAttendanceProvider(widget.attendance.id));
+
+
                     Navigator.pop(context);
                   },
 

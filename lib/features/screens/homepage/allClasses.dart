@@ -76,19 +76,32 @@ class AllClass extends ConsumerWidget {
                     data: (class_data){
                       return ListView.builder(
                           padding: EdgeInsets.symmetric(horizontal: 15.w),
-                          shrinkWrap: true, itemCount: class_data.length,
+                          shrinkWrap: true,
+                          itemCount: class_data.length,
                           itemBuilder: (context,index){
                             return  InfoTileWidget(
                                 title: 'Class ${class_data[index].classSection.className.classLevel.name}${class_data[index].classSection.section.sectionName}',
+                                text: class_data[index].classSection.className.classLevel.name.substring(0,1),
 
-                              onTap: (){
 
-                              },
+
+                                onTap: () => Get.to(() => ClassPage(
+                              class_sec_id: class_data[index].classSection.id,
+                              token: '$token',
+                              class_teacher_name: class_data[index].classSection.classTeacher.employeeName,
+                              sec_name: class_data[index].classSection.section.sectionName,
+                              class_level_name: class_data[index].classSection.className.classLevel.name,
+                              teacher_id: class_data[index].classSection.classTeacher.id,
+                              class_teacher: auth.user.userInfo.name == class_data[index].classSection.classTeacher.employeeName ? true : false,
+                              class_id: class_data[index].classSection.className.id,
+                            )
+
                               // onTap: ()=> Get.to(() => ClassPage(
                               //
                               //   class_id: 12222,
                               //   class_sec_id: class_data[index].classSection.id, token: '$token', sec_name: class_data[index].classSection.section.sectionName, class_level_name: class_data[index].classSection.className.classLevel.name, teacher_id: infoData.id, class_teacher: class_data[index].classSection.classTeacher=='true' ? true:false,)),
 
+                                )
                             );
                               //CommonCard(
                             //     onTap: () => Get.to(() => ClassPage(class_sec_id: class_data[index].id, token: '$token', sec_name: class_data[index].section, class_level_name: class_data[index].classLevel, teacher_id: infoData.id, school_id: 1,)),

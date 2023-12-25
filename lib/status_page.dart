@@ -9,6 +9,9 @@ import 'features/authentication/providers/auth_provider.dart';
 import 'features/screens/homepage/default_teacher.dart';
 
 class StatusPage extends ConsumerWidget {
+
+
+
   @override
   Widget build(BuildContext context, ref) {
     final auth = ref.watch(authProvider);

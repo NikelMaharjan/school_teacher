@@ -33,6 +33,8 @@ class InfoService {
 
 
 
+
+
     try {
       final response = await dio.get(Api.employeeInfo,
           options: Options(
@@ -41,15 +43,13 @@ class InfoService {
 
 
 
+
+
       if (response.data['data'] is List) {
-        final data = (response.data['data'] as List)
-            .map((e) => EmployeeData.fromJson(e))
-            .toList();
-        print('teacher success');
+        final data = (response.data['data'] as List).map((e) => EmployeeData.fromJson(e)).toList();
         return data;
       } else if (response.data['data'] is Map) {
         final data = [EmployeeData.fromJson(response.data['data'])];
-        print('teacher success');
         return data;
       } else {
         throw Exception('Invalid response format');

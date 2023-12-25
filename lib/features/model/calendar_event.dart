@@ -2,7 +2,7 @@
 class CalendarEvent {
   final int id;
   final String dateEng;
-  final String dateNepali;
+  String? dateNepali;
   final String title;
   final String location;
   final String description;
@@ -10,9 +10,12 @@ class CalendarEvent {
   final String endTime;
   final String createdAt;
   final String updatedAt;
+  final EventType event_type;
+
 
   CalendarEvent({
     required this.id,
+    required this.event_type,
     required this.dateEng,
     required this.dateNepali,
     required this.title,
@@ -28,7 +31,7 @@ class CalendarEvent {
     return CalendarEvent(
       id: json['id'],
       dateEng: json['date_eng'],
-      dateNepali: json['date_nepali'],
+      dateNepali: json['date_nepali'] ?? "",
       title: json['title'],
       location: json['location'],
       description: json['description'],
@@ -36,23 +39,24 @@ class CalendarEvent {
       endTime: json['end_time'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+      event_type: EventType.fromJson(json['event_type']),
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'date_eng': dateEng,
-      'date_nepali': dateNepali,
-      'title': title,
-      'location': location,
-      'description': description,
-      'start_time': startTime,
-      'end_time': endTime,
-      'created_at': createdAt,
-      'updated_at': updatedAt,
-    };
-  }
+// Map<String, dynamic> toJson() {
+//   return {
+//     'id': id,
+//     'date_eng': dateEng,
+//     'date_nepali': dateNepali,
+//     'title': title,
+//     'location': location,
+//     'description': description,
+//     'start_time': startTime,
+//     'end_time': endTime,
+//     'created_at': createdAt,
+//     'updated_at': updatedAt,
+//   };
+// }
 }
 
 
@@ -64,8 +68,7 @@ class EventType {
   final int id;
   final String name;
   final bool is_sub_type;
-  final int type;
-  final int school;
+  final String? type;
 
   final String created_at;
   final String updated_at;
@@ -73,7 +76,6 @@ class EventType {
   EventType(
       {required this.id,
         required this.name,
-        required this.school,
         required this.is_sub_type,
         required this.type,
         required this.created_at,
@@ -84,7 +86,6 @@ class EventType {
       created_at: json['created_at'] ?? '',
       id: json['id'] ?? '',
       name: json['name'] ?? '',
-      school: json['school'] ?? '',
       is_sub_type: json['is_sub_type'] ?? '',
       type: json['type'] ?? '',
       updated_at: json['updated_at'] ?? '',

@@ -20,7 +20,7 @@ final attendanceStudentList = FutureProvider.family(
         (ref, String token) => AttendanceService(token).getStudentAttendance());
 
 
-final studentAttendanceProvider = FutureProvider.family<List<StudentAttendance>, int>((ref, id) async {
+final studentAttendanceProvider = FutureProvider.family.autoDispose <List<StudentAttendance>, int>((ref, id) async {
   final token = ref.watch(authProvider);
   final studentStatus = StudentAttendanceService(token.user!.token, id);
   return await studentStatus.getStudentAttendance();
@@ -187,7 +187,9 @@ class StudentAttendanceService {
           options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
 
       if(response.statusCode == 204){
-        throw "Nothing at the moment";
+       return[
+
+       ];
       }
 
 

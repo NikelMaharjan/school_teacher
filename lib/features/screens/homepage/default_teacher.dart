@@ -52,7 +52,7 @@ class _DefaultTeacherState extends ConsumerState<DefaultTeacher>
      Overview(),
     TimeTable(),
 
-    AssignmentPage(),
+   // AssignmentPage(),
     //Teacher(),
     Settings_teacher()
   ];
@@ -141,16 +141,16 @@ class _DefaultTeacherState extends ConsumerState<DefaultTeacher>
                               ),
                               label: 'Schedule'),
 
-                          BottomNavigationBarItem(
-                              icon: DecoratedIcon(
-                                icon: Icon(
-                                  EvaIcons.activity,
-                                  size: 27.sp,
-                                ),
-                                decoration: IconDecoration(
-                                    border: IconBorder(width: 1.w)),
-                              ),
-                              label: 'Assignments'),
+                          // BottomNavigationBarItem(
+                          //     icon: DecoratedIcon(
+                          //       icon: Icon(
+                          //         EvaIcons.activity,
+                          //         size: 27.sp,
+                          //       ),
+                          //       decoration: IconDecoration(
+                          //           border: IconBorder(width: 1.w)),
+                          //     ),
+                          //     label: 'Assignments'),
 
 
                           // BottomNavigationBarItem(

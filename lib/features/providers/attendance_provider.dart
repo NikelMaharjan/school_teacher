@@ -2,6 +2,9 @@
 
 
 
+import 'package:eschool_teacher/attendance_state.dart';
+import 'package:eschool_teacher/attendance_state.dart';
+import 'package:eschool_teacher/attendance_state.dart';
 import 'package:eschool_teacher/features/services/attendance_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,9 +14,9 @@ import '../services/teacher_attendance_service.dart';
 
 
 
-final attendanceProvider = StateNotifierProvider<AttendanceNotifier, CrudState>((ref) => AttendanceNotifier(CrudState.empty()));
+final attendanceProvider = StateNotifierProvider<AttendanceNotifier, AttendanceState>((ref) => AttendanceNotifier(AttendanceState.empty()));
 
-class AttendanceNotifier extends StateNotifier<CrudState>{
+class AttendanceNotifier extends StateNotifier<AttendanceState>{
   AttendanceNotifier(super.state);
 
 
@@ -22,21 +25,25 @@ class AttendanceNotifier extends StateNotifier<CrudState>{
     required String ip_address,
     required int employee,
     required String status,
-    required String token
+    required String token,
+    required double long,
+    required double lat,
 
 
   }) async {
-    state = state.copyWith(isLoad: true, errorMessage: '', isSuccess: false);
+    state = state.copyWith(isLoad: true, errorMessage: '', isSuccess: false, isAttendanceSuccess: false);
     final response = await TeacherAttendanceService(token).addAttendanceTeacher(
         attendance: attendance,
         ip_address: ip_address,
         employee: employee,
-        status: status
+        status: status,
+        long: long,
+        lat:  lat
     );
     response.fold((l) {
-      state = state.copyWith(isLoad: false, errorMessage: l, isSuccess: false);
+      state = state.copyWith(isLoad: false, errorMessage: l, attendanceErrorMessage: l, isSuccess: false, isAttendanceSuccess: false);
     }, (r) {
-      state = state.copyWith(isLoad: false, errorMessage: '', isSuccess: true);
+      state = state.copyWith(isLoad: false, errorMessage: '', attendanceErrorMessage: '', isSuccess: true, isAttendanceSuccess: true);
     });
   }
 
@@ -127,10 +134,10 @@ class AttendanceNotifier extends StateNotifier<CrudState>{
         longLeave: longLeave,
         employee: employee);
     response.fold((l) {
-      state = state.copyWith(isLoad: false, errorMessage: l, isSuccess: false);
+      state = state.copyWith(isLoad: false, errorMessage: l, isSuccess: false, isLeaveSuccess: false);
     }, (r) {
       state = state.copyWith(
-          isLoad: false, errorMessage: '', isSuccess: true);
+          isLoad: false, errorMessage: '', isSuccess: true, isLeaveSuccess: true);
 
     });
   }

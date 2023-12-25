@@ -142,11 +142,11 @@ class _TeacherState extends ConsumerState<Teacher> {
                             ),
                             IconTextRow(
                                 onTap: (){
-                                  _makePhoneCall(userWall.mobile_no);
+                                  _makePhoneCall(userWall.mobile_no.toString());
                                 },
                                 title: 'Phone Number',
                                 icon:  Icons.phone,
-                                text: userWall.mobile_no
+                                text: userWall.mobile_no.toString()
                             ),
 
                             SizedBox(

@@ -20,11 +20,13 @@ class InfoTileWidget extends StatelessWidget {
   final String title;
   final String? svgPath;
   final VoidCallback onTap;
+  String? text;
 
   InfoTileWidget({
     required this.title,
     this.svgPath,
     required this.onTap,
+    this.text
   });
 
   @override
@@ -65,7 +67,7 @@ class InfoTileWidget extends StatelessWidget {
                           currentColor: Colors.black,
                         ),
                       ),
-                    ): SizedBox(),
+                    ): Center(child: Text(text!),),
                   ),
                   SizedBox(
                     width: 8.0,
@@ -141,8 +143,7 @@ class CommonCard extends StatelessWidget {
                   child: svgAsset != null ? SvgPicture.asset(svgAsset!,)
                       : svgPath != null
                       ? SvgPicture.network(svgPath!,)
-                      : Center(
-                    child: Text(subjectName.substring(0,1), style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),),
+                      : Center(child: Text(subjectName.substring(0,1), style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),),
                   ),
                 ),
                 Expanded(

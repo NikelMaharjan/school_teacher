@@ -32,42 +32,15 @@ class ExamClasses extends ConsumerWidget {
     final classList = ref.watch(examClassList(auth.user.token));
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        title: Text(examDetail.name, style: TextStyle(color: Colors.white),),
+      ),
       backgroundColor: Colors.white,
       body:Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-              height: MediaQuery.of(context).size.height * 0.8 / 5,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: bgColor,
-                  borderRadius:
-                  BorderRadius.vertical(bottom: Radius.circular(25))),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Center(
-                    child: Text(examDetail.name,style: TextStyle(color: Colors.white,fontSize: 25.sp),),
-                  ),
-                ],
-              )),
           SizedBox(
             height: 10.h,
           ),

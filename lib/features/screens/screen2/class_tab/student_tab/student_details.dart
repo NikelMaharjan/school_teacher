@@ -23,10 +23,11 @@ class StudentDetails extends ConsumerWidget {
   final String className;
   final ClassWiseStudent student;
   final String section;
+  final String studentName;
 
 
 
-  StudentDetails({required this.student_id,required this.className,required this.section, required this.student});
+  StudentDetails({required this.student_id,required this.className,required this.section, required this.student, required this.studentName});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -368,7 +369,12 @@ class StudentDetails extends ConsumerWidget {
                   }
 
                   return InkWell(
-                    onTap: ()=>Get.to(()=>AttendanceStatus(student_id: student_id)),
+                    onTap: ()=>Get.to(()=>AttendanceStatus(
+                        student_id: student_id,
+                       stuent_name: studentName,
+
+
+                    )),
                     child: Padding(
                       padding: EdgeInsets.all(10.h),
                       child: Card(

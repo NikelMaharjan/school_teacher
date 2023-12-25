@@ -19,7 +19,7 @@ final attendanceDateTeacher = FutureProvider.family(
         (ref, String token) => TeacherAttendanceService(token).getDateTeacher());
 
 
-final teacherAttendanceProvider = FutureProvider.family<List<TeacherAttendance>, int>((ref, id) async {
+final teacherAttendanceProvider = FutureProvider.family.autoDispose<List<TeacherAttendance>, int>((ref, id) async {
   final token = ref.watch(authProvider);
   final teacherAttendance = TeacherAllAttendanceService(token.user.token, id);
   return await teacherAttendance.getAllAttendance();
@@ -33,17 +33,23 @@ class TeacherAttendanceService{
 
 
   Future<List<AttendanceDateTeacher>> getDateTeacher() async {
+
     try {
       final response = await dio.get(Api.teacherAttendanceUrl,
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
 
+
+      if(response.statusCode == 204) {
+        throw "No Attendance Data";
+      }
+
+
       final data = (response.data['data'] as List)
           .map((e) => AttendanceDateTeacher.fromJson(e))
           .toList();
-      // print('success');
       return data;
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
 
       throw Exception('Unable to fetch data');
@@ -90,24 +96,30 @@ class TeacherAttendanceService{
     required int attendance,
     required String ip_address,
     required int employee,
-    required String status
+    required String status,
+    required double long,
+    required double lat,
 
   }) async {
+
+    print("Longitude and latiude is $long, $lat");
     try {
       final response = await dio.post(Api.teacherAttendanceInfoUrl,
           data: {
             "attendance": attendance,
             "employee" : employee,
             "status" : status,
+            "long" : long,
+            "lat" : lat,
             "ip_address" : ip_address
 
           },
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(response.data);
-    } on DioError catch (err) {
-      print(err.response);
-      throw Exception('Network error');
+    } on DioException catch (err) {
+      print("Nkel is ${err.response}");
+      return Left(err.response.toString());
     }
   }
 
@@ -122,15 +134,27 @@ class TeacherAllAttendanceService {
   final dio = Dio();
 
   Future<List<TeacherAttendance>> getAllAttendance() async {
+
     try {
       final response = await dio.get('${Api.teacherAllAttendanceInfoUrl}$id',
           options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+
+      if(response.statusCode == 204) {
+        return [
+
+
+
+        ];
+      }
       final data = (response.data['navigation']['data'] as List)
           .map((e) => TeacherAttendance.fromJson(e))
           .toList();
-      print('success');
+
+
+
+
       return data;
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
       throw Exception('Unable to fetch data');
     }
@@ -162,9 +186,9 @@ class TeacherLeaveNoteService{
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(response.data);
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
-      throw Exception('Network error');
+      return Left(err.response.toString());
     }
   }
 

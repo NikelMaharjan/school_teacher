@@ -50,12 +50,24 @@ class _ExamTabsState extends State<ExamTabs> with TickerProviderStateMixin {
               indicator: BoxDecoration(
                   color: primary, borderRadius: BorderRadius.circular(10)),
               tabs: [
-                Tab(
-                  text: 'All Exams',
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Tab(
+                    text: 'All Exams',
+                  ),
                 ),
-                Tab(text: 'Upcoming'),
-                Tab(text: 'Ongoing'),
-                Tab(text: 'Completed'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Tab(text: 'Upcoming'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Tab(text: 'Ongoing'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Tab(text: 'Completed'),
+                ),
               ]),
         ),
       ],

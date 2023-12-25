@@ -184,11 +184,11 @@ class _SubjectNoticeFormState extends ConsumerState<EditSubNotice> {
 
 
                       await ref.read(subNoticeProvider.notifier).updateSubNotice(
-                        token: auth.user.token,
-                        title: _titleController.text,
-                        message: _messageController.text,
-                         id: widget.subjectNotice.id,
-                        class_subject: class_sub_id
+                           token: auth.user.token,
+                           title: _titleController.text,
+                           message: _messageController.text,
+                           id: widget.subjectNotice.id,
+                           class_subject: class_sub_id
 
                       );
                     }

@@ -16,7 +16,8 @@ import '../../../../services/attendance_services.dart';
 class AttendanceStatus extends ConsumerWidget {
 
   final int student_id;
-  AttendanceStatus({required this.student_id});
+  final String stuent_name;
+  AttendanceStatus({required this.student_id, required this.stuent_name});
 
   @override
   Widget build(BuildContext context,ref) {
@@ -44,6 +45,7 @@ class AttendanceStatus extends ConsumerWidget {
                     itemCount: data.length,
                     itemBuilder: (context, index) {
                       return Card(
+
                         color: Colors.white,
                         shape: Border.all(
                             color: Colors.black
@@ -51,16 +53,20 @@ class AttendanceStatus extends ConsumerWidget {
                         child: ListTile(
                           onTap: ()async{
                             if(data[index].status=='Present'){
-                              SnackShow.showSuccess(context, 'You were present');
+                              SnackShow.showSuccess(context, '$stuent_name was present');
                             }
                             else{
                               await showDialog(
+
                                   context: context,
                                   builder: (context){
                                     return attendNote.when(
                                       data: (note_data) {
                                         final note = note_data.firstWhereOrNull((element) => element.startDate == data[index].attendance.date && element.student == data[index].student.id);
                                         return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                          ),
                                           backgroundColor: Colors.white,
                                           title: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

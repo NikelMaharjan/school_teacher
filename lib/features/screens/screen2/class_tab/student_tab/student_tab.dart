@@ -66,6 +66,7 @@ class ApiStudents extends ConsumerWidget {
                             student_id: student_data[index].student.id,
                             className: className,
                             section: section,
+                            studentName: student_data[index].student.studentName,
                             student: student_data[index],
                           )),
                         
