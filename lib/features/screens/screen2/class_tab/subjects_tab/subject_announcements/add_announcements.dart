@@ -2,13 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:eschool_teacher/constants/colors.dart';
 import 'package:eschool_teacher/features/authentication/providers/auth_provider.dart';
 import 'package:eschool_teacher/features/providers/notice_providers.dart';
-import 'package:eschool_teacher/utils/commonWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../../../../api.dart';
 import '../../../../../../constants/snack_show.dart';
 
 import '../../../../../services/notice_services.dart';
@@ -20,7 +18,7 @@ class SubjectNoticeForm extends ConsumerStatefulWidget {
   final int sub_id;
 
 
-  SubjectNoticeForm({required this.class_sec_id,required this.sub_id});
+  const SubjectNoticeForm({super.key, required this.class_sec_id,required this.sub_id});
 
   @override
   ConsumerState<SubjectNoticeForm> createState() =>
@@ -89,7 +87,7 @@ class _SubjectNoticeFormState extends ConsumerState<SubjectNoticeForm> {
       if(next.errorMessage.isNotEmpty){
         SnackShow.showFailure(context, next.errorMessage);
       }else if(next.isSuccess){
-        SnackShow.showSuccess(context, 'succesfully added');
+        SnackShow.showSuccess(context, 'successfully added');
         // ref.invalidate(subNoticeProvider);
         ref.invalidate(subNoticeList(auth.user.token));
 
@@ -103,7 +101,7 @@ class _SubjectNoticeFormState extends ConsumerState<SubjectNoticeForm> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: primary,
-          title: Text('Add Subject Notice', style: TextStyle(color: Colors.white),),
+          title: const Text('Add Subject Notice', style: TextStyle(color: Colors.white),),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -114,7 +112,7 @@ class _SubjectNoticeFormState extends ConsumerState<SubjectNoticeForm> {
                 if (_error != null)
                   Text(
                     _error,
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   ),
                 Container(
                   decoration: BoxDecoration(
@@ -123,8 +121,8 @@ class _SubjectNoticeFormState extends ConsumerState<SubjectNoticeForm> {
                       border: Border.all(color: Colors.black)),
                   child: TextFormField(
                     controller: _titleController,
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.black),
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black)),
                         hintText: 'Title',
@@ -147,8 +145,8 @@ class _SubjectNoticeFormState extends ConsumerState<SubjectNoticeForm> {
                       border: Border.all(color: Colors.black)),
                   child: TextFormField(
                     controller: _messageController,
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.black),
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black)),
                         hintText: 'Message',
@@ -162,7 +160,7 @@ class _SubjectNoticeFormState extends ConsumerState<SubjectNoticeForm> {
                   ),
                 ),
 
-                SizedBox(height: 10 ,),
+                const SizedBox(height: 10 ,),
 
                 classSubList.when(
                     data: (data){
@@ -175,12 +173,12 @@ class _SubjectNoticeFormState extends ConsumerState<SubjectNoticeForm> {
                         onPressed: subNotice.isLoad ? null : () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            final String auth_token = auth.user.token;
+                            final String authToken = auth.user.token;
 
 
                             await ref.read(subNoticeProvider.notifier)
                                 .addSubNotice(
-                                token: auth_token,
+                                token: authToken,
                                 title: _titleController.text,
                                 message: _messageController.text,
                                 class_subject: classSub_data.id,
@@ -195,7 +193,7 @@ class _SubjectNoticeFormState extends ConsumerState<SubjectNoticeForm> {
 
 
 
-                        }, child: Text("Add Notice", style: TextStyle(color: Colors.white),),
+                        }, child: const Text("Add Notice", style: TextStyle(color: Colors.white),),
                       );
                     },
                   error: (err, stack) => Center(child: Text('$err')),

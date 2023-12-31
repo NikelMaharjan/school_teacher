@@ -33,8 +33,8 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
     final auth=ref.watch(authProvider);
     final attend=ref.watch(attendanceProvider);
     final attendanceDate = ref.watch(attendanceDateStudent(auth.user.token));
-    print('attend class id ${widget.class_sec_id}');
-    print('teacher id ${widget.teacher_id}');
+   // print('attend class id ${widget.class_sec_id}');
+    //print('teacher id ${widget.teacher_id}');
 
     return attendanceDate.when(
         data: (data){
@@ -42,22 +42,22 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
           if(attendDate == null){
             return AlertDialog(
 
-              shape: RoundedRectangleBorder(borderRadius:
+              shape: const RoundedRectangleBorder(borderRadius:
               BorderRadius.all(Radius.circular(10))),
               backgroundColor: Colors.white,
-              title: Text("Create Attendance",style: TextStyle(color: Colors.black),),
+              title: const Text("Create Attendance",style: TextStyle(color: Colors.black),),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Class: ${widget.className} ${widget.section}',style: TextStyle(color: Colors.black),),
-                  Text('Date: $date',style: TextStyle(color: Colors.black),)
+                  Text('Class: ${widget.className} ${widget.section}',style: const TextStyle(color: Colors.black),),
+                  Text('Date: $date',style: const TextStyle(color: Colors.black),)
                 ],
               ),
               actions: <Widget>[
                 TextButton(
-                  child: attend.isLoad ? CircularProgressIndicator() : Text("Yes"),
+                  child: attend.isLoad ? const CircularProgressIndicator() : const Text("Yes"),
                   onPressed: () {
                     ref.read(attendanceProvider.notifier).addDate(
                         token: auth.user.token,
@@ -78,7 +78,7 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
                   },
                 ),
                 TextButton(
-                  child: Text("No"),
+                  child: const Text("No"),
                   onPressed: () {
                     // Perform some action
                     Navigator.of(context).pop();
@@ -89,17 +89,17 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
           }
           else {
             return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius:
+              shape: const RoundedRectangleBorder(borderRadius:
               BorderRadius.all(Radius.circular(15))),
               backgroundColor: Colors.white,
-              title: Text("Attendance Already Added",style: TextStyle(color: Colors.black),),
+              title: const Text("Attendance Already Added",style: TextStyle(color: Colors.black),),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Class: ${widget.className} ${widget.section}',style: TextStyle(color: Colors.black),),
-                  Text('Date: $date',style: TextStyle(color: Colors.black),),
+                  Text('Class: ${widget.className} ${widget.section}',style: const TextStyle(color: Colors.black),),
+                  Text('Date: $date',style: const TextStyle(color: Colors.black),),
                   SizedBox(height: 5.h,),
                   Text('Go to Attendance page ?',style: TextStyle(color: Colors.black,fontSize: 12.sp),)
                 ],
@@ -110,15 +110,15 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
                       backgroundColor: primary
                   ),
                   child: attend.isLoad
-                      ? CircularProgressIndicator()
-                      : Text("Yes",style: TextStyle(color: Colors.white),),
+                      ? const CircularProgressIndicator()
+                      : const Text("Yes",style: TextStyle(color: Colors.white),),
                   onPressed: () {
                     Navigator.pop(context);
                     Get.to(()=>EditAttendance(class_id: widget.class_sec_id ,attendance: attendDate,));
                   },
                 ),
                 TextButton(
-                  child: Text("No",style: TextStyle(color: Colors.black),),
+                  child: const Text("No",style: TextStyle(color: Colors.black),),
                   onPressed: () {
                     // Perform some action
                     Navigator.of(context).pop();
@@ -129,7 +129,7 @@ class _AttendanceAlertDialogState extends ConsumerState<AttendanceAlertDialog> {
           }
         },
         error: (err, stack) => Center(child: Text('$err')),
-        loading: () => Center(child: CircularProgressIndicator(),)
+        loading: () => const Center(child: CircularProgressIndicator(),)
     );
   }
 }

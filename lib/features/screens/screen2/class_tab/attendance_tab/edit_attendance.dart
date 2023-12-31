@@ -11,13 +11,12 @@ import '../../../../../../../constants/colors.dart';
 import '../../../../../api.dart';
 import '../../../../model/attendance_student.dart';
 import '../../../../services/feature_services.dart';
-import '../../../../../utils/commonWidgets.dart';
 
 class EditAttendance extends ConsumerStatefulWidget {
   final int class_id;
   final Attendance attendance;
 
-  EditAttendance({required this.class_id,required this.attendance});
+  const EditAttendance({super.key, required this.class_id,required this.attendance});
 
   @override
   ConsumerState<EditAttendance> createState() => _TestAttendanceState();
@@ -47,8 +46,7 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                       color: bgColor,
-                      borderRadius: BorderRadius.vertical(
-                          bottom: Radius.circular(25))),
+                      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(25))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -61,7 +59,7 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
                             onPressed: () {
                               Get.back();
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.arrow_back,
                               color: Colors.white,
                             ),
@@ -75,8 +73,8 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
                           style: TextStyle(
                               color: Colors.white, fontSize: 18.sp)),
                       Text(
-                        '${DateFormat('yyyy-MM-dd').format(DateTime.now())}',
-                        style: TextStyle(
+                        DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
@@ -87,7 +85,7 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
                 child: ListView.builder(
                     itemCount: data.length,
                     shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
                       if (!toggleStates.containsKey(data[index].student.id)) {
@@ -120,7 +118,7 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
                               padding: EdgeInsets.symmetric(horizontal: 8.w),
                               child: Text(
                                 data[index].student.studentName,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -130,7 +128,7 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
                               style: TextButton.styleFrom(
                                 backgroundColor: toggleStates[data[index].student.id]! ? primary : abs_color,
                                 foregroundColor: Colors.white,
-                                padding: EdgeInsets.all(0),
+                                padding: const EdgeInsets.all(0),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
@@ -166,7 +164,7 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
                       fixedSize: Size.fromWidth(320.w),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(
+                          side: const BorderSide(
                             color: Colors.black,
                           ))),
                   onPressed: () async {
@@ -196,7 +194,7 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
                     Navigator.pop(context);
                   },
 
-                  child:attendload.isLoad? CircularProgressIndicator(): Text(
+                  child:attendload.isLoad? const CircularProgressIndicator(): Text(
                     'Submit',
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -208,7 +206,7 @@ class _TestAttendanceState extends ConsumerState<EditAttendance> {
           );
         },
         error: (err, stack) => Center(child: Text('$err')),
-        loading: () => Center(
+        loading: () => const Center(
           child: CircularProgressIndicator(),
         ),
       ),

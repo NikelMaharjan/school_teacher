@@ -442,6 +442,67 @@ class NoticeCard2 extends StatelessWidget {
   }
 }
 
+class NotificationCard extends StatelessWidget {
+  final String title;
+  final String description;
+  final VoidCallback onTap;
+  final Color color;
+
+  const NotificationCard({
+    required this.title,
+    required this.description,
+    required this.onTap,
+    required this.color
+
+  });
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: Card(
+        elevation: 0,
+        color: color,
+        shape: RoundedRectangleBorder(
+
+            borderRadius: BorderRadius.circular(5),
+            side: BorderSide(
+
+                color: Colors.black
+            )
+        ),
+        child: ListTile(
+          onTap: onTap,
+          title: Container(
+            width: MediaQuery.of(context).size.width*0.5,
+            child: Text(
+              title,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 1,
+            ) ,
+          ),
+          subtitle: Padding(
+            padding: EdgeInsets.only(top: 8.h),
+            child: Container(
+              width: MediaQuery.of(context).size.width*0.6,
+              child: Text(
+                description,
+                style: TextStyle(color: Colors.black),
+                maxLines: 2,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
 class NoticeCard3 extends StatelessWidget {
   final String title;
   final String description;

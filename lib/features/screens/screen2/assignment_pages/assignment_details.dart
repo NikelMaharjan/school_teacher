@@ -23,11 +23,14 @@ class AssignmentDetails extends ConsumerWidget {
   AssignmentDetails({required this.assignment,required this.classSubject, required this.class_subject_id});
 
   Future<void> _redirect(String website) async {
-    final Uri launchUri = Uri(
-      scheme: 'https',
-      path: website,
-    );
-    await launchUrl(launchUri);
+
+    final Uri url = Uri.parse(website);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw "Could not launch $url";
+    }
+
   }
 
   @override
@@ -42,7 +45,7 @@ class AssignmentDetails extends ConsumerWidget {
     return assignment.when(
         data: (data){
           return ListView.builder(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
               itemCount: data.length,
               itemBuilder: (context, index){
 
@@ -53,72 +56,115 @@ class AssignmentDetails extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
+                      DataTable(
+                        // datatable widget
+                        columns: [
+                          // column to set the name
+                          const DataColumn(label: Text('Title'),),
+                          DataColumn(label: Text(data[index].title),),
+                        ],
 
-                      Text('Title',style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.bold),),
+                        rows: [
+                          // row to set the values
+                          DataRow(
+                              cells: [
+                                const DataCell(Text('Description')),
+                                DataCell(InkWell(
 
-                      SizedBox(height: 5.h,),
-                      Text(data[index].title,style: TextStyle(color: Colors.black),),
-                      SizedBox(height: 10.h,),
+                                  onTap: (){
+                                    showDialog (
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: const RoundedRectangleBorder(borderRadius:
+                                          BorderRadius.all(Radius.circular(10))),
+                                          title: const Text('Description!'),
+                                          content: Text(data[index].description),
+                                          actions: [
 
-                      Divider(
-                        thickness: 1,
-                        color: Colors.black,
+                                            TextButton(
+                                              child: const Text('OK',),
+                                              onPressed: () {
+
+                                                Navigator.of(context).pop();
+
+
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+
+                                  child: SizedBox(
+                                    width: 180.w,
+                                    child: Text(data[index].description, style: TextStyle(
+                                        color: bgColor,
+                                        decoration: TextDecoration.underline,
+                                        fontStyle: FontStyle.italic,
+                                        overflow: TextOverflow.ellipsis
+
+                                    ),
+                                    ),
+                                  ),
+                                )),
+                              ]
+                          ),
+
+
+                          DataRow(
+                              cells: [
+                                const DataCell(Text('Link')),
+                                DataCell(data[index].link != null ? InkWell(
+                                    onTap: (){
+                                      _redirect(data[index].link!);
+
+                                    },
+                                    child: SizedBox(
+                                      width: 180.w,
+                                      child: Text(data[index].link!, style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          color: bgColor,
+                                          overflow: TextOverflow.ellipsis,
+
+                                          decoration: TextDecoration.underline
+                                      ),),
+                                    )) : const Text("")),
+                              ]
+                          ),
+
+
+                          DataRow(
+                              cells: [
+                                const DataCell(Text('Reference')),
+                                DataCell(data[index].imageFile != null ? InkWell(
+                                    onTap: (){
+                                      showImageViewer(context, CachedNetworkImageProvider('${Api.basePicUrl}${data[index].imageFile}'),
+                                          swipeDismissible: false);
+                                    },
+                                    child: SizedBox(
+                                      width: 180.w,
+                                        child: Text(data[index].imageFile!, style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            color: bgColor,
+                                            decoration: TextDecoration.underline,
+                                             overflow: TextOverflow.ellipsis,
+                                        ),))) : const Text("")),
+                              ]
+                          ),
+
+                          DataRow(
+                              cells: [
+                                const DataCell(Text('Deadline')),
+                                DataCell(data[index].hasDeadline == true ? Text(DateFormat('MMMM dd').format(DateTime.parse(data[index].deadline!))) : const Text("")),
+                              ]
+                          ),
+
+                        ],
                       ),
 
-                      Text('Description',style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.bold),),
-                      SizedBox(height: 5.h,),
-                      Text(data[index].description,style: TextStyle(color: Colors.black),),
-                      SizedBox(height: 10.h,),
-                      Divider(
-                        thickness: 1,
-                        color: Colors.black,
-                      ),
-                      data[index].link != null ? Column(
-                        children: [
-                          ListTile(
-                            onTap: (){
-                              _redirect(data[index].link!);
-                            },
-                            contentPadding: EdgeInsets.zero,
-                            title: Text('Link',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                            subtitle: Text(data[index].link!,style: TextStyle(color: bgColor, fontStyle: FontStyle.italic, decoration: TextDecoration.underline),),
-                          ),
-                          Divider(
-                            thickness: 1,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ):SizedBox(),
-                      SizedBox(height: 5.h,),
-                      data[index].imageFile != null ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Image',style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.bold),),
-                          InkWell(
-                            onTap: () {
-                              showImageViewer(context, CachedNetworkImageProvider('${Api.basePicUrl}${data[index].imageFile}'),
-                                  swipeDismissible: false);
-                            },
-                            child: Text(data[index].imageFile!, style: TextStyle(color: bgColor, fontStyle: FontStyle.italic, decoration: TextDecoration.underline),),
-                          ),
-                        ],
-                      ):SizedBox(),
-                      SizedBox(height: 10.h,),
-
-                      Divider(
-                        thickness: 1,
-                        color: Colors.black,
-                      ),
-                      data[index].hasDeadline==true? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-
-                        children: [
-                          Text('Deadline',style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.bold),),
-
-                          Text('${DateFormat('MMMM dd').format(DateTime.parse(data[index].deadline!))}',style: TextStyle(color: Colors.black,fontSize: 16.sp),),
-
-                        ],
-                      ): Text(''),
                     ],
                   ),
                 );
@@ -126,7 +172,7 @@ class AssignmentDetails extends ConsumerWidget {
           );
         },
         error: (e, s) => Center(child: Text(e.toString()),),
-        loading: () => Center(child: CircularProgressIndicator(),)
+        loading: () => const Center(child: CircularProgressIndicator(),)
     );
   }
 }

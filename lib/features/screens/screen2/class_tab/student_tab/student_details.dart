@@ -27,12 +27,12 @@ class StudentDetails extends ConsumerWidget {
 
 
 
-  StudentDetails({required this.student_id,required this.className,required this.section, required this.student, required this.studentName});
+  const StudentDetails({super.key, required this.student_id,required this.className,required this.section, required this.student, required this.studentName});
 
   @override
   Widget build(BuildContext context, ref) {
 
-    print("STUDENT ID IS $student_id");
+   // print("STUDENT ID IS $student_id");
 
     final auth = ref.watch(authProvider);
 
@@ -41,14 +41,14 @@ class StudentDetails extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Student Details", style: TextStyle(
+        title: const Text("Student Details", style: TextStyle(
           color: Colors.white
         ),),
         backgroundColor: bgColor,
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -277,7 +277,7 @@ class StudentDetails extends ConsumerWidget {
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Container(
+              child: SizedBox(
                 height: 150,
                   child: CachedNetworkImage(imageUrl: "${Api.basePicUrl}${student.student.studentPhoto}", fit: BoxFit.fill,)),
             ),
@@ -286,22 +286,22 @@ class StudentDetails extends ConsumerWidget {
               // datatable widget
               columns: [
                 // column to set the name
-                DataColumn(label: Text('Student Name', style: TextStyle(fontWeight: FontWeight.normal),),),
-                DataColumn(label: Text(student.student.studentName, style: TextStyle(fontWeight: FontWeight.normal ),),),
+                const DataColumn(label: Text('Student Name', style: TextStyle(fontWeight: FontWeight.normal),),),
+                DataColumn(label: Text(student.student.studentName, style: const TextStyle(fontWeight: FontWeight.normal ),),),
               ],
 
               rows: [
                 // row to set the values
                 DataRow(
                     cells: [
-                  DataCell(Text('Gender')),
+                  const DataCell(Text('Gender')),
                   DataCell(Text(student.student.gender)),
                 ]
                 ),
 
                 DataRow(
                     cells: [
-                      DataCell(Text('Date of Birth')),
+                      const DataCell(Text('Date of Birth')),
                       DataCell(Text(student.student.date_of_birth_eng)),
                     ]
                 ),
@@ -309,42 +309,42 @@ class StudentDetails extends ConsumerWidget {
 
                 DataRow(
                     cells: [
-                      DataCell(Text('Email')),
+                      const DataCell(Text('Email')),
                       DataCell(Text(student.student.email)),
                     ]
                 ),
 
                 DataRow(
                     cells: [
-                      DataCell(Text('Address')),
+                      const DataCell(Text('Address')),
                       DataCell(Text(student.student.residental_address)),
                     ]
                 ),
 
                 DataRow(
                     cells: [
-                      DataCell(Text('Mobile')),
+                      const DataCell(Text('Mobile')),
                       DataCell(Text(student.student.mobile_number.toString())),
                     ]
                 ),
 
                 DataRow(
                     cells: [
-                      DataCell(Text('Roll')),
+                      const DataCell(Text('Roll')),
                       DataCell(Text(student.student.student_roll_no)),
                     ]
                 ),
 
                 DataRow(
                     cells: [
-                      DataCell(Text('Father Name')),
+                      const DataCell(Text('Father Name')),
                       DataCell(Text(student.student.father_name)),
                     ]
                 ),
 
                 DataRow(
                     cells: [
-                      DataCell(Text('Mother Name')),
+                      const DataCell(Text('Mother Name')),
                       DataCell(Text(student.student.mother_name)),
                     ]
                 ),
@@ -352,7 +352,7 @@ class StudentDetails extends ConsumerWidget {
             ),
 
 
-            Container(
+            SizedBox(
               height: 140.h,
               child: attendanceStatus.when(
                 data: (data){
@@ -381,7 +381,7 @@ class StudentDetails extends ConsumerWidget {
                           elevation: 0,
                           color: Colors.grey.withOpacity(0.1),
                           shape: RoundedRectangleBorder(
-                              side: BorderSide(
+                              side: const BorderSide(
                                   color: Colors.black
                               ),
                               borderRadius: BorderRadius.circular(10)),
@@ -467,7 +467,7 @@ class StudentDetails extends ConsumerWidget {
                   );
                 },
                 error: (err, stack) => Center(child: Text('$err')),
-                loading: () => Center(child: CircularProgressIndicator(),),
+                loading: () => const Center(child: CircularProgressIndicator(),),
               ),
             ),
 

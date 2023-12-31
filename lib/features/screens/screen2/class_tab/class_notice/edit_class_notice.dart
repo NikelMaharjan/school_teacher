@@ -61,9 +61,9 @@ class _EditNoticeState extends ConsumerState<EditNotice> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
-    String _error = '';
+    String error = '';
     final auth = ref.watch(authProvider);
     final noticeLoad = ref.watch(noticeList(auth.user.token));
 
@@ -74,40 +74,37 @@ class _EditNoticeState extends ConsumerState<EditNotice> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: primary,
-          title: Text('Edit Class Notice'),
+          title: const Text('Edit Class Notice'),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: ListView(
               children: [
-                if (_error != null)
+                if (error != null)
                   Text(
-                    _error,
-                    style: TextStyle(color: Colors.red),
+                    error,
+                    style: const TextStyle(color: Colors.red),
                   ),
-                Container(
-                  // height: MediaQuery.of(context).size.height * 0.07,
-
-                    child: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Send Notifications',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        Transform.scale(
-                          scale: 0.8,
-                          child: CupertinoSwitch(
-                              activeColor: primary,
-                              value: isSwitched,
-                              onChanged: toggleSwitch
-                          ),
-                        )
-                      ],
-                    )),
+                Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'Send Notifications',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    Transform.scale(
+                      scale: 0.8,
+                      child: CupertinoSwitch(
+                          activeColor: primary,
+                          value: isSwitched,
+                          onChanged: toggleSwitch
+                      ),
+                    )
+                  ],
+                ),
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
@@ -115,8 +112,8 @@ class _EditNoticeState extends ConsumerState<EditNotice> {
                       border: Border.all(color: Colors.black)),
                   child: TextFormField(
                     controller: _titleController,
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.black),
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black)),
                         hintText: 'Title',
@@ -139,8 +136,8 @@ class _EditNoticeState extends ConsumerState<EditNotice> {
                       border: Border.all(color: Colors.black)),
                   child: TextFormField(
                     controller: _descriptionController,
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.black),
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black)),
                         hintText: 'Description',
@@ -156,14 +153,14 @@ class _EditNoticeState extends ConsumerState<EditNotice> {
                 CommonTextButton(
                   buttonText: 'Submit',
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      final String auth_token = auth.user.token;
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      final String authToken = auth.user.token;
 
-                      print(auth_token);
+                    //   print(authToken);
 
                       await ref.read(noticeProvider.notifier).updateNotice(
-                          token: auth_token,
+                          token: authToken,
                           title: _titleController.text,
                           description: _descriptionController.text,
                           for_all_class: false,

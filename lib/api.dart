@@ -41,6 +41,10 @@ class Api {
   static const editAssignmentStatus = '$baseUrl/assignment_status/';
 
 
+  static const studentAssignmentNotification = '$baseUrl/student_assignment/';
+
+
+
 
 
 
@@ -111,6 +115,13 @@ class Api {
   static const examClassDetailUrl ='$baseUrl/exam_class/all/';
   static const examRoutineUrl ='$baseUrl/exam_routine/all/';
   static const classExamRoutineUrl ='$baseUrl/exam_routine/all/?exam=';
+
+
+  static const notificationUrl = '$baseUrl/notification/all/?notification_token__notification_token=';
+  static const updateNotificationUrl = '$baseUrl/notification/';
+
+
+
 
 
 

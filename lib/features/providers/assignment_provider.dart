@@ -130,8 +130,9 @@ class AssignmentNotifier extends StateNotifier<CrudState>{
 
   }) async {
     state = state.copyWith(isLoad: true, errorMessage: '', isSuccess: false);
+
     final response = await AssignmentService(token).editStatus(
-      id: id,
+         id: id,
         remarks: remarks,
         status: status,
         notifications: notifications,

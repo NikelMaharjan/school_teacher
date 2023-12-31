@@ -1,11 +1,15 @@
 import 'package:eschool_teacher/class_notice.dart';
 import 'package:eschool_teacher/exceptions/internet_exceptions.dart';
+import 'package:eschool_teacher/features/services/notice_services.dart';
+import 'package:eschool_teacher/notification_page.dart';
 import 'package:eschool_teacher/utils/commonWidgets.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../api.dart';
 import '../../../../../../constants/colors.dart';
 import '../../../notification_service.dart';
@@ -34,11 +38,23 @@ class Overview extends ConsumerStatefulWidget {
 
 class _OverviewState extends ConsumerState<Overview> {
 
+  int? unseen;
+  double? longitiude;
+  double? latitude;
+  final notificationTypes = [ 'Calendar events','Notice', 'Invigillator info', 'Class section', 'Class notice','Assignment', 'Student assignment', 'Student total fee', 'Exam class', 'Admit card', 'Total exam marks'];
+
+
+
 
 
   @override
   void initState() {
     super.initState();
+
+    setState(() {
+      unseen = 0;
+    });
+
 
     // 1. This method call when app in terminated state and you get a notification
     // when you click on notification app open from terminated state and you can get notification data in this method
@@ -50,15 +66,31 @@ class _OverviewState extends ConsumerState<Overview> {
         print("FirebaseMessaging.instance.getInitialMessage");
         if (message != null) {
           print("New Notification");
-          // if (message.data['_id'] != null) {
-          //   Navigator.of(context).push(
-          //     MaterialPageRoute(
-          //       builder: (context) => DemoScreen(
-          //         id: message.data['_id'],
-          //       ),
-          //     ),
-          //   );
-          // }
+
+          if (message.data['id'] != null) {
+
+            if(message.data['notification_type']==notificationTypes[0]){
+              Get.to(()=>NotificationPage(notification_token: "1"));
+            }
+            else if(message.data['notification_type']==notificationTypes[1]||message.data['notification_type']==notificationTypes[4]){
+              Get.to(()=>NotificationPage(notification_token: "1",));
+            }
+            else if(message.data['notification_type']==notificationTypes[5]){
+              Get.to(()=>NotificationPage(notification_token: "1",));
+            }
+            else if(message.data['notification_type']==notificationTypes[8]){
+              Get.to(()=>NotificationPage(notification_token: "1",));
+            }
+            else if(message.data['notification_type']==notificationTypes[10]){
+              Get.to(()=>NotificationPage(notification_token: "1",));
+            }
+            else{
+              Get.to(()=>NotificationPage(notification_token: "1",));
+            }
+
+
+          }
+
           LocalNotificationService.createanddisplaynotification(message);
         }
       },
@@ -73,6 +105,26 @@ class _OverviewState extends ConsumerState<Overview> {
           print(message.notification!.body);
           print("message.data11 ${message.data}");
           LocalNotificationService.createanddisplaynotification(message);
+          if(message.data['notification_type']==notificationTypes[0]){
+            Get.to(()=>NotificationPage(notification_token: "1"));
+          }
+          else if(message.data['notification_type']==notificationTypes[1]||message.data['notification_type']==notificationTypes[4]){
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+          else if(message.data['notification_type']==notificationTypes[5]){
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+          else if(message.data['notification_type']==notificationTypes[8]){
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+          else if(message.data['notification_type']==notificationTypes[10]){
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+          else{
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+
+
 
         }
       },
@@ -87,6 +139,25 @@ class _OverviewState extends ConsumerState<Overview> {
           print(message.notification!.body);
           print("message.data22 ${message.data['_id']}");
           LocalNotificationService.createanddisplaynotification(message);
+          if(message.data['notification_type']==notificationTypes[0]){
+            Get.to(()=>NotificationPage(notification_token: "1"));
+          }
+          else if(message.data['notification_type']==notificationTypes[1]||message.data['notification_type']==notificationTypes[4]){
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+          else if(message.data['notification_type']==notificationTypes[5]){
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+          else if(message.data['notification_type']==notificationTypes[8]){
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+          else if(message.data['notification_type']==notificationTypes[10]){
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+          else{
+            Get.to(()=>NotificationPage(notification_token: "1",));
+          }
+
         }
       },
     );
@@ -101,6 +172,14 @@ class _OverviewState extends ConsumerState<Overview> {
     print(response);
   }
 
+  Future getLocation() async {
+    await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+
+    longitiude = position.longitude;
+    latitude = position.latitude;
+  }
+
 
 
   @override
@@ -109,6 +188,30 @@ class _OverviewState extends ConsumerState<Overview> {
     final String token = auth.user.token;
     final teacherClass = ref.watch(teacherSubList(token));
     final infoData = ref.watch(employeeList(auth.user.token));
+    final noticeData = ref.watch(noticeList(auth.user.token));
+
+    final notificationData = ref.watch(notificationProvider2("222"));
+    //print('notification token: $notification_token');
+
+
+    notificationData.when(
+        data: (data) {
+          final unseenNotifications = data.where((notification) => notification.seen == false);
+          final totalUnseenCount = unseenNotifications.length;
+          //print('Total number of unseen notifications: $totalUnseenCount');
+          setState(() {
+            unseen = totalUnseenCount;
+          });
+        },
+        error: (error, stackTrace) {
+          //    print('$error');
+        },
+        loading: () {
+          return;
+        }
+    );
+
+
 
     return ConnectivityChecker(
       child: Scaffold(
@@ -156,20 +259,58 @@ class _OverviewState extends ConsumerState<Overview> {
                               ),
                               Row(
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Get.to(() => NoticeBoard());
-                                    },
-                                    icon: Icon(Icons.notifications,
-                                        size: 25.sp, color: Colors.white),
+                                  Container(
+                                    height: 30,
+                                    width: 30,
+                                    // color: Colors.yellow,
+                                    child: Center(
+                                      child: Stack(
+                                          children: [
+                                            InkWell(
+                                                onTap: (){
+
+                                                  Get.to(()=>NotificationPage(notification_token: "123"));
+                                                },
+                                                child: Icon(Icons.notifications, size: 25.sp, color: Colors.white)
+                                            ),
+                                            if(unseen != 0)
+                                              Positioned(
+                                                  top: 0,
+                                                  right: 0,
+                                                  child: Container(
+                                                    width: 14.w,
+                                                    height: 14.h,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "$unseen",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 10.sp,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),))
+
+                                          ]),
+                                    ),
                                   ),
                                   SizedBox(width: 5.h,),
                                   IconButton(
-                                      onPressed: (){
+                                      onPressed: () async {
+                                        await getLocation();
+
                                         showDialog(
                                             context: context,
                                             builder: (context){
-                                              return TeacherAttendanceDialog(teacher_id: info_data.first.id);
+                                              return TeacherAttendanceDialog(
+                                                lat: latitude!,
+                                                  lng: longitiude!,
+                                                  teacher_id: info_data.first.id)
+                                              ;
                                             }
                                         );
                                       },
@@ -294,6 +435,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                             ),
+
                             Container(
                               // color: Colors.blue,
                                 height: MediaQuery.of(context).size.height * 0.5 / 4,
@@ -372,15 +514,55 @@ class _OverviewState extends ConsumerState<Overview> {
                                 )
                             ),
 
+
                             Padding(
-                              padding:
-                              EdgeInsets.symmetric(horizontal: 30.w, vertical: 8.h),
-                              child: Text('Information',
-                                  style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black)),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 30.w,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Latest Notice',
+                                      style: TextStyle(
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black)),
+                                  TextButton(
+                                      onPressed: (){
+                                        Get.to(()=>NoticeBoard());
+                                      },
+                                      child: Text('View all >',style: TextStyle(color: Colors.grey),)
+                                  )
+                                ],
+                              ),
                             ),
+                            Center(
+                              child: Container(
+                                width: 360.w,
+                                // height: 500.h,
+                                child: noticeData.when(
+                                  data: (data) {
+                                    final allNotice = data.where((element) => element.forAllClass == true).toList();
+                                    return ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: allNotice.length == 0 ? 0 : 1,
+                                        itemBuilder: (context, index) {
+                                          return NoticeCard3(
+                                              title: allNotice[index].title,
+                                              image: allNotice[index].image!=null?'${Api.basePicUrl}${allNotice[index].image}':null,
+                                              description: allNotice[index].description,
+                                              createdAt: '${DateFormat('MMMM dd').format(DateTime.parse(allNotice[index].createdAt))}');
+                                        });
+                                  },
+                                  error: (err, stack) => Center(child: Text('$err')),
+                                  loading: () => NoticeShimmer(),
+                                ),
+                              ),
+                            ),
+
+
                             Center(
                               child: Container(
                                 width: 350.w,

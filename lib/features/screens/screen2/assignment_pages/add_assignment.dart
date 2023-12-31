@@ -10,9 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
+
 
 import '../../../../constants/snack_show.dart';
 import '../../../providers/image_provider.dart';
@@ -37,6 +35,8 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
   final TextEditingController typeController = TextEditingController();
   final _form = GlobalKey<FormState>();
   String dropdownValue='';
+  File? file;
+
 
   bool isSwitched = false;
 
@@ -66,482 +66,489 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: bgColor,
-        title: Text("ADD ASSIGNMENT", style: TextStyle(color: Colors.white),) ,
+        title: const Text("ADD ASSIGNMENT", style: TextStyle(color: Colors.white),) ,
       ),
       // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Form(
-              key: _form,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 8.h),
-                height: MediaQuery.of(context).size.height * 4.1 / 5,
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                          height: MediaQuery.of(context).size.height * 0.07,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: shimmerHighlightColor,
-                              border: Border.all(color: Colors.black)),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                '${widget.classSubject.subject.subjectName} - ${widget.classSubject.classSection?.className.classLevel.name}${widget.classSubject.classSection?.section.sectionName}',
-                                style: TextStyle(color: Colors.black),
-                              ),
+      body: Form(
+        key: _form,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(height: 20,),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: shimmerHighlightColor,
+                        border: Border.all(color: Colors.black)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${widget.classSubject.subject.subjectName} - ${widget.classSubject.classSection?.className.classLevel.name}${widget.classSubject.classSection?.section.sectionName}',
+                          style: const TextStyle(color: Colors.black),
+                        ),
 
-                            ],
-                          )),
-                      SizedBox(
-                        height: 15.h,
-                      ),
+                      ],
+                    )),
+                SizedBox(
+                  height: 15.h,
+                ),
 
-                      Container(
-                          height: MediaQuery.of(context).size.height * 0.07,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: shimmerHighlightColor,
-                              border: Border.all(color: Colors.black)),
-                          child: TextFormField(
-                            controller: titleController,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                               // return SnackShow.showFailure(context, 'Title cannot be empty');
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: shimmerHighlightColor,
+                        border: Border.all(color: Colors.black)),
+                    child: TextFormField(
+                      controller: titleController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                         // return SnackShow.showFailure(context, 'Title cannot be empty');
 
-                                return "Field cannot be empty";
-                              }
-                              return null;
-                            },
-                            style: TextStyle(
-                                color: Colors.black, fontSize: 15.sp),
-                            decoration: InputDecoration(
-                                focusedBorder: InputBorder.none,
-                                border: InputBorder.none,
-                                hintText: 'Assignment Name',
-                                hintStyle: TextStyle(
-                                    color: Colors.black, fontSize: 15.sp),
-                                contentPadding: EdgeInsets.only(
-                                    left: 8.w, bottom: 8.h)),
-                          )),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Container(
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: shimmerHighlightColor,
-                              border: Border.all(color: Colors.black)),
-                          child: TextFormField(
-                            maxLines: 6,
-                            controller: descController,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                //return SnackShow.showFailure(context, 'Description cannot be empty');
+                          return "Field cannot be empty";
+                        }
+                        return null;
+                      },
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 15.sp),
+                      decoration: InputDecoration(
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none,
+                          hintText: 'Assignment Name',
+                          hintStyle: TextStyle(
+                              color: Colors.black, fontSize: 15.sp),
+                          contentPadding: EdgeInsets.only(
+                              left: 8.w, bottom: 8.h)),
+                    )),
+                SizedBox(
+                  height: 15.h,
+                ),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: shimmerHighlightColor,
+                        border: Border.all(color: Colors.black)),
+                    child: TextFormField(
+                      maxLines: 6,
+                      controller: descController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          //return SnackShow.showFailure(context, 'Description cannot be empty');
 
-                                return "Field cannot be empty";
-                              }
-                              return null;
-                            },
-                            style: TextStyle(
-                                color: Colors.black, fontSize: 15.sp),
-                            decoration: InputDecoration(
-                                focusedBorder: InputBorder.none,
-                                border: InputBorder.none,
-                                hintText: 'Assignment Description',
-                                hintStyle: TextStyle(
-                                    color: Colors.black, fontSize: 15.sp),
-                                contentPadding: EdgeInsets.only(
-                                    top: 8.h,
-                                    left: 8.w,
-                                    bottom: 8.h,
-                                    right: 8.w)),
-                          )),
+                          return "Field cannot be empty";
+                        }
+                        return null;
+                      },
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 15.sp),
+                      decoration: InputDecoration(
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none,
+                          hintText: 'Assignment Description',
+                          hintStyle: TextStyle(
+                              color: Colors.black, fontSize: 15.sp),
+                          contentPadding: EdgeInsets.only(
+                              top: 8.h,
+                              left: 8.w,
+                              bottom: 8.h,
+                              right: 8.w)),
+                    )),
 
-                      SizedBox(
-                        height: 15.h,
-                      ),
+                SizedBox(
+                  height: 15.h,
+                ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              width: MediaQuery.of(context).size.width*0.4,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: shimmerHighlightColor,
-                                  border: Border.all(color: Colors.black)),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Deadline',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  Transform.scale(
-                                    scale: 0.8,
-                                    child: CupertinoSwitch(
-                                        activeColor: primary,
-                                        value: isSwitched,
-                                        onChanged: toggleSwitch),
-                                  )
-                                ],
-                              )),
-                          SizedBox(width: 40.h,),
-                          isSwitched== false ? SizedBox( width: MediaQuery.of(context).size.width*0.4,)
-                              : Visibility(
-                                  visible: isSwitched,
-                                  child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height * 0.07,
-                                      width:
-                                          MediaQuery.of(context).size.width * 0.4,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          color: shimmerHighlightColor,
-                                          border: Border.all(color: Colors.black)),
-                                      child: TextFormField(
-                                        maxLines: 1,
-                                        controller: dueController,
-                                        onTap: () async {
-                                          DateTime? date = DateTime(1900);
-                                          FocusScope.of(context)
-                                              .requestFocus(new FocusNode());
-
-                                          date = await showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2020),
-                                              lastDate: DateTime(2030));
-
-                                          dueController.text =
-                                              "${date!.year}-${date.month}-${date.day}";
-
-                                        },
-
-
-                                      
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 15.sp),
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-
-                                            return "Field cannot be empty";
-                                          }
-                                          return null;
-                                        },
-                                        decoration: InputDecoration(
-
-                                            focusedBorder: InputBorder.none,
-                                            border: InputBorder.none,
-                                            hintText: 'Due Date',
-                                            hintStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15.sp),
-                                            contentPadding: EdgeInsets.only(
-                                                top: 8.h,
-                                                left: 8.w,
-                                                bottom: 8.h,
-                                                right: 8.w)),
-                                      )),
-                                ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Container(
-
-                          height: MediaQuery.of(context).size.height * 0.07,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: shimmerHighlightColor,
-                              border: Border.all(color: Colors.black)),
-                          child: DropdownSearch<String>(
-
-                            popupProps:  PopupProps.menu(
-                              containerBuilder: (BuildContext context, Widget child) {
-                                return Container(
-                                  constraints: BoxConstraints(minHeight: 100),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                  ),
-                                  child: child,
-                                );
-                              },
-                              loadingBuilder: (context, index) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                              itemBuilder: (BuildContext context, dynamic item, bool isSelected) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: isSelected ? Colors.grey[300] : null,
-                                  ),
-                                  child: ListTile(
-                                    title: Text(
-                                      item.toString(),
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-
-
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.width*0.4,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: shimmerHighlightColor,
+                            border: Border.all(color: Colors.black)),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text(
+                              'Deadline',
+                              style: TextStyle(color: Colors.black),
                             ),
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                                textAlign: TextAlign.start,
-                                baseStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w500,color: Colors.black),
-                                dropdownSearchDecoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                                    label: Text('Type'),
-                                    labelStyle: TextStyle(color: Colors.grey,fontSize: 15)
-                                )
-                            ),
-                            items: ['File', 'Image'],
+                            Transform.scale(
+                              scale: 0.8,
+                              child: CupertinoSwitch(
+                                  activeColor: primary,
+                                  value: isSwitched,
+                                  onChanged: toggleSwitch),
+                            )
+                          ],
+                        )),
+                    SizedBox(width: 40.h,),
+                    isSwitched== false ? SizedBox( width: MediaQuery.of(context).size.width*0.4,)
+                        : Visibility(
+                            visible: isSwitched,
+                            child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                width:
+                                    MediaQuery.of(context).size.width * 0.4,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: shimmerHighlightColor,
+                                    border: Border.all(color: Colors.black)),
+                                child: TextFormField(
+                                  maxLines: 1,
+                                  controller: dueController,
+                                  onTap: () async {
+                                    DateTime? date = DateTime(1900);
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
 
-                            onChanged: (value) {
-                              setState(() {
-                                dropdownValue = value!;
-                              });
-                            },
-                            selectedItem: dropdownValue,
-                          ), ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Container(
-                          height: MediaQuery.of(context).size.height * 0.07,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: shimmerHighlightColor,
-                              border: Border.all(color: Colors.black)),
-                          child: TextFormField(
-                            controller: linkController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return null; // return null if value is null or empty
-                              } else if (!value.contains('www.')) {
-                                return SnackShow.showFailure(context, 'Link should be properly formatted');
-                              }
-                              return null;
-                            },
-                            style: TextStyle(
-                                color: Colors.black, fontSize: 15.sp),
-                            decoration: InputDecoration(
-                                focusedBorder: InputBorder.none,
-                                border: InputBorder.none,
-                                hintText: 'Link',
-                                hintStyle: TextStyle(
-                                    color: Colors.black, fontSize: 15.sp),
-                                contentPadding: EdgeInsets.only(
-                                    left: 8.w, bottom: 8.h)),
-                          )),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      image  == null ? DottedBorder(
-                        borderType: BorderType.RRect,
-                        radius: Radius.circular(10),
-                        dashPattern: [5, 5],
-                        color: primary,
-                        strokeWidth: 1,
-                        child: InkWell(
-                          onTap: () {
+                                    date = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2020),
+                                        lastDate: DateTime(2030));
 
-                           ref.read(imageProvider.notifier).pickAnImage();
+                                    dueController.text =
+                                        "${date!.year}-${date.month}-${date.day}";
 
-                          },
-                          child: Container(
-                            height:
-                            MediaQuery.of(context).size.height * 0.1,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  radius: 20.sp,
-                                  backgroundColor: primary,
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Text(
-                                  'Reference Materials',
+                                  },
+
+
+
                                   style: TextStyle(
                                       color: Colors.black, fontSize: 15.sp),
-                                )
-                              ],
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+
+                                      return "Field cannot be empty";
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+
+                                      focusedBorder: InputBorder.none,
+                                      border: InputBorder.none,
+                                      hintText: 'Due Date',
+                                      hintStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.sp),
+                                      contentPadding: EdgeInsets.only(
+                                          top: 8.h,
+                                          left: 8.w,
+                                          bottom: 8.h,
+                                          right: 8.w)),
+                                )),
+                          ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                Container(
+
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: shimmerHighlightColor,
+                        border: Border.all(color: Colors.black)),
+                    child: DropdownSearch<String>(
+
+                      popupProps:  PopupProps.menu(
+                        containerBuilder: (BuildContext context, Widget child) {
+                          return Container(
+                            constraints: const BoxConstraints(minHeight: 100),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
                             ),
-                          )
-
+                            child: child,
+                          );
+                        },
+                        loadingBuilder: (context, index) => const Center(
+                          child: CircularProgressIndicator(),
                         ),
-                      )
-                          : Container(
-                        height:
-                        MediaQuery.of(context).size.height * 0.1,
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: InkWell(
-                            onTap: () {
-                              ref.read(imageProvider.notifier).pickAnImage();
+                        itemBuilder: (BuildContext context, dynamic item, bool isSelected) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: isSelected ? Colors.grey[300] : null,
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                item.toString(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
 
-                            },
-                            child: Image.file(File(image.path),fit: BoxFit.contain,)),
+
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.h, horizontal: 8.w),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: primary,
-                              foregroundColor: Colors.white,
-                              fixedSize: Size.fromWidth(250.w),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  side: BorderSide(
-                                    color: Colors.black,
-                                  ))),
-                          onPressed: () async {
+                      dropdownDecoratorProps: const DropDownDecoratorProps(
+                          textAlign: TextAlign.start,
+                          baseStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w500,color: Colors.black),
+                          dropdownSearchDecoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                              label: Text('Type'),
+                              labelStyle: TextStyle(color: Colors.grey,fontSize: 15)
+                          )
+                      ),
+                      items: const ['File', 'Image'],
+
+                      onChanged: (value) {
+                        setState(() {
+                          dropdownValue = value!;
+                        });
+                      },
+                      selectedItem: dropdownValue,
+                    ), ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: shimmerHighlightColor,
+                        border: Border.all(color: Colors.black)),
+                    child: TextFormField(
+                      controller: linkController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return null; // return null if value is null or empty
+                        }
+                        return null;
+                      },
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 15.sp),
+                      decoration: InputDecoration(
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none,
+                          hintText: 'Assignment Link',
+                          hintStyle: TextStyle(
+                              color: Colors.black, fontSize: 15.sp),
+                          contentPadding: EdgeInsets.only(
+                              left: 8.w, bottom: 8.h)),
+                    )),
+                SizedBox(
+                  height: 15.h,
+                ),
+
+                // InkWell(
+                //   onTap: () async {
+                //     FilePickerResult? result = await FilePicker.platform.pickFiles();
+                //     if (result != null) {
+                //       setState(() {
+                //         file =File(result.files.single.path!);
+                //       });
+                //
+                //     } else {
+                //
+                //       print("ASdsadsa");
+                //     }
+                //
+                //   },
+                //     child: Container(color: Colors.red, child: file == null ? Text("SAD") : Text(file!.path),)),
 
 
+                image  == null ? DottedBorder(
+                  borderType: BorderType.RRect,
+                  radius: const Radius.circular(10),
+                  dashPattern: const [5, 5],
+                  color: primary,
+                  strokeWidth: 1,
+                  child: InkWell(
+                    onTap: () {
 
-                            _form.currentState!.save();
-                            if(_form.currentState!.validate()) {
+                     ref.read(imageProvider.notifier).pickAnImage();
 
-
-                              if(dropdownValue == ''){
-
-                                return SnackShow.showFailure(context, 'Select the type first');
-                              } else{
-
-                                if (linkController.text.isEmpty &&
-                                    image == null) {
-                                  ref.read(assignmentProvider.notifier)
-                                      .addAssignment(
-                                      title: titleController.text.trim(),
-                                      description: descController.text.trim(),
-                                      hasDeadline: isSwitched,
-                                      type: dropdownValue,
-                                      subject: widget.classSubject.id,
-                                      token: auth.user.token,
-                                      deadline: dueController.text
-
-                                  ).then((value) => ref.invalidate(imageProvider))
-                                      .then((value) => ref.refresh(
-                                      assignmentList(auth.user.token)))
-                                      .then((value) => Navigator.pop(context));
-                                }
-                                else if (linkController.text.isEmpty) {
-                                  ref.read(assignmentProvider.notifier)
-                                      .addAssignment(
-                                      title: titleController.text.trim(),
-                                      description: descController.text.trim(),
-                                      hasDeadline: isSwitched,
-                                      type: dropdownValue,
-                                      subject: widget.classSubject.id,
-                                      token: auth.user.token,
-                                      deadline: dueController.text,
-                                      image: image
-
-                                  ).then((value) => ref.invalidate(imageProvider))
-                                      .then((value) => ref.refresh(
-                                      assignmentList(auth.user.token)))
-                                      .then((value) => Navigator.pop(context));
-                                }
-                                else if (image == null) {
-                                  ref.read(assignmentProvider.notifier)
-                                      .addAssignment(
-                                      title: titleController.text.trim(),
-                                      description: descController.text.trim(),
-                                      hasDeadline: isSwitched,
-                                      type: dropdownValue,
-                                      subject: widget.classSubject.id,
-                                      token: auth.user.token,
-                                      deadline: dueController.text,
-                                      link: linkController.text.trim()
-
-                                  ).then((value) => ref.invalidate(imageProvider))
-                                      .then((value) => ref.refresh(
-                                      assignmentList(auth.user.token)))
-                                      .then((value) => Navigator.pop(context));
-                                }
-                                else {
-                                  ref.read(assignmentProvider.notifier)
-                                      .addAssignment(
-                                      title: titleController.text.trim(),
-                                      description: descController.text.trim(),
-                                      hasDeadline: isSwitched,
-                                      type: dropdownValue,
-                                      subject: widget.classSubject.id,
-                                      token: auth.user.token,
-                                      deadline: dueController.text,
-                                      link: linkController.text.trim(),
-                                      image: image
-
-                                  ).then((value) => ref.invalidate(imageProvider))
-                                      .then((value) => ref.refresh(
-                                      assignmentList(auth.user.token)))
-                                      .then((value) => Navigator.pop(context));
-                                }
-
-
-                              }
-
-
-                            }
-
-                            else {
-                              print("No Validation");
-                            }
-                            },
-
-
-
-                          child: assign.isLoad? CircularProgressIndicator():Text(
-                            'Add Assignments',
-                            style: TextStyle(
-                              fontSize: 20.sp,
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 20.sp,
+                            backgroundColor: primary,
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white,
                             ),
                           ),
-                        ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Text(
+                            'Reference Material',
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 15.sp),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 15.h,
+                    )
+
+                  ),
+                )
+                    : Container(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                     decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                    child: InkWell(
+                      onTap: () {
+                        ref.read(imageProvider.notifier).pickAnImage();
+
+                      },
+                      child: Image.file(File(image.path),fit: BoxFit.contain,)),
+                ),
+
+                const SizedBox(height: 20,),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: 8.h, horizontal: 8.w),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: primary,
+                        foregroundColor: Colors.white,
+                        fixedSize: Size.fromWidth(250.w),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: Colors.black,
+                            ))),
+                    onPressed: () async {
+
+
+
+                      _form.currentState!.save();
+                      if(_form.currentState!.validate()) {
+
+
+                        if(dropdownValue == ''){
+
+                          return SnackShow.showFailure(context, 'Select the type first');
+                        } else{
+
+                          if (linkController.text.isEmpty && image == null) {
+                            ref.read(assignmentProvider.notifier)
+                                .addAssignment(
+                                title: titleController.text.trim(),
+                                description: descController.text.trim(),
+                                hasDeadline: isSwitched,
+                                type: dropdownValue,
+                                subject: widget.classSubject.id,
+                                token: auth.user.token,
+                                deadline: dueController.text
+
+                            ).then((value) => ref.invalidate(imageProvider))
+                                .then((value) => ref.refresh(
+                                assignmentList(auth.user.token)))
+                                .then((value) => Navigator.pop(context));
+                          }
+                          else if (linkController.text.isEmpty) {
+                            ref.read(assignmentProvider.notifier)
+                                .addAssignment(
+                                title: titleController.text.trim(),
+                                description: descController.text.trim(),
+                                hasDeadline: isSwitched,
+                                type: dropdownValue,
+                                subject: widget.classSubject.id,
+                                token: auth.user.token,
+                                deadline: dueController.text,
+                                image: image
+
+                            ).then((value) => ref.invalidate(imageProvider))
+                                .then((value) => ref.refresh(
+                                assignmentList(auth.user.token)))
+                                .then((value) => Navigator.pop(context));
+                          }
+                          else if (image == null) {
+                            ref.read(assignmentProvider.notifier)
+                                .addAssignment(
+                                title: titleController.text.trim(),
+                                description: descController.text.trim(),
+                                hasDeadline: isSwitched,
+                                type: dropdownValue,
+                                subject: widget.classSubject.id,
+                                token: auth.user.token,
+                                deadline: dueController.text,
+                                link: linkController.text.trim()
+
+                            ).then((value) => ref.invalidate(imageProvider))
+                                .then((value) => ref.refresh(
+                                assignmentList(auth.user.token)))
+                                .then((value) => Navigator.pop(context));
+                          }
+                          else {
+                            ref.read(assignmentProvider.notifier)
+                                .addAssignment(
+                                title: titleController.text.trim(),
+                                description: descController.text.trim(),
+                                hasDeadline: isSwitched,
+                                type: dropdownValue,
+                                subject: widget.classSubject.id,
+                                token: auth.user.token,
+                                deadline: dueController.text,
+                                link: linkController.text.trim(),
+                                image: image
+
+                            ).then((value) => ref.invalidate(imageProvider))
+                                .then((value) => ref.refresh(
+                                assignmentList(auth.user.token)))
+                                .then((value) => Navigator.pop(context));
+                          }
+
+
+                        }
+
+
+                      }
+
+                      else {
+                        print("No Validation");
+                      }
+                      },
+
+
+
+                    child: assign.isLoad? const CircularProgressIndicator(
+
+                    ):Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontSize: 20.sp,
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

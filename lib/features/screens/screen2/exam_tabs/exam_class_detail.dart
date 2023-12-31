@@ -23,7 +23,7 @@ class ExamClassDetails extends ConsumerWidget {
   final TeacherClass classInfo;
   final ExamClass examClass;
 
-  ExamClassDetails({required this.examDetail,required this.classInfo,required this.examClass});
+  const ExamClassDetails({super.key, required this.examDetail,required this.classInfo,required this.examClass});
 
   @override
   Widget build(BuildContext context,ref) {
@@ -49,8 +49,7 @@ class ExamClassDetails extends ConsumerWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                   color: bgColor,
-                  borderRadius:
-                  BorderRadius.vertical(bottom: Radius.circular(25))),
+                  borderRadius: const BorderRadius.vertical(bottom: Radius.circular(25))),
               child: Column(
                 children: [
                   SizedBox(
@@ -63,7 +62,7 @@ class ExamClassDetails extends ConsumerWidget {
                         onPressed: () {
                           Get.back();
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back,
                           color: Colors.white,
                         ),
@@ -89,7 +88,7 @@ class ExamClassDetails extends ConsumerWidget {
               title: 'Routine',
 
           ),
-          CommonCard2(
+          const CommonCard2(
               title: 'Students',
 
           ),
@@ -106,7 +105,7 @@ class ExamClassDetails extends ConsumerWidget {
             child: classSubject.when(
               data: (data) {
                 return ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   padding: EdgeInsets.only(left: 30.w),
                   itemCount: data.length,
@@ -117,15 +116,15 @@ class ExamClassDetails extends ConsumerWidget {
                       children: [
                         TableRow(
                           children: [
-                            index == 0 ? Text('Subject',style: TextStyle(color: Colors.black,fontSize: 22.sp),) : SizedBox.shrink(),
-                            index == 0 ? Text('Marks',style: TextStyle(color: Colors.black,fontSize: 22.sp),) : SizedBox.shrink(),
+                            index == 0 ? Text('Subject',style: TextStyle(color: Colors.black,fontSize: 22.sp),) : const SizedBox.shrink(),
+                            index == 0 ? Text('Marks',style: TextStyle(color: Colors.black,fontSize: 22.sp),) : const SizedBox.shrink(),
                           ],
                         ),
                         TableRow(
 
                           children: [
                             Text(subjectName,style: TextStyle(color: Colors.black,fontSize: 18.sp),),
-                            Text('$marks',style: TextStyle(color: Colors.black,fontSize: 18.sp),),
+                            Text(marks,style: TextStyle(color: Colors.black,fontSize: 18.sp),),
                           ],
                         ),
                       ],
@@ -134,7 +133,7 @@ class ExamClassDetails extends ConsumerWidget {
                 );
               },
               error: (err, stack) => Center(child: Text('$err')),
-              loading: () => Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
             ),
 
           ),

@@ -3,17 +3,14 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eschool_teacher/features/screens/screen2/assignment_pages/student_status.dart';
-import 'package:eschool_teacher/features/screens/screen2/class_tab/student_tab/student_details.dart';
 import 'package:eschool_teacher/features/services/feature_services.dart';
 import 'package:eschool_teacher/utils/commonWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../../../api.dart';
-import '../../../../../constants/colors.dart';
 import '../../../authentication/providers/auth_provider.dart';
 import '../../../model/assignment.dart';
 
@@ -33,18 +30,18 @@ class Student_Assignment extends ConsumerWidget {
     final studentList = ref.watch(classWiseStudentProvider(class_id));
 
 
-    return Container(
+    return SizedBox(
       height: 200.h,
       // color: Colors.red,
       child: studentList.when(
-          data: (student_data) {
-            student_data.sort((a, b) => a.rollNo.compareTo(b.rollNo));
+          data: (studentData) {
+            studentData.sort((a, b) => a.rollNo.compareTo(b.rollNo));
 
             return ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
-                itemCount: student_data.length,
+                itemCount: studentData.length,
                 itemBuilder: (context, index) {
 
                   return Padding(
@@ -59,24 +56,24 @@ class Student_Assignment extends ConsumerWidget {
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 8.w, vertical: 8.h),
                         onTap: () => Get.to(
-                                () => AssignmentStatus(assignment: assignment,studentName: student_data[index].student.studentName,student_id: student_data[index].student.id,)),
+                                () => AssignmentStatus(assignment: assignment,studentName: studentData[index].student.studentName,student_id: studentData[index].student.id,)),
                         leading: CircleAvatar(
                           radius: 20.sp,
-                          backgroundImage: NetworkImage('${Api.basePicUrl}${student_data[index].student.studentPhoto}'),
+                          backgroundImage: NetworkImage('${Api.basePicUrl}${studentData[index].student.studentPhoto}'),
                         ),
 
                         title: Padding(
                           padding:
                           EdgeInsets.symmetric(horizontal: 8.w),
                           child: AutoSizeText(
-                            student_data[index].student.studentName,
-                            style: TextStyle(color: Colors.black),
+                            studentData[index].student.studentName,
+                            style: const TextStyle(color: Colors.black),
                             maxLines: 1,
                           ),
                         ),
                         trailing: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: Text('Roll no. ${student_data[index].rollNo}',style: TextStyle(color: Colors.black),),
+                          child: Text('Roll no. ${studentData[index].rollNo}',style: const TextStyle(color: Colors.black),),
                         ),
                       ),
                     ),
@@ -84,7 +81,7 @@ class Student_Assignment extends ConsumerWidget {
                 });
           },
           error: (err, stack) => Center(child: Text('$err')),
-          loading: () => ShimmerListTile()),
+          loading: () => const ShimmerListTile()),
     );
   }
 }

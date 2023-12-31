@@ -28,8 +28,7 @@ class _AddLessonsState extends State<AddLessons> {
               width: double.infinity,
               decoration: BoxDecoration(
                   color: bgColor,
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(25))),
+                  borderRadius: const BorderRadius.vertical(bottom: Radius.circular(25))),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -42,7 +41,7 @@ class _AddLessonsState extends State<AddLessons> {
                         onPressed: () {
                           Get.back();
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back,
                           color: Colors.white,
                         ),
@@ -68,7 +67,7 @@ class _AddLessonsState extends State<AddLessons> {
                 border: Border.all(color: Colors.grey)),
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-              child: Text(
+              child: const Text(
                 'Class',
                 style: TextStyle(color: Colors.black),
               ),
@@ -86,7 +85,7 @@ class _AddLessonsState extends State<AddLessons> {
                 border: Border.all(color: Colors.grey)),
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-              child: Text(
+              child: const Text(
                 'Subject',
                 style: TextStyle(color: Colors.black),
               ),
@@ -141,7 +140,7 @@ class _AddLessonsState extends State<AddLessons> {
           ),
           DottedBorder(
             borderType: BorderType.RRect,
-            radius: Radius.circular(10),
+            radius: const Radius.circular(10),
             dashPattern: [5, 5],
             color: primary,
             strokeWidth: 1,
@@ -157,7 +156,7 @@ class _AddLessonsState extends State<AddLessons> {
                   CircleAvatar(
                     radius: 20.sp,
                     backgroundColor: primary,
-                    child: Icon(
+                    child: const Icon(
                       Icons.add,
                       color: Colors.white,
                     ),
@@ -185,7 +184,7 @@ class _AddLessonsState extends State<AddLessons> {
                   fixedSize: Size.fromWidth(250.w),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side: BorderSide(
+                      side: const BorderSide(
                         color: Colors.black,
                       ))),
               onPressed: () {

@@ -20,7 +20,7 @@ class Chapters extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           width : 350.w,
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 15.w),
@@ -35,7 +35,7 @@ class Chapters extends StatelessWidget {
                 EdgeInsets.symmetric(horizontal:15.w, vertical: 8.h),
                 onTap: ()=>Get.to(()=>SubjectPlan(classSecSubject: classSecSubject,className: className,section: section,)),
                 title: Text('Subject Plan',style: TextStyle(color: Colors.black,fontSize: 15.sp),),
-                trailing: Icon(Icons.arrow_circle_right_rounded,color: Colors.black,),
+                trailing: const Icon(Icons.arrow_circle_right_rounded,color: Colors.black,),
               ),
             ),
           ),
@@ -72,7 +72,7 @@ class Chapters extends StatelessWidget {
                                       color: Colors.black, fontSize: 12.sp)),
                               Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.edit,
                                     color: Colors.grey,
                                   ),
@@ -90,7 +90,7 @@ class Chapters extends StatelessWidget {
                           SizedBox(
                             height: 10.h,
                           ),
-                          Text('Lesson 1',
+                          const Text('Lesson 1',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
@@ -103,7 +103,7 @@ class Chapters extends StatelessWidget {
                           SizedBox(
                             height: 10.h,
                           ),
-                          Text('Basic Lessons',
+                          const Text('Basic Lessons',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),

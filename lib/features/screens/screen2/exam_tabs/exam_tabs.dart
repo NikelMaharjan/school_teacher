@@ -49,23 +49,23 @@ class _ExamTabsState extends State<ExamTabs> with TickerProviderStateMixin {
               // indicatorColor: primary,
               indicator: BoxDecoration(
                   color: primary, borderRadius: BorderRadius.circular(10)),
-              tabs: [
+              tabs: const [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Tab(
                     text: 'All Exams',
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Tab(text: 'Upcoming'),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Tab(text: 'Ongoing'),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Tab(text: 'Completed'),
                 ),
               ]),
@@ -73,7 +73,7 @@ class _ExamTabsState extends State<ExamTabs> with TickerProviderStateMixin {
       ],
       body: TabBarView(
         controller: _tabController,
-        children: [
+        children: const [
           TestExam(tabType: '',),
           TestExam(tabType: 'Upcoming',),
           TestExam(tabType: 'Ongoing',),

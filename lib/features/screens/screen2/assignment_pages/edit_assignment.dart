@@ -8,14 +8,11 @@ import 'package:eschool_teacher/features/authentication/providers/auth_provider.
 import 'package:eschool_teacher/features/model/assignment.dart';
 import 'package:eschool_teacher/features/model/class_subject.dart';
 import 'package:eschool_teacher/features/providers/assignment_provider.dart';
-import 'package:eschool_teacher/features/screens/homepage/information_items/assignment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../constants/snack_show.dart';
 import '../../../providers/image_provider.dart';
@@ -57,6 +54,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
 
@@ -105,10 +103,10 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: bgColor,
-        title: Text("Edit Assignment", style: TextStyle(color: Colors.white),),
+        title: const Text("Edit Assignment", style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             Form(
@@ -117,7 +115,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                 padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 8.h),
                 height: MediaQuery.of(context).size.height * 4.1 / 5,
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -134,7 +132,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                             children: [
                               Text(
                                 '${widget.classSubject.subject.subjectName} - ${widget.classSubject.classSection!.className.classLevel.name}${widget.classSubject.classSection!.section.sectionName}',
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.black),
                               ),
 
                             ],
@@ -222,7 +220,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Deadline',
                                     style: TextStyle(color: Colors.black),
                                   ),
@@ -303,8 +301,8 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                           popupProps:  PopupProps.menu(
                             containerBuilder: (BuildContext context, Widget child) {
                               return Container(
-                                constraints: BoxConstraints(minHeight: 100),
-                                decoration: BoxDecoration(
+                                constraints: const BoxConstraints(minHeight: 100),
+                                decoration: const BoxDecoration(
                                   color: Colors.white,
                                 ),
                                 child: child,
@@ -321,7 +319,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                 child: ListTile(
                                   title: Text(
                                     item.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                     ),
                                   ),
@@ -340,7 +338,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                   labelStyle: TextStyle(color: Colors.grey,fontSize: 15)
                               )
                           ),
-                          items: ['File', 'Image'],
+                          items: const ['File', 'Image'],
 
                           onChanged: (value) {
                             setState(() {
@@ -386,8 +384,8 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                       image  == null && widget.assignment.imageFile ==null?
                       DottedBorder(
                         borderType: BorderType.RRect,
-                        radius: Radius.circular(10),
-                        dashPattern: [5, 5],
+                        radius: const Radius.circular(10),
+                        dashPattern: const [5, 5],
                         color: primary,
                         strokeWidth: 1,
                         child: InkWell(
@@ -409,7 +407,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                                   CircleAvatar(
                                     radius: 20.sp,
                                     backgroundColor: primary,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.add,
                                       color: Colors.white,
                                     ),
@@ -456,7 +454,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                               fixedSize: Size.fromWidth(250.w),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  side: BorderSide(
+                                  side: const BorderSide(
                                     color: Colors.black,
                                   ))),
                           onPressed:  assignmentInfo.isLoad ? null : () async {
@@ -542,14 +540,14 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                               }
 
 
-                              print(image.toString());
-                              print(auth.user.token);
+                            //  print(image.toString());
+                            //  print(auth.user.token);
                             }
                           },
 
 
 
-                          child: assignmentInfo.isLoad ? Center(child: CircularProgressIndicator(color: Colors.white,),) : Text(
+                          child: assignmentInfo.isLoad ? const Center(child: CircularProgressIndicator(color: Colors.white,),) : Text(
                             'Update Assignments',
                             style: TextStyle(
                               fontSize: 20.sp,

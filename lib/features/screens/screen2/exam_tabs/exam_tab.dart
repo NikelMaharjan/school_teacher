@@ -44,8 +44,7 @@ class TestExam extends ConsumerWidget {
             itemCount: filteredExams.length,
             itemBuilder: (context, index) {
               return ExamCard(
-                  onTap: () => Get.to(() =>
-                      ExamClasses(examDetail: filteredExams[index])),
+                  onTap: () => Get.to(() => ExamClasses(examDetail: filteredExams[index])),
                   title: filteredExams[index].name,
                   date:
                   '${filteredExams[index].examStartDate} to ${filteredExams[index].examEndDate}');

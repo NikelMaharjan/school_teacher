@@ -41,7 +41,7 @@ class _Add_TopicsState extends State<Add_Topics> {
         <DropdownMenuEntry<ClassLabel>>[];
     for (final ClassLabel grade in ClassLabel.values) {
       classEntries.add(DropdownMenuEntry<ClassLabel>(
-          style: ButtonStyle(
+          style: const ButtonStyle(
               foregroundColor: MaterialStatePropertyAll(Colors.black)),
           value: grade,
           label: grade.grade));
@@ -51,7 +51,7 @@ class _Add_TopicsState extends State<Add_Topics> {
         <DropdownMenuEntry<SubLabel>>[];
     for (final SubLabel subj in SubLabel.values) {
       subEntries.add(DropdownMenuEntry<SubLabel>(
-          style: ButtonStyle(
+          style: const ButtonStyle(
               foregroundColor: MaterialStatePropertyAll(Colors.black)),
           value: subj,
           label: subj.label));
@@ -61,7 +61,7 @@ class _Add_TopicsState extends State<Add_Topics> {
         <DropdownMenuEntry<ChapLabel>>[];
     for (final ChapLabel chap in ChapLabel.values) {
       chapEntries.add(DropdownMenuEntry<ChapLabel>(
-          style: ButtonStyle(
+          style: const ButtonStyle(
               foregroundColor: MaterialStatePropertyAll(Colors.black)),
           value: chap,
           label: chap.label));
@@ -81,7 +81,7 @@ class _Add_TopicsState extends State<Add_Topics> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: bgColor,
-                          borderRadius: BorderRadius.vertical(
+                          borderRadius: const BorderRadius.vertical(
                               bottom: Radius.circular(25))),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +92,7 @@ class _Add_TopicsState extends State<Add_Topics> {
                                 onPressed: () {
                                   Get.back();
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.arrow_back,
                                   color: Colors.white,
                                 ),
@@ -110,7 +110,7 @@ class _Add_TopicsState extends State<Add_Topics> {
                   Container(
                     height: MediaQuery.of(context).size.height * 4.1 / 5,
                     child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -124,27 +124,27 @@ class _Add_TopicsState extends State<Add_Topics> {
 
                                   controller: classController,
 
-                                  menuStyle: MenuStyle(
+                                  menuStyle: const MenuStyle(
                                     backgroundColor:
                                         MaterialStatePropertyAll(Colors.white),
                                   ),
                                   width: 350.w,
 
                                   inputDecorationTheme: InputDecorationTheme(
-                                      hintStyle: TextStyle(color: Colors.black),
+                                      hintStyle: const TextStyle(color: Colors.black),
                                       filled: true,
                                       fillColor: shimmerHighlightColor,
-                                      enabledBorder: OutlineInputBorder(),
+                                      enabledBorder: const OutlineInputBorder(),
                                       focusedBorder: InputBorder.none),
 
-                                  textStyle: TextStyle(color: Colors.black),
+                                  textStyle: const TextStyle(color: Colors.black),
 
                                   // label: Text('Class',style: TextStyle(color: Colors.black),),
                                   dropdownMenuEntries: classEntries,
                                   onSelected: (ClassLabel? color) {
                                     setState(() {
                                       FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
+                                          .requestFocus(FocusNode());
                                       selectedClass = color;
                                     });
                                   },
@@ -153,28 +153,28 @@ class _Add_TopicsState extends State<Add_Topics> {
                                 DropdownMenu<SubLabel>(
                                   hintText: 'Subject',
 
-                                  menuStyle: MenuStyle(
+                                  menuStyle: const MenuStyle(
                                     backgroundColor:
                                         MaterialStatePropertyAll(Colors.white),
                                   ),
 
                                   width: 350.w,
                                   inputDecorationTheme: InputDecorationTheme(
-                                      hintStyle: TextStyle(color: Colors.black),
+                                      hintStyle: const TextStyle(color: Colors.black),
                                       filled: true,
                                       fillColor: shimmerHighlightColor,
-                                      enabledBorder: OutlineInputBorder(),
+                                      enabledBorder: const OutlineInputBorder(),
                                       focusedBorder: InputBorder.none),
 
                                   controller: subController,
-                                  textStyle: TextStyle(color: Colors.black),
+                                  textStyle: const TextStyle(color: Colors.black),
 
                                   // label: const Text('Sub',style: TextStyle(color: Colors.black),),
                                   dropdownMenuEntries: subEntries,
                                   onSelected: (SubLabel? icon) {
                                     setState(() {
                                       FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
+                                          .requestFocus(FocusNode());
                                       selectedSub = icon;
                                     });
                                   },
@@ -183,28 +183,28 @@ class _Add_TopicsState extends State<Add_Topics> {
                                 DropdownMenu<ChapLabel>(
                                   hintText: 'Lesson',
 
-                                  menuStyle: MenuStyle(
+                                  menuStyle: const MenuStyle(
                                     backgroundColor:
                                         MaterialStatePropertyAll(Colors.white),
                                   ),
 
                                   width: 350.w,
                                   inputDecorationTheme: InputDecorationTheme(
-                                      hintStyle: TextStyle(color: Colors.black),
+                                      hintStyle: const TextStyle(color: Colors.black),
                                       filled: true,
                                       fillColor: shimmerHighlightColor,
-                                      enabledBorder: OutlineInputBorder(),
+                                      enabledBorder: const OutlineInputBorder(),
                                       focusedBorder: InputBorder.none),
 
                                   controller: chapController,
-                                  textStyle: TextStyle(color: Colors.black),
+                                  textStyle: const TextStyle(color: Colors.black),
 
                                   // label: const Text('Sub',style: TextStyle(color: Colors.black),),
                                   dropdownMenuEntries: chapEntries,
                                   onSelected: (ChapLabel? chapter) {
                                     setState(() {
                                       FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
+                                          .requestFocus(FocusNode());
                                       selectedChap = chapter;
                                     });
                                   },
@@ -266,8 +266,8 @@ class _Add_TopicsState extends State<Add_Topics> {
                           ),
                           DottedBorder(
                             borderType: BorderType.RRect,
-                            radius: Radius.circular(10),
-                            dashPattern: [5, 5],
+                            radius: const Radius.circular(10),
+                            dashPattern: const [5, 5],
                             color: primary,
                             strokeWidth: 1,
                             child: InkWell(
@@ -285,7 +285,7 @@ class _Add_TopicsState extends State<Add_Topics> {
                                     CircleAvatar(
                                       radius: 20.sp,
                                       backgroundColor: primary,
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.add,
                                         color: Colors.white,
                                       ),
@@ -313,7 +313,7 @@ class _Add_TopicsState extends State<Add_Topics> {
                                   fixedSize: Size.fromWidth(250.w),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Colors.black,
                                       ))),
                               onPressed: () {},

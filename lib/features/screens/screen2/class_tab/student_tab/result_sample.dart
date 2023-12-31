@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import '../../../../../../constants/colors.dart';
 
 class StudentResult extends StatelessWidget {
+  const StudentResult({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,8 +18,7 @@ class StudentResult extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                   color: bgColor,
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(25))),
+                  borderRadius: const BorderRadius.vertical(bottom: Radius.circular(25))),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -30,7 +31,7 @@ class StudentResult extends StatelessWidget {
                         onPressed: () {
                           Get.back();
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back,
                           color: Colors.white,
                         ),

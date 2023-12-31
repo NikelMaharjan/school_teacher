@@ -9,25 +9,24 @@ import 'package:eschool_teacher/teacher_attendance_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:wifi_info_flutter/wifi_info_flutter.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../authentication/providers/auth_provider.dart';
 
 class TeacherAttendanceDialog extends ConsumerStatefulWidget {
   final int teacher_id;
-  TeacherAttendanceDialog({required this.teacher_id});
+  double lat;
+  double lng;
+  TeacherAttendanceDialog({required this.teacher_id, required this.lat, required this.lng});
   @override
   _TeacherAttendanceState createState() => _TeacherAttendanceState();
 }
 
 class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
   String _ipAddress = '';
-   double? longitiude;
-   double? latitude;
+
 
 
   @override
@@ -43,13 +42,7 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
     });
   }
 
-  Future getLocation() async {
-    await Geolocator.requestPermission();
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
 
-    longitiude = position.longitude;
-    latitude = position.latitude;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +56,9 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
 
     ref.listen(attendanceProvider, (previous, next) {
 
-      print("1");
       if(next.isAttendanceSuccess == false){
+
+        print(1);
 
         showDialog(
           barrierDismissible: false,
@@ -235,11 +229,10 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
                                           side: BorderSide(
                                             color: Colors.black,
                                           ))),
-                                  onPressed: () async {
+                                    onPressed: ()  {
 
 
 
-                                    await getLocation();
 
                                     ref.read(attendanceProvider.notifier).addAttendanceTeacher(
                                         attendance: data.id,
@@ -247,8 +240,8 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
                                         employee: widget.teacher_id,
                                         status: 'Present',
                                         token: auth.user.token,
-                                        long:  longitiude!,
-                                        lat:  latitude!
+                                        long:  widget.lng,
+                                        lat:  widget.lat
                                     );
 
 

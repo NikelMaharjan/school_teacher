@@ -1,11 +1,9 @@
 
-import 'dart:ffi';
-import 'dart:io';
 
 import 'package:eschool_teacher/api.dart';
 import 'package:eschool_teacher/constants/snack_show.dart';
 import 'package:eschool_teacher/features/authentication/providers/auth_provider.dart';
-import 'package:eschool_teacher/features/providers/assignment_provider.dart';
+import 'package:eschool_teacher/features/providers/status_provider.dart';
 import 'package:eschool_teacher/features/services/assignment_services.dart';
 import 'package:eschool_teacher/utils/commonWidgets.dart';
 import 'package:flutter/material.dart';
@@ -16,15 +14,13 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../model/assignment.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AssignmentStatus extends ConsumerStatefulWidget {
 
   final Assignment assignment;
   final String studentName;
   final int student_id;
-  AssignmentStatus({required this.assignment,required this.studentName,required this.student_id});
+  AssignmentStatus({super.key, required this.assignment,required this.studentName,required this.student_id});
 
   @override
   ConsumerState<AssignmentStatus> createState() => _AssignmentStatusState();
@@ -39,16 +35,30 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
   bool _accepted = false;
   bool _unaccepted = false;
 
+
+
+
   @override
   Widget build(BuildContext context) {
 
 
 
     final auth = ref.watch(authProvider);
+    final assignment = ref.watch(statusProvider);
     final studentAssignment = ref.watch(studentAssignmentProvider(auth.user.token));
     final assignmentStatus = ref.watch(assignmentStatusList(auth.user.token));
-    print('assignment id ${widget.assignment.id}');
-    print('student id ${widget.student_id}');
+  //  print('assignment id ${widget.assignment.id}');
+ //   print('student id ${widget.student_id}');
+
+    ref.listen(statusProvider, (previous, next) {
+      if(next.errorMessage.isNotEmpty){
+        SnackShow.showFailure(context, next.errorMessage);
+      }else if(next.isSuccess){
+        ref.invalidate(assignmentStatusList(auth.user.token));
+        SnackShow.showSuccess(context, 'Success');
+
+      }
+    });
 
 
 
@@ -65,7 +75,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: bgColor,
-        title: Text(widget.studentName, style: TextStyle(color: Colors.white),),
+        title: Text(widget.studentName, style: const TextStyle(color: Colors.white),),
       ),
       backgroundColor: Colors.white,
       body: Column(
@@ -79,8 +89,9 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
             padding: EdgeInsets.symmetric(horizontal: 15.w),
 
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Title", style: TextStyle(fontWeight: FontWeight.bold),),
+                  const Text("Title", style: TextStyle(fontWeight: FontWeight.bold),),
                   Text(widget.assignment.title,style: TextStyle(color: Colors.black,fontSize: 15.sp),maxLines: null,),
                 ],
               )),
@@ -116,11 +127,11 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                             onTap: () {
 
                               if(stud_data.studentAssignment.path.endsWith('.jpg')||stud_data.studentAssignment.path.endsWith('.jpeg')||stud_data.studentAssignment.path.endsWith('.png')){
-                                print('${Api.basePicUrl}${stud_data.studentAssignment.path}');
+                               // print('${Api.basePicUrl}${stud_data.studentAssignment.path}');
                                 launchUrlString('${Api.basePicUrl}${stud_data.studentAssignment.path}');
                               }
                               else if(stud_data.studentAssignment.path.endsWith('.doc')||stud_data.studentAssignment.path.endsWith('.docx')||stud_data.studentAssignment.path.endsWith('.pdf')){
-                                print('http://docs.google.com/viewer?url=${Api.basePicUrl}${stud_data.studentAssignment.path}');
+                               // print('http://docs.google.com/viewer?url=${Api.basePicUrl}${stud_data.studentAssignment.path}');
                                 launchUrlString('http://docs.google.com/viewer?url=${Api.basePicUrl}${stud_data.studentAssignment.path}');
                               }
                               else{
@@ -130,7 +141,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
 
                               // launchUrl(url);
                             },
-                            title: Row(
+                            title: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('View Assignment',style: TextStyle(color: Colors.black),),
@@ -142,8 +153,8 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                         SizedBox(height: 10.h,),
 
                         assignmentStatus.when(
-                            data: (status_data){
-                              final status = status_data.firstWhereOrNull((element) => element.studentAssignment.id == stud_data.id);
+                            data: (statusData){
+                              final status = statusData.firstWhereOrNull((element) => element.studentAssignment.id == stud_data.id);
 
                               if(status == null){
                                 return Container(
@@ -163,15 +174,18 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                               return StatefulBuilder(
                                                 builder: (BuildContext context, StateSetter setState) {
                                                   return AlertDialog(
+                                                    shape: const RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.all(Radius.circular(10.0))
+                                                    ),
                                                     backgroundColor: Colors.white,
-                                                    title: Text('Status',style: TextStyle(color: Colors.black),),
+                                                    title: const Text('Status',style: TextStyle(color: Colors.black),),
                                                     content: Form(
                                                       key: _form,
                                                       child: Column(
                                                         mainAxisSize: MainAxisSize.min,
                                                         children: [
                                                           CheckboxListTile(
-                                                            side: BorderSide(
+                                                            side: const BorderSide(
                                                               color : Colors.black
                                                             ),
                                                             activeColor: pre_color,
@@ -179,7 +193,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                               borderRadius: BorderRadius.circular(5),
 
                                                             ),
-                                                            title: Text('Accepted',style: TextStyle(color: Colors.black)),
+                                                            title: const Text('Accepted',style: TextStyle(color: Colors.black)),
                                                             value: _accepted,
                                                             onChanged: (newValue) {
                                                               setState(() {
@@ -191,7 +205,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                             },
                                                           ),
                                                           CheckboxListTile(
-                                                            side: BorderSide(
+                                                            side: const BorderSide(
                                                                 color : Colors.black
                                                             ),
                                                             activeColor: abs_color,
@@ -199,7 +213,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                                 borderRadius: BorderRadius.circular(5),
 
                                                             ),
-                                                            title: Text('Unaccepted',style: TextStyle(color: Colors.black)),
+                                                            title: const Text('Unaccepted',style: TextStyle(color: Colors.black)),
                                                             value: _unaccepted,
                                                             onChanged: (newValue) {
                                                               setState(() {
@@ -252,32 +266,35 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                             backgroundColor: primary
                                                         ),
                                                         onPressed: () {
+
                                                           _form.currentState!.save();
                                                           if(_form.currentState!.validate()){
                                                             if(_accepted == false && _unaccepted==false){
                                                             SnackShow.showFailure(context, 'Please check one of the status box');
                                                           }
                                                           else {
-                                                            ref.read(assignmentProvider.notifier).addStatus(
+
+
+
+                                                              ref.read(statusProvider.notifier).addStatus(
                                                                 remarks: remarkController.text.trim(),
                                                                 status: _accepted == true? 'Accepted' : 'Unaccepted',
                                                                 notifications: false,
                                                                 studentAssignment: stud_data.id,
                                                                 token: auth.user.token
-                                                            ).then((value) => ref.refresh(assignmentStatusList(auth.user.token)))
-                                                                .then((value) => Navigator.pop(context));
+                                                            ).then((value) => Navigator.pop(context));
                                                           }
                                                           }
                                                         },
 
 
-                                                        child: Text('Submit',style: TextStyle(color: Colors.white),),
+                                                        child: const Text('Submit',style: TextStyle(color: Colors.white),),
                                                       ),
                                                       TextButton(
                                                         onPressed: () {
                                                           Navigator.pop(context);
                                                         },
-                                                        child: Text('Cancel',style: TextStyle(color: Colors.black)),
+                                                        child: const Text('Cancel',style: TextStyle(color: Colors.black)),
                                                       ),
 
                                                     ],
@@ -288,8 +305,8 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                             }
                                         );
                                       },
-                                      title: Text('Status',style: TextStyle(color: Colors.black),),
-                                      trailing:Text('Pending',style: TextStyle(color: Colors.grey),)
+                                      title: const Text('Status',style: TextStyle(color: Colors.black),),
+                                      trailing:const Text('Pending',style: TextStyle(color: Colors.grey),)
                                     )
                                 );
                               }
@@ -315,15 +332,18 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                     return StatefulBuilder(
                                                       builder: (BuildContext context, StateSetter setState) {
                                                         return AlertDialog(
+                                                          shape: const RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.all(Radius.circular(10.0))
+                                                          ),
                                                           backgroundColor: Colors.white,
-                                                          title: Text('Edit Status',style: TextStyle(color: Colors.black),),
+                                                          title: const Text('Edit Status',style: TextStyle(color: Colors.black),),
                                                           content: Form(
                                                             key: _form,
                                                             child: Column(
                                                               mainAxisSize: MainAxisSize.min,
                                                               children: [
                                                                 CheckboxListTile(
-                                                                  side: BorderSide(
+                                                                  side: const BorderSide(
                                                                       color : Colors.black
                                                                   ),
                                                                   activeColor: pre_color,
@@ -331,7 +351,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                                     borderRadius: BorderRadius.circular(5),
 
                                                                   ),
-                                                                  title: Text('Accepted',style: TextStyle(color: Colors.black)),
+                                                                  title: const Text('Accepted',style: TextStyle(color: Colors.black)),
                                                                   value: _accepted,
                                                                   onChanged: (newValue) {
                                                                     setState(() {
@@ -343,7 +363,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                                   },
                                                                 ),
                                                                 CheckboxListTile(
-                                                                  side: BorderSide(
+                                                                  side: const BorderSide(
                                                                       color : Colors.black
                                                                   ),
                                                                   activeColor: abs_color,
@@ -351,7 +371,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                                     borderRadius: BorderRadius.circular(5),
 
                                                                   ),
-                                                                  title: Text('Unaccepted',style: TextStyle(color: Colors.black)),
+                                                                  title: const Text('Unaccepted',style: TextStyle(color: Colors.black)),
                                                                   value: _unaccepted,
                                                                   onChanged: (newValue) {
                                                                     setState(() {
@@ -403,33 +423,40 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                               style: TextButton.styleFrom(
                                                                   backgroundColor: primary
                                                               ),
-                                                              onPressed: () {
+                                                              onPressed:  assignment.isLoad ? null :() {
+
                                                                 _form.currentState!.save();
                                                                 if(_form.currentState!.validate()){
                                                                   if(_accepted == false && _unaccepted==false){
                                                                     SnackShow.showFailure(context, 'Please check one of the status box');
                                                                   }
                                                                   else {
-                                                                    ref.read(assignmentProvider.notifier).editStatus(
-                                                                         id: status.id,
+
+
+
+
+                                                                    ref.read(statusProvider.notifier).editStatus(
+                                                                        id: status.id,
                                                                         remarks: remarkController.text.trim(),
                                                                         status: _accepted == true? 'Accepted' : 'Unaccepted',
-                                                                        notifications: false,
+                                                                        notifications: true,
                                                                         studentAssignment: stud_data.id,
                                                                         token: auth.user.token
-                                                                    ).then((value) => ref.refresh(assignmentStatusList(auth.user.token))).then((value) => Navigator.pop(context));
+                                                                    ).then((value) => Navigator.pop(context));
+
+
 
                                                                   }
 
                                                                 }
                                                               },
-                                                              child: Text('Submit',style: TextStyle(color: Colors.white),),
+                                                              child: assignment.isLoad ? const CircularProgressIndicator() : const Text('submit',style: TextStyle(color: Colors.white),),
                                                             ),
                                                             TextButton(
                                                               onPressed: () {
                                                                 Navigator.pop(context);
                                                               },
-                                                              child: Text('Cancel',style: TextStyle(color: Colors.black)),
+                                                              child: const Text('Cancel',style: TextStyle(color: Colors.black)),
                                                             ),
 
                                                           ],
@@ -440,8 +467,8 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                   }
                                               );
                                             },
-                                            title: Text('Status',style: TextStyle(color: Colors.white),),
-                                            trailing:Text(status.status,style: TextStyle(color: Colors.white),)
+                                            title: const Text('Status',style: TextStyle(color: Colors.white),),
+                                            trailing:Text(status.status,style: const TextStyle(color: Colors.white),)
                                         )
                                     ),
                                     NoticeCard(
@@ -457,9 +484,9 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                             },
                             error: (err, stack) => Center(child: Text('$err')),
                             loading: () =>
-                                Container(
+                                SizedBox(
                                     height:100.h,
-                                    child: ShimmerListTile3())
+                                    child: const ShimmerListTile3())
                         ),
 
 
@@ -469,10 +496,8 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
 
                   }
                   else{
-                    return Container(
-                      child: Text(
-                        'No Submission',style: TextStyle(color: Colors.black,fontSize: 15.sp,fontWeight: FontWeight.bold),
-                      ),
+                    return Text(
+                      'No Submission',style: TextStyle(color: Colors.black,fontSize: 15.sp,fontWeight: FontWeight.bold),
                     );
 
                   }
@@ -480,9 +505,9 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                 },
                 error: (err, stack) => Center(child: Text('$err')),
                 loading: () =>
-                    Container(
+                    SizedBox(
                         height: 100.h,
-                        child: ShimmerListTile3())),
+                        child: const ShimmerListTile3())),
           ),
 
 
@@ -490,7 +515,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
 
 
         ],
-      ),
+      )
     );
   }
 }

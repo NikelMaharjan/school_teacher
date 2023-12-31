@@ -39,7 +39,7 @@ class _AddLesson2State extends State<AddLesson2> {
         <DropdownMenuEntry<ClassLabel>>[];
     for (final ClassLabel grade in ClassLabel.values) {
       classEntries.add(DropdownMenuEntry<ClassLabel>(
-          style: ButtonStyle(
+          style: const ButtonStyle(
               foregroundColor: MaterialStatePropertyAll(Colors.black)),
           value: grade,
           label: grade.grade));
@@ -49,7 +49,7 @@ class _AddLesson2State extends State<AddLesson2> {
         <DropdownMenuEntry<SubLabel>>[];
     for (final SubLabel subj in SubLabel.values) {
       subEntries.add(DropdownMenuEntry<SubLabel>(
-          style: ButtonStyle(
+          style: const ButtonStyle(
               foregroundColor: MaterialStatePropertyAll(Colors.black)),
           value: subj,
           label: subj.label));
@@ -59,7 +59,7 @@ class _AddLesson2State extends State<AddLesson2> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SafeArea(
-          child: Container(
+          child: SizedBox(
               // color: Colors.red,
               width: double.infinity,
               child: Column(
@@ -69,7 +69,7 @@ class _AddLesson2State extends State<AddLesson2> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: bgColor,
-                          borderRadius: BorderRadius.vertical(
+                          borderRadius: const BorderRadius.vertical(
                               bottom: Radius.circular(25))),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +80,7 @@ class _AddLesson2State extends State<AddLesson2> {
                                 onPressed: () {
                                   Get.back();
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.arrow_back,
                                   color: Colors.white,
                                 ),
@@ -95,10 +95,10 @@ class _AddLesson2State extends State<AddLesson2> {
                                   color: Colors.white, fontSize: 18.sp)),
                         ],
                       )),
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height * 4.1 / 5,
                     child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -112,20 +112,20 @@ class _AddLesson2State extends State<AddLesson2> {
 
                                   controller: classController,
 
-                                  menuStyle: MenuStyle(
+                                  menuStyle: const MenuStyle(
                                     backgroundColor:
                                         MaterialStatePropertyAll(Colors.white),
                                   ),
                                   width: 350.w,
 
                                   inputDecorationTheme: InputDecorationTheme(
-                                      hintStyle: TextStyle(color: Colors.black),
+                                      hintStyle: const TextStyle(color: Colors.black),
                                       filled: true,
                                       fillColor: shimmerHighlightColor,
-                                      enabledBorder: OutlineInputBorder(),
+                                      enabledBorder: const OutlineInputBorder(),
                                       focusedBorder: InputBorder.none),
 
-                                  textStyle: TextStyle(color: Colors.black),
+                                  textStyle: const TextStyle(color: Colors.black),
 
                                   // label: Text('Class',style: TextStyle(color: Colors.black),),
                                   dropdownMenuEntries: classEntries,
@@ -141,21 +141,21 @@ class _AddLesson2State extends State<AddLesson2> {
                                 DropdownMenu<SubLabel>(
                                   hintText: 'Subject',
 
-                                  menuStyle: MenuStyle(
+                                  menuStyle: const MenuStyle(
                                     backgroundColor:
                                         MaterialStatePropertyAll(Colors.white),
                                   ),
 
                                   width: 350.w,
                                   inputDecorationTheme: InputDecorationTheme(
-                                      hintStyle: TextStyle(color: Colors.black),
+                                      hintStyle: const TextStyle(color: Colors.black),
                                       filled: true,
                                       fillColor: shimmerHighlightColor,
-                                      enabledBorder: OutlineInputBorder(),
+                                      enabledBorder: const OutlineInputBorder(),
                                       focusedBorder: InputBorder.none),
 
                                   controller: subController,
-                                  textStyle: TextStyle(color: Colors.black),
+                                  textStyle: const TextStyle(color: Colors.black),
 
                                   // label: const Text('Sub',style: TextStyle(color: Colors.black),),
                                   dropdownMenuEntries: subEntries,
@@ -224,7 +224,7 @@ class _AddLesson2State extends State<AddLesson2> {
                           ),
                           DottedBorder(
                             borderType: BorderType.RRect,
-                            radius: Radius.circular(10),
+                            radius: const Radius.circular(10),
                             dashPattern: [5, 5],
                             color: primary,
                             strokeWidth: 1,
@@ -243,7 +243,7 @@ class _AddLesson2State extends State<AddLesson2> {
                                     CircleAvatar(
                                       radius: 20.sp,
                                       backgroundColor: primary,
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.add,
                                         color: Colors.white,
                                       ),
@@ -271,7 +271,7 @@ class _AddLesson2State extends State<AddLesson2> {
                                   fixedSize: Size.fromWidth(250.w),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Colors.black,
                                       ))),
                               onPressed: () {},

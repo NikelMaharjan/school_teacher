@@ -92,7 +92,7 @@ class _SubjectsState extends ConsumerState<Subjects>
             
           },
           backgroundColor: primary,
-          child: Icon(
+          child: const Icon(
             Icons.add,
             color: Colors.white,
           ),
@@ -104,7 +104,7 @@ class _SubjectsState extends ConsumerState<Subjects>
 
 
           backgroundColor: primary,
-          child: Icon(
+          child: const Icon(
             Icons.add,
             color: Colors.white,
           ),
@@ -113,7 +113,7 @@ class _SubjectsState extends ConsumerState<Subjects>
       default:
         return FloatingActionButton(
           onPressed: () {},
-          child: Icon(Icons.error),
+          child: const Icon(Icons.error),
         );
     }
   }
@@ -136,7 +136,7 @@ class _SubjectsState extends ConsumerState<Subjects>
       child: Scaffold(
           backgroundColor: Colors.white,
           body:SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 Container(
@@ -145,7 +145,7 @@ class _SubjectsState extends ConsumerState<Subjects>
                   decoration: BoxDecoration(
                       color: bgColor,
                       borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(25))),
+                          const BorderRadius.vertical(bottom: Radius.circular(25))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -183,7 +183,7 @@ class _SubjectsState extends ConsumerState<Subjects>
                               style: TextStyle(color: Colors.white, fontSize: 25.sp),
                             ),
                             Text(
-                              'Class ${class_level_name} ${sec_name}',
+                              'Class $class_level_name $sec_name',
                               style: TextStyle(color: Colors.white, fontSize: 15.sp),
                             ),
                           ],
@@ -215,22 +215,22 @@ class _SubjectsState extends ConsumerState<Subjects>
                           indicator: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10)),
-                          tabs: [
+                          tabs: const [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                              padding: EdgeInsets.symmetric(horizontal: 12.0),
                               child: Tab(
                                 text: 'Chapters',
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                              padding: EdgeInsets.symmetric(horizontal: 12.0),
                               child: Tab(text: 'Announcement'),
                             ),
                           ]),
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 4 / 6,
                   // color: Colors.red,
                   child: TabBarView(

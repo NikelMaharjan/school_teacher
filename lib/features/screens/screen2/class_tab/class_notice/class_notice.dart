@@ -28,13 +28,13 @@ class ClassNoticeBoard extends ConsumerWidget {
     final classNotice = ref.watch(classNoticeList(auth.user.token));
     final noticeInfo = ref.watch(noticeList(auth.user.token));
     final noticeData = ref.watch(classNoticeProvider2(class_sec_id));
-    print(class_sec_id);
+   // print(class_sec_id);
 
     return ConnectivityChecker(
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: bgColor,
-          title: Text("Notice Board", style: TextStyle(color: Colors.white),),
+          title: const Text("Notice Board", style: TextStyle(color: Colors.white),),
         ),
         backgroundColor: Colors.white,
         body: Stack(
@@ -68,14 +68,14 @@ class ClassNoticeBoard extends ConsumerWidget {
 
                           return ListView.builder(
                               padding: EdgeInsets.symmetric(horizontal: 15.w),
-                              physics: BouncingScrollPhysics(),
+                              physics: const BouncingScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: allNotice.length,
                               itemBuilder: (context, index) {
                                 return Slidable(
                                   closeOnScroll: true,
                                   endActionPane: ActionPane(
-                                    motion: ScrollMotion(),
+                                    motion: const ScrollMotion(),
                                     children: [
                                       // SlidableAction(
                                       //   borderRadius: BorderRadius.circular(10),
@@ -109,7 +109,7 @@ class ClassNoticeBoard extends ConsumerWidget {
                                                 return AlertDialog(
                                                   backgroundColor: Colors.white,
                                                   alignment: Alignment.center,
-                                                  title: Text('Do you want to delete the notice?',style: TextStyle(color: Colors.black),),
+                                                  title: const Text('Do you want to delete the notice?',style: TextStyle(color: Colors.black),),
                                                   actionsAlignment: MainAxisAlignment.spaceEvenly,
                                                   actions: [
                                                     TextButton(
@@ -125,7 +125,7 @@ class ClassNoticeBoard extends ConsumerWidget {
 
                                                        await ref.read(noticeProvider.notifier).deleteNotice(allNotice[index].notice.id, auth.user.token);
                                                         },
-                                                        child: Text('Yes',style: TextStyle(color: Colors.white),)
+                                                        child: const Text('Yes',style: TextStyle(color: Colors.white),)
                                                     ),
                                                     TextButton(
                                                         style: TextButton.styleFrom(
@@ -134,7 +134,7 @@ class ClassNoticeBoard extends ConsumerWidget {
                                                         onPressed: (){
                                                           Navigator.pop(context);
                                                         },
-                                                        child: Text('No',style: TextStyle(color: Colors.black),)
+                                                        child: const Text('No',style: TextStyle(color: Colors.black),)
                                                     ),
                                                   ],
                                                 );
@@ -153,7 +153,7 @@ class ClassNoticeBoard extends ConsumerWidget {
                               });
                         },
                         error: (err, stack) => Center(child: Text('$err')),
-                        loading: () => NoticeShimmer(),
+                        loading: () => const NoticeShimmer(),
                       ),
                     )
                   ],
@@ -187,7 +187,7 @@ class ClassNoticeBoard extends ConsumerWidget {
               Get.to(()=>AddNotice(teacher_id: teacher_id, class_sec_id: class_sec_id));
             },
           backgroundColor: primary,
-          child: Icon(Icons.add,color: Colors.white,),
+          child: const Icon(Icons.add,color: Colors.white,),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),

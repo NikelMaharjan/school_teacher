@@ -17,7 +17,7 @@ class AttendanceStatus extends ConsumerWidget {
 
   final int student_id;
   final String stuent_name;
-  AttendanceStatus({required this.student_id, required this.stuent_name});
+  const AttendanceStatus({super.key, required this.student_id, required this.stuent_name});
 
   @override
   Widget build(BuildContext context,ref) {
@@ -28,19 +28,19 @@ class AttendanceStatus extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: bgColor  ,
-        title: Text("STATUS", style: TextStyle(color: Colors.white),),
+        title: const Text("STATUS", style: TextStyle(color: Colors.white),),
       ),
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          Container(
+          SizedBox(
             // color: Colors.red,
               height: MediaQuery.of(context).size.height*4.2/5,
               child:  attendStatus.when(
                 data: (data){
                   return ListView.builder(
                     padding: EdgeInsets.zero,
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: data.length,
                     itemBuilder: (context, index) {
@@ -61,8 +61,8 @@ class AttendanceStatus extends ConsumerWidget {
                                   context: context,
                                   builder: (context){
                                     return attendNote.when(
-                                      data: (note_data) {
-                                        final note = note_data.firstWhereOrNull((element) => element.startDate == data[index].attendance.date && element.student == data[index].student.id);
+                                      data: (noteData) {
+                                        final note = noteData.firstWhereOrNull((element) => element.startDate == data[index].attendance.date && element.student == data[index].student.id);
                                         return AlertDialog(
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(15.0),
@@ -75,16 +75,16 @@ class AttendanceStatus extends ConsumerWidget {
                                               Text(data[index].attendance.date, style: TextStyle(color: Colors.black, fontSize: 12.sp),),
                                             ],
                                           ),
-                                          content: Text(note == null ? 'No reason given' : note.reason!, style: TextStyle(color: Colors.black),),
+                                          content: Text(note == null ? 'No reason given' : note.reason!, style: const TextStyle(color: Colors.black),),
                                         );
                                       },
-                                      error: (err, stack) => AlertDialog(
+                                      error: (err, stack) => const AlertDialog(
                                         backgroundColor: Colors.white,
                                         title: Text('Reason', style: TextStyle(color: Colors.black),),
                                         content: Text('No reason given', style: TextStyle(color: Colors.black),),
                                       ),
                                       loading: () => FutureBuilder(
-                                        future: Future.delayed(Duration(seconds: 10)), // Set timeout duration
+                                        future: Future.delayed(const Duration(seconds: 10)), // Set timeout duration
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState == ConnectionState.done) {
                                             // Show error message after timeout
@@ -97,11 +97,11 @@ class AttendanceStatus extends ConsumerWidget {
                                                   Text(data[index].attendance.date, style: TextStyle(color: Colors.black, fontSize: 12.sp),),
                                                 ],
                                               ),
-                                              content: Text( 'No reason given', style: TextStyle(color: Colors.black),),
+                                              content: const Text( 'No reason given', style: TextStyle(color: Colors.black),),
                                             );
                                           } else {
                                             // Show loading indicator during the timeout period
-                                            return Center(child: CircularProgressIndicator());
+                                            return const Center(child: CircularProgressIndicator());
                                           }
                                         },
                                       ),
@@ -111,7 +111,7 @@ class AttendanceStatus extends ConsumerWidget {
                               );
                             }
                           },
-                          title: Text(data[index].attendance.date,style: TextStyle(color: Colors.black),),
+                          title: Text(data[index].attendance.date,style: const TextStyle(color: Colors.black),),
                           trailing: CircleAvatar(
                             radius: 10.sp,
                             backgroundColor: data[index].status == 'Present' ? pre_color: abs_color,
@@ -124,7 +124,7 @@ class AttendanceStatus extends ConsumerWidget {
 
                 },
                 error: (err, stack) => Center(child: Text('$err')),
-                loading: () => NoticeShimmer(),
+                loading: () => const NoticeShimmer(),
               )
 
 

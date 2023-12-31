@@ -3,7 +3,6 @@
 
 
 
-import 'package:eschool_teacher/features/model/class_subject.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +12,6 @@ import 'package:get/get.dart';
 import '../../../../constants/colors.dart';
 import '../../../../exceptions/internet_exceptions.dart';
 import '../../../model/assignment.dart';
-import '../class_tab/student_tab/student_tab.dart';
 import 'assignment_details.dart';
 import 'assignment_student.dart';
 
@@ -37,7 +35,7 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
 
 
 
-    TabController _tabController = TabController(length: 2, vsync: this);
+    TabController tabController = TabController(length: 2, vsync: this);
     return ConnectivityChecker(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -49,8 +47,7 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: bgColor,
-                    borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(25))),
+                    borderRadius: const BorderRadius.vertical(bottom: Radius.circular(25))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -64,7 +61,7 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
                           onPressed: () {
                             Get.back();
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back,
                             color: Colors.white,
                           ),
@@ -77,7 +74,7 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
                           style: TextStyle(color: Colors.white, fontSize: 25.sp)),
                     ),
 
-                    Text(widget.assignment.classSubject.subject.subjectName, style: TextStyle(color: Colors.white),),
+                    Text(widget.assignment.classSubject.subject.subjectName, style: const TextStyle(color: Colors.white),),
 
 
 
@@ -86,7 +83,7 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
                       height: 10.h,
                     ),
                     TabBar(
-                        controller: _tabController,
+                        controller: tabController,
                         padding: EdgeInsets.symmetric(
                             vertical: 15.h, horizontal: 30.w),
                         labelStyle: TextStyle(
@@ -103,15 +100,15 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
                         indicator: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10)),
-                        tabs: [
+                        tabs: const [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
                             child: Tab(
                               text: 'Task',
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
                             child: Tab(text: 'Students'),
                           ),
                         ])
@@ -123,7 +120,7 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
                 child: TabBarView(
                   // physics: NeverScrollableScrollPhysics(),
 
-                  controller: _tabController,
+                  controller: tabController,
                   children: [
                     AssignmentDetails(assignment: widget.assignment,classSubject : widget.assignment.classSubject, class_subject_id: widget.class_subject_id,),
                     Student_Assignment(assignment: widget.assignment, class_id: widget.assignment.classSubject.classSection!.id, section: widget.assignment.classSubject.classSection!.section.sectionName, className: widget.assignment.classSubject.classSection!.className.classLevel.name,)],

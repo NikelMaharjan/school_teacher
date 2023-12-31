@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:eschool_teacher/constants/snack_show.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../api.dart';
-import '../model/calendar_event.dart';
 import '../model/routine.dart';
 
 final routineList = FutureProvider.family(

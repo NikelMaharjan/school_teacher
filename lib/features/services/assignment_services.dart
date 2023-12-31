@@ -25,6 +25,12 @@ final assignmentDetailProvider = FutureProvider.family.autoDispose<List<Assignme
   return await assignmentDetail.getAssignmentDetail();
 });
 
+final assignmentNotificationProvider = FutureProvider.family.autoDispose<List<StudentAssignment>, int>((ref, id) async {
+  final token = ref.watch(authProvider);
+  final assignmentDetail = AssignmentDetail(token.user.token, id);
+  return await assignmentDetail.getAssignmentNotification();
+});
+
 
 
 
@@ -218,7 +224,7 @@ class AssignmentService {
           data: {
             'status':status,
             'remarks':remarks,
-            'send_notification':notifications,
+            'send_notification':true,
             'student_assignment':studentAssignment
 
           },
@@ -243,7 +249,7 @@ class AssignmentService {
           data: {
             'status':status,
             'remarks':remarks,
-            'send_notification':notifications,
+            'send_notification':true,
             'student_assignment':studentAssignment
 
           },
@@ -253,10 +259,13 @@ class AssignmentService {
     } on DioError catch (err) {
       print(err.response);
       throw Exception('Network error');
+      throw Exception('Network error');
     }
   }
 
 }
+
+
 
 class StudentAssignmentService {
   String token;
@@ -270,12 +279,17 @@ class StudentAssignmentService {
     try {
       final response = await dio.get('${Api.studentAssignmentUrl}',
           options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
-      final data = (response.data['navigation']['data'] as List)
-          .map((e) => StudentAssignment.fromJson(e))
-          .toList();
+
+
+      if(response.statusCode == 204) {
+        throw "Nothing at moment";
+      }
+
+
+      final data = (response.data['navigation']['data'] as List).map((e) => StudentAssignment.fromJson(e)).toList();
       print('success');
       return data;
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
       throw Exception('Unable to fetch data');
     }
@@ -309,6 +323,27 @@ class AssignmentDetail {
     } on DioException catch (err) {
       print(err.response);
       throw Exception('Unable to fetch data');
+    }
+  }
+
+
+
+  Future<List<StudentAssignment>> getAssignmentNotification() async {
+
+    try {
+      final response = await dio.get('${Api.studentAssignmentNotification}$id/',
+          options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));
+      final data = (response.data['data'] as List)
+          .map((e) => StudentAssignment.fromJson(e))
+          .toList();
+      if(response.statusCode == 204) {
+        throw "Nothing";
+      }
+      print('success');
+      return data;
+    } on DioException catch (err) {
+      print(err.response);
+      throw Exception(err.response);
     }
   }
 }

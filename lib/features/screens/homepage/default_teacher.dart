@@ -110,7 +110,8 @@ class _DefaultTeacherState extends ConsumerState<DefaultTeacher>
                     child: BottomNavigationBar(
                         // backgroundColor: Colors.blue,
                         selectedItemColor: pre_color,
-                        unselectedItemColor: Colors.white,
+                        unselectedItemColor: Colors.grey,
+
                         showSelectedLabels: true,
                         showUnselectedLabels: false,
                         onTap: (int index) {

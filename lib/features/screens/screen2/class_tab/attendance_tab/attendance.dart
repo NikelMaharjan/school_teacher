@@ -15,7 +15,7 @@ import '../../../../../utils/commonWidgets.dart';
 class Attendance_add extends ConsumerStatefulWidget {
   final int class_id;
 
-  Attendance_add({required this.class_id});
+  const Attendance_add({super.key, required this.class_id});
 
   @override
   ConsumerState<Attendance_add> createState() => _Attendance_addState();
@@ -39,7 +39,7 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
         data: (data) {
           final attendDate = data.firstWhere((element) => element.date == date);
           return studentList.when(
-            data: (stud_data) {
+            data: (studData) {
               return Column(
                 children: [
                   Container(
@@ -47,8 +47,7 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: bgColor,
-                          borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(25))),
+                          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(25))),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -61,7 +60,7 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                                 onPressed: () {
                                   Get.back();
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.arrow_back,
                                   color: Colors.white,
                                 ),
@@ -76,7 +75,7 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                                   color: Colors.white, fontSize: 18.sp)),
                           Text(
                             attendDate.date,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                             ),
                           ),
@@ -84,13 +83,13 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                       )),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: stud_data.length,
+                        itemCount: studData.length,
                         shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         padding: EdgeInsets.zero,
                         itemBuilder: (context, index) {
-                          if (!toggleStates.containsKey(stud_data[index].student.id)) {
-                            toggleStates[stud_data[index].student.id] = true;
+                          if (!toggleStates.containsKey(studData[index].student.id)) {
+                            toggleStates[studData[index].student.id] = true;
                           }
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.h),
@@ -102,9 +101,9 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                               ),
                               child: ListTile(
                                 contentPadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                                leading: stud_data[index].student.studentPhoto!=null?  CircleAvatar(
+                                leading: studData[index].student.studentPhoto!=null?  CircleAvatar(
                                   radius: 20.sp,
-                                  backgroundImage: NetworkImage('${Api.basePicUrl}${stud_data[index].student.studentPhoto}'),
+                                  backgroundImage: NetworkImage('${Api.basePicUrl}${studData[index].student.studentPhoto}'),
                                 ):  CircleAvatar(
                                   radius: 20.sp,
                                   backgroundColor: Colors.black,
@@ -115,8 +114,8 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        stud_data[index].student.studentName,
-                                        style: TextStyle(
+                                        studData[index].student.studentName,
+                                        style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -125,7 +124,7 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                                         height: 10.h,
                                       ),
                                       Text(
-                                        'Roll no. ${stud_data[index].rollNo}',
+                                        'Roll no. ${studData[index].rollNo}',
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 12.sp,
@@ -136,19 +135,19 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                                 ),
                                 trailing: TextButton(
                                   style: TextButton.styleFrom(
-                                    backgroundColor: toggleStates[stud_data[index].student.id]! ? primary : abs_color,
+                                    backgroundColor: toggleStates[studData[index].student.id]! ? primary : abs_color,
                                     foregroundColor: Colors.white,
-                                    padding: EdgeInsets.all(0),
+                                    padding: const EdgeInsets.all(0),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      toggleStates[stud_data[index].student.id] = !toggleStates[stud_data[index].student.id]!;
+                                      toggleStates[studData[index].student.id] = !toggleStates[studData[index].student.id]!;
                                     });
                                   },
-                                  child: toggleStates[stud_data[index].student.id]!
+                                  child: toggleStates[studData[index].student.id]!
                                       ? Text(
                                     'Present',
                                     style: TextStyle(fontSize: 12.sp),
@@ -173,17 +172,17 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                           fixedSize: Size.fromWidth(320.w),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(
+                              side: const BorderSide(
                                 color: Colors.black,
                               ))),
                       onPressed: () async {
-                        for (var i = 0; i < stud_data.length; i++) {
-                          if (toggleStates[stud_data[i].student.id
+                        for (var i = 0; i < studData.length; i++) {
+                          if (toggleStates[studData[i].student.id
                           ] == true) {
                             await ref.read(attendanceProvider.notifier).addAttendanceStudent(
                                 token: auth.user.token,
                                 attendance: attendDate.id,
-                                student: stud_data[i].student.id,
+                                student: studData[i].student.id,
                                 status: 'Present'
                             );
                           }
@@ -191,7 +190,7 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                             await ref.read(attendanceProvider.notifier).addAttendanceStudent(
                                 token: auth.user.token,
                                 attendance: attendDate.id,
-                                student: stud_data[i].student.id,
+                                student: studData[i].student.id,
                                 status: 'Absent'
                             );
                           }
@@ -199,7 +198,7 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                         Navigator.pop(context);
                       },
 
-                      child:attendload.isLoad? CircularProgressIndicator(): Text(
+                      child:attendload.isLoad? const CircularProgressIndicator(): Text(
                         'Submit',
                         style: TextStyle(
                           fontSize: 18.sp,
@@ -211,11 +210,11 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
               );
             },
             error: (err, stack) => Center(child: Text('$err')),
-            loading: () => ShimmerListTile(),
+            loading: () => const ShimmerListTile(),
           );
         },
         error: (err, stack) => Center(child: Text('$err')),
-        loading: () => Center(
+        loading: () => const Center(
           child: CircularProgressIndicator(),
         ),
       ),

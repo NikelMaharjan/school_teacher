@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 
-import '../../../../../constants/colors.dart';
 import '../../../../services/feature_services.dart';
 
 
@@ -20,7 +18,7 @@ class MyClass extends ConsumerWidget {
   final String class_level_name;
   final String sec_name;
   final int teacher_id;
-  MyClass({required this.class_sec_id,required this.sec_name,required this.class_level_name,required this.teacher_id});
+  const MyClass({super.key, required this.class_sec_id,required this.sec_name,required this.class_level_name,required this.teacher_id});
 
 
 
@@ -31,7 +29,7 @@ class MyClass extends ConsumerWidget {
 
     final classSecSubjects = ref.watch(classSecSubjectProvider(class_sec_id));
 
-    return Container(
+    return SizedBox(
       height: 100.h,
       // color: Colors.red,
       child: classSecSubjects.when(
@@ -73,7 +71,7 @@ class MyClass extends ConsumerWidget {
                     child: Center(
                       child: Text(
                           data[index].subject.subjectName.substring(0,1),
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       ),
                     ),
                   ),
@@ -82,7 +80,7 @@ class MyClass extends ConsumerWidget {
                     padding: EdgeInsets.symmetric(
                         horizontal: 8.w),
                     child: Text(data[index].subject.subjectName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                         )),
                   ),
@@ -91,7 +89,7 @@ class MyClass extends ConsumerWidget {
             );
           },
         ),
-        loading: () => ShimmerListTile(),
+        loading: () => const ShimmerListTile(),
         error: (error, stackTrace) => Text('Error: $error'),
       ),
     );

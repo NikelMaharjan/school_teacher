@@ -34,7 +34,7 @@ class ExamClasses extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: bgColor,
-        title: Text(examDetail.name, style: TextStyle(color: Colors.white),),
+        title: Text(examDetail.name, style: const TextStyle(color: Colors.white),),
       ),
       backgroundColor: Colors.white,
       body:Column(
@@ -53,24 +53,24 @@ class ExamClasses extends ConsumerWidget {
                 data: (teacher_class) {
                   return classList.when(
                     data: (data) {
-                      final exam_data = data.where((element) => element.exam.id == examDetail.id).toList();
-                      List<TeacherClass> class_data = [];
-                      for (var i = 0; i < exam_data.length; i++) {
-                        List<TeacherClass> filtered = teacher_class.where((element) => element.classSection.className.id == exam_data[i].examClass.id).toList();
-                        class_data.addAll(filtered);
+                      final examData = data.where((element) => element.exam.id == examDetail.id).toList();
+                      List<TeacherClass> classData = [];
+                      for (var i = 0; i < examData.length; i++) {
+                        List<TeacherClass> filtered = teacher_class.where((element) => element.classSection.className.id == examData[i].examClass.id).toList();
+                        classData.addAll(filtered);
                       }
-                      if (class_data.isNotEmpty) {
+                      if (classData.isNotEmpty) {
                         return ListView.builder(
                             padding: EdgeInsets.symmetric(horizontal: 8.w),
                             shrinkWrap: true,
-                            itemCount: class_data.length,
+                            itemCount: classData.length,
                             itemBuilder: (context,index) {
-                              final exam_class= exam_data.firstWhere((element) => element.examClass.id==class_data[index].classSection.className.id);
+                              final examClass= examData.firstWhere((element) => element.examClass.id==classData[index].classSection.className.id);
                               return InfoTileWidget(
-                                  title: 'Class ${class_data[index].classSection.className.classLevel.name} - ${class_data[index].classSection.section.sectionName}',
+                                  title: 'Class ${classData[index].classSection.className.classLevel.name} - ${classData[index].classSection.section.sectionName}',
                                   onTap: () {
 
-                                      Get.to(()=>ExamClassDetails(examDetail: examDetail, classInfo: class_data[index], examClass: exam_class));
+                                      Get.to(()=>ExamClassDetails(examDetail: examDetail, classInfo: classData[index], examClass: examClass));
 
 
                                   }
@@ -79,17 +79,15 @@ class ExamClasses extends ConsumerWidget {
                         );
                       }
                       return Center(
-                        child: Container(
-                            child: Text('No Classes',style: TextStyle(color: Colors.black),)
-                        ),
+                        child: const Text('No Classes',style: TextStyle(color: Colors.black),),
                       );
                     },
                     error: (err, stack) => Center(child: Text('$err')),
-                    loading: () => ShimmerListTile(),
+                    loading: () => const ShimmerListTile(),
                   );
                 },
                 error: (err, stack) => Center(child: Text('$err')),
-                loading: () => ShimmerListTile(),
+                loading: () => const ShimmerListTile(),
               )
 
 
