@@ -73,7 +73,7 @@ class NotificationService {
           options: Options(
               headers: {HttpHeaders.authorizationHeader: 'token $token'}));
       return Right(response.data);
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
       throw Exception('Network error');
     }

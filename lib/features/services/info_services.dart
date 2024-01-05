@@ -135,7 +135,7 @@ class TeacherCourseService {
           .toList();
       print('course success');
       return data;
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       print(err.response);
       throw Exception('Unable to fetch data');
     }
