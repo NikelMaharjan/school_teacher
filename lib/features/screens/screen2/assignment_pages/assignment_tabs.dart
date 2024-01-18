@@ -39,8 +39,7 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
     return ConnectivityChecker(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body:
-        Column(
+        body: Column(
           children: [
             Container(
                 height: MediaQuery.of(context).size.height * 1.4 / 5,
@@ -122,8 +121,18 @@ class _AssignmentTabState extends ConsumerState<AssignmentTabs> with TickerProvi
 
                   controller: tabController,
                   children: [
-                    AssignmentDetails(assignment: widget.assignment,classSubject : widget.assignment.classSubject, class_subject_id: widget.class_subject_id,),
-                    Student_Assignment(assignment: widget.assignment, class_id: widget.assignment.classSubject.classSection!.id, section: widget.assignment.classSubject.classSection!.section.sectionName, className: widget.assignment.classSubject.classSection!.className.classLevel.name,)],
+                    AssignmentDetails(
+                       id: widget.assignment.id,
+                      assignment: widget.assignment,
+                      classSubject : widget.assignment.classSubject,
+                      class_subject_id: widget.class_subject_id,
+                    ),
+                    Student_Assignment(
+                      assignment: widget.assignment,
+                      class_id: widget.assignment.classSubject.classSection!.id,
+                      section: widget.assignment.classSubject.classSection!.section.sectionName,
+                      className: widget.assignment.classSubject.classSection!.className.classLevel.name,
+                    )],
                   //MyClass(id: class_id, school_id: school_id, class_teacher: class_teacher, teacher_subject: teacher_subject, classSub_id: classSub_id,)
                 )),
           ],

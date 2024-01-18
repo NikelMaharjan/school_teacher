@@ -20,7 +20,8 @@ class AssignmentDetails extends ConsumerWidget {
   final Assignment assignment;
   final ClassSubject classSubject;
   final int class_subject_id;
-  AssignmentDetails({required this.assignment,required this.classSubject, required this.class_subject_id});
+  final int id;
+  AssignmentDetails({required this.assignment,required this.classSubject, required this.class_subject_id, required this.id});
 
   Future<void> _redirect(String website) async {
 
@@ -43,7 +44,8 @@ class AssignmentDetails extends ConsumerWidget {
 
 
     return assignment.when(
-        data: (data){
+        data: (dataa){
+          final data = dataa.where((element) => element.id == id).toList();
           return ListView.builder(
             physics: const BouncingScrollPhysics(),
               itemCount: data.length,
@@ -158,7 +160,7 @@ class AssignmentDetails extends ConsumerWidget {
                           DataRow(
                               cells: [
                                 const DataCell(Text('Deadline')),
-                                DataCell(data[index].hasDeadline == true ? Text(DateFormat('MMMM dd').format(DateTime.parse(data[index].deadline!))) : const Text("")),
+                                DataCell(data[index].hasDeadline == true ? Text(DateFormat('MMMM dd').format(DateTime.parse(data[index].deadline!))) : const Text("No Deadline")),
                               ]
                           ),
 

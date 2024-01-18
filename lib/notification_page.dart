@@ -112,9 +112,6 @@ class _ClassNoticeBoardState extends ConsumerState<NotificationPage>
                             }
                             else if(types==notificationTypes[6]){
 
-
-
-
                               Get.to(()=>NotificationAssignmentPage(studentName: '', student_id: 1, assignment_id: data[index].objectId,));
                             }
                             else if(types==notificationTypes[8]){

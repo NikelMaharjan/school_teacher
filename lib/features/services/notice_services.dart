@@ -95,7 +95,7 @@ class NoticeService {
 
             'image': image ?? null,
             'for_all_class':for_all_class,
-            'send_notification':notification,
+            'send_notification':true,
             'added_by':added_by,
             'notice_type':notice_type
 

@@ -342,7 +342,7 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
                       decoration: InputDecoration(
                           focusedBorder: InputBorder.none,
                           border: InputBorder.none,
-                          hintText: 'Assignment Link',
+                          hintText: 'Assignment Link (website, drive)',
                           hintStyle: TextStyle(
                               color: Colors.black, fontSize: 15.sp),
                           contentPadding: EdgeInsets.only(
@@ -532,6 +532,8 @@ class _Add_AssignmentState extends ConsumerState<Add_Assignment> {
                         print("No Validation");
                       }
                       },
+
+
 
 
 

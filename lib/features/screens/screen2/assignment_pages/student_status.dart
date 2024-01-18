@@ -52,9 +52,12 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
 
     ref.listen(statusProvider, (previous, next) {
       if(next.errorMessage.isNotEmpty){
+        Navigator.of(context).pop();
         SnackShow.showFailure(context, next.errorMessage);
       }else if(next.isSuccess){
         ref.invalidate(assignmentStatusList(auth.user.token));
+
+        Navigator.of(context).pop();
         SnackShow.showSuccess(context, 'Success');
 
       }
@@ -173,132 +176,147 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                             builder: (context){
                                               return StatefulBuilder(
                                                 builder: (BuildContext context, StateSetter setState) {
-                                                  return AlertDialog(
-                                                    shape: const RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.all(Radius.circular(10.0))
-                                                    ),
-                                                    backgroundColor: Colors.white,
-                                                    title: const Text('Status',style: TextStyle(color: Colors.black),),
-                                                    content: Form(
-                                                      key: _form,
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        children: [
-                                                          CheckboxListTile(
-                                                            side: const BorderSide(
-                                                              color : Colors.black
-                                                            ),
-                                                            activeColor: pre_color,
-                                                            checkboxShape:RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(5),
 
-                                                            ),
-                                                            title: const Text('Accepted',style: TextStyle(color: Colors.black)),
-                                                            value: _accepted,
-                                                            onChanged: (newValue) {
-                                                              setState(() {
-                                                                _accepted = newValue!;
-                                                                if (_accepted) {
-                                                                  _unaccepted = false;
-                                                                }
-                                                              });
-                                                            },
-                                                          ),
-                                                          CheckboxListTile(
-                                                            side: const BorderSide(
-                                                                color : Colors.black
-                                                            ),
-                                                            activeColor: abs_color,
-                                                            checkboxShape:RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius.circular(5),
-
-                                                            ),
-                                                            title: const Text('Unaccepted',style: TextStyle(color: Colors.black)),
-                                                            value: _unaccepted,
-                                                            onChanged: (newValue) {
-                                                              setState(() {
-                                                                _unaccepted = newValue!;
-                                                                if (_unaccepted) {
-                                                                  _accepted = false;
-                                                                }
-                                                              });
-                                                            },
-                                                          ),
-                                                          SizedBox(height: 5.h,),
-                                                          Container(
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(10),
-                                                                  color: shimmerHighlightColor,
-                                                                  border: Border.all(color: Colors.black)),
-                                                              child: TextFormField(
-                                                                maxLines: 2,
-                                                                controller: remarkController,
-                                                                validator: (value) {
-                                                                  if (value!.isEmpty) {
-                                                                    return SnackShow.showFailure(context, 'Remarks cannot be empty');
-                                                                  }else if(value.length >50){
-                                                                    return SnackShow.showFailure(context, 'Word limit exceeded');
-                                                                  }
-                                                                  return null;
-                                                                },
-                                                                style: TextStyle(
-                                                                    color: Colors.black, fontSize: 15.sp),
-                                                                decoration: InputDecoration(
-                                                                    focusedBorder: InputBorder.none,
-                                                                    border: InputBorder.none,
-                                                                    hintText: 'Remarks',
-                                                                    hintStyle: TextStyle(
-                                                                        color: Colors.black, fontSize: 15.sp),
-                                                                    contentPadding: EdgeInsets.only(
-                                                                        top: 8.h,
-                                                                        left: 8.w,
-                                                                        bottom: 8.h,
-                                                                        right: 8.w)),
-                                                              )),
-                                                        ],
-                                                      ),
-                                                    ),
-
-                                                    actionsAlignment: MainAxisAlignment.spaceEvenly,
-                                                    actions: [
-                                                      TextButton(
-                                                        style: TextButton.styleFrom(
-                                                            backgroundColor: primary
+                                                  return Consumer(
+                                                      builder: (context, ref, child){
+                                                        final load = ref.watch(statusProvider);
+                                                        return AlertDialog(
+                                                        shape: const RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.all(Radius.circular(10.0))
                                                         ),
-                                                        onPressed: () {
+                                                        backgroundColor: Colors.white,
+                                                        title: const Text('Status',style: TextStyle(color: Colors.black),),
+                                                        content: Form(
+                                                          key: _form,
+                                                          child: Column(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            children: [
+                                                              CheckboxListTile(
+                                                                side: const BorderSide(
+                                                                    color : Colors.black
+                                                                ),
+                                                                activeColor: pre_color,
+                                                                checkboxShape:RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(5),
 
-                                                          _form.currentState!.save();
-                                                          if(_form.currentState!.validate()){
-                                                            if(_accepted == false && _unaccepted==false){
-                                                            SnackShow.showFailure(context, 'Please check one of the status box');
-                                                          }
-                                                          else {
+                                                                ),
+                                                                title: const Text('Accepted',style: TextStyle(color: Colors.black)),
+                                                                value: _accepted,
+                                                                onChanged: (newValue) {
+                                                                  setState(() {
+                                                                    _accepted = newValue!;
+                                                                    if (_accepted) {
+                                                                      _unaccepted = false;
+                                                                    }
+                                                                  });
+                                                                },
+                                                              ),
+                                                              CheckboxListTile(
+                                                                side: const BorderSide(
+                                                                    color : Colors.black
+                                                                ),
+                                                                activeColor: abs_color,
+                                                                checkboxShape:RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(5),
+
+                                                                ),
+                                                                title: const Text('Unaccepted',style: TextStyle(color: Colors.black)),
+                                                                value: _unaccepted,
+                                                                onChanged: (newValue) {
+                                                                  setState(() {
+                                                                    _unaccepted = newValue!;
+                                                                    if (_unaccepted) {
+                                                                      _accepted = false;
+                                                                    }
+                                                                  });
+                                                                },
+                                                              ),
+                                                              SizedBox(height: 5.h,),
+                                                              Container(
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      color: shimmerHighlightColor,
+                                                                      border: Border.all(color: Colors.black)),
+                                                                  child: TextFormField(
+                                                                    maxLines: 2,
+                                                                    controller: remarkController,
+                                                                    validator: (value) {
+                                                                      if (value!.isEmpty) {
+                                                                        return "cannot be empty";
+                                                                      }else if(value.length >50){
+                                                                        return "character limit";
+                                                                      }
+                                                                      return null;
+                                                                    },
+                                                                    style: TextStyle(
+                                                                        color: Colors.black, fontSize: 15.sp),
+                                                                    decoration: InputDecoration(
+                                                                        focusedBorder: InputBorder.none,
+                                                                        border: InputBorder.none,
+                                                                        hintText: 'Remarks',
+                                                                        hintStyle: TextStyle(
+                                                                            color: Colors.black, fontSize: 15.sp),
+                                                                        contentPadding: EdgeInsets.only(
+                                                                            top: 8.h,
+                                                                            left: 8.w,
+                                                                            bottom: 8.h,
+                                                                            right: 8.w)),
+                                                                  )),
+                                                            ],
+                                                          ),
+                                                        ),
+
+                                                        actionsAlignment: MainAxisAlignment.spaceEvenly,
+                                                        actions: [
+                                                          ElevatedButton(
+                                                            style: ElevatedButton.styleFrom(
+                                                                backgroundColor: primary
+                                                            ),
+                                                            onPressed:  load.isLoad ? null : ()  {
+
+                                                              _form.currentState!.save();
+                                                              if(_form.currentState!.validate()){
+                                                                if(_accepted == false && _unaccepted==false){
+                                                                  SnackShow.showFailure(context, 'Please check one of the status box');
+                                                                }
+                                                                else {
+
+
+                                                                  setState((){
+
+                                                                    ref.read(statusProvider.notifier).addStatus(
+                                                                        remarks: remarkController.text.trim(),
+                                                                        status: _accepted == true? 'Accepted' : 'Unaccepted',
+                                                                        notifications: false,
+                                                                        studentAssignment: stud_data.id,
+                                                                        token: auth.user.token
+                                                                    );
+
+                                                                  });
 
 
 
-                                                              ref.read(statusProvider.notifier).addStatus(
-                                                                remarks: remarkController.text.trim(),
-                                                                status: _accepted == true? 'Accepted' : 'Unaccepted',
-                                                                notifications: false,
-                                                                studentAssignment: stud_data.id,
-                                                                token: auth.user.token
-                                                            ).then((value) => Navigator.pop(context));
-                                                          }
-                                                          }
-                                                        },
+
+                                                                }
+                                                              }
+                                                            },
 
 
-                                                        child: const Text('Submit',style: TextStyle(color: Colors.white),),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(context);
-                                                        },
-                                                        child: const Text('Cancel',style: TextStyle(color: Colors.black)),
-                                                      ),
+                                                            child: const Text('Submit',style: TextStyle(color: Colors.white),),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: const Text('Cancel',style: TextStyle(color: Colors.black)),
+                                                          ),
 
-                                                    ],
+                                                        ],
+                                                      );
+                                                      }
                                                   );
+
+
                                                 },
                                               );
 
@@ -331,135 +349,152 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                   builder: (context){
                                                     return StatefulBuilder(
                                                       builder: (BuildContext context, StateSetter setState) {
-                                                        return AlertDialog(
-                                                          shape: const RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.all(Radius.circular(10.0))
-                                                          ),
-                                                          backgroundColor: Colors.white,
-                                                          title: const Text('Edit Status',style: TextStyle(color: Colors.black),),
-                                                          content: Form(
-                                                            key: _form,
-                                                            child: Column(
-                                                              mainAxisSize: MainAxisSize.min,
-                                                              children: [
-                                                                CheckboxListTile(
-                                                                  side: const BorderSide(
-                                                                      color : Colors.black
-                                                                  ),
-                                                                  activeColor: pre_color,
-                                                                  checkboxShape:RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(5),
 
-                                                                  ),
-                                                                  title: const Text('Accepted',style: TextStyle(color: Colors.black)),
-                                                                  value: _accepted,
-                                                                  onChanged: (newValue) {
-                                                                    setState(() {
-                                                                      _accepted = newValue!;
-                                                                      if (_accepted) {
-                                                                        _unaccepted = false;
-                                                                      }
-                                                                    });
-                                                                  },
+                                                        return Consumer(
+                                                            builder: (context, ref, child){
+                                                              final loaad = ref.watch(statusProvider);
+                                                               return AlertDialog(
+                                                                shape: const RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.all(Radius.circular(10.0))
                                                                 ),
-                                                                CheckboxListTile(
-                                                                  side: const BorderSide(
-                                                                      color : Colors.black
-                                                                  ),
-                                                                  activeColor: abs_color,
-                                                                  checkboxShape:RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(5),
+                                                                backgroundColor: Colors.white,
+                                                                title: const Text('Edit Status',style: TextStyle(color: Colors.black),),
+                                                                content: Form(
+                                                                  key: _form,
+                                                                  child: Column(
+                                                                    mainAxisSize: MainAxisSize.min,
+                                                                    children: [
+                                                                      CheckboxListTile(
+                                                                        side: const BorderSide(
+                                                                            color : Colors.black
+                                                                        ),
+                                                                        activeColor: pre_color,
+                                                                        checkboxShape:RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(5),
 
+                                                                        ),
+                                                                        title: const Text('Accepted',style: TextStyle(color: Colors.black)),
+                                                                        value: _accepted,
+                                                                        onChanged: (newValue) {
+                                                                          setState(() {
+                                                                            _accepted = newValue!;
+                                                                            if (_accepted) {
+                                                                              _unaccepted = false;
+                                                                            }
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      CheckboxListTile(
+                                                                        side: const BorderSide(
+                                                                            color : Colors.black
+                                                                        ),
+                                                                        activeColor: abs_color,
+                                                                        checkboxShape:RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(5),
+
+                                                                        ),
+                                                                        title: const Text('Unaccepted',style: TextStyle(color: Colors.black)),
+                                                                        value: _unaccepted,
+                                                                        onChanged: (newValue) {
+                                                                          setState(() {
+                                                                            _unaccepted = newValue!;
+                                                                            if (_unaccepted) {
+                                                                              _accepted = false;
+                                                                            }
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      SizedBox(height: 5.h,),
+                                                                      Container(
+                                                                          decoration: BoxDecoration(
+                                                                              borderRadius: BorderRadius.circular(10),
+                                                                              color: shimmerHighlightColor,
+                                                                              border: Border.all(color: Colors.black)),
+                                                                          child: TextFormField(
+                                                                            maxLines: 2,
+                                                                            controller: remarkController,
+                                                                            validator: (value) {
+                                                                              if (value!.isEmpty) {
+                                                                                return "cannot be empty";
+                                                                              }else if(value.length >50){
+                                                                                return "character limit";
+                                                                              }
+                                                                              return null;
+                                                                            },
+                                                                            style: TextStyle(
+                                                                                color: Colors.black, fontSize: 15.sp),
+                                                                            decoration: InputDecoration(
+                                                                                focusedBorder: InputBorder.none,
+                                                                                border: InputBorder.none,
+                                                                                hintText: 'Remarks',
+                                                                                hintStyle: TextStyle(
+                                                                                    color: Colors.black, fontSize: 15.sp),
+                                                                                contentPadding: EdgeInsets.only(
+                                                                                    top: 8.h,
+                                                                                    left: 8.w,
+                                                                                    bottom: 8.h,
+                                                                                    right: 8.w)),
+                                                                          )),
+                                                                    ],
                                                                   ),
-                                                                  title: const Text('Unaccepted',style: TextStyle(color: Colors.black)),
-                                                                  value: _unaccepted,
-                                                                  onChanged: (newValue) {
-                                                                    setState(() {
-                                                                      _unaccepted = newValue!;
-                                                                      if (_unaccepted) {
-                                                                        _accepted = false;
-                                                                      }
-                                                                    });
-                                                                  },
                                                                 ),
-                                                                SizedBox(height: 5.h,),
-                                                                Container(
-                                                                    decoration: BoxDecoration(
-                                                                        borderRadius: BorderRadius.circular(10),
-                                                                        color: shimmerHighlightColor,
-                                                                        border: Border.all(color: Colors.black)),
-                                                                    child: TextFormField(
-                                                                      maxLines: 2,
-                                                                      controller: remarkController,
-                                                                      validator: (value) {
-                                                                        if (value!.isEmpty) {
-                                                                          return SnackShow.showFailure(context, 'Remarks cannot be empty');
-                                                                        }else if(value.length >50){
-                                                                          return SnackShow.showFailure(context, 'Word limit exceeded');
+
+                                                                actionsAlignment: MainAxisAlignment.spaceEvenly,
+                                                                actions: [
+                                                                  ElevatedButton(
+                                                                    style: ElevatedButton.styleFrom(
+                                                                        backgroundColor: primary
+                                                                    ),
+                                                                    onPressed: loaad.isLoad ? null : () {
+
+                                                                      _form.currentState!.save();
+                                                                      if(_form.currentState!.validate()){
+                                                                        if(_accepted == false && _unaccepted==false){
+                                                                          SnackShow.showFailure(context, 'Please check one of the status box');
                                                                         }
-                                                                        return null;
-                                                                      },
-                                                                      style: TextStyle(
-                                                                          color: Colors.black, fontSize: 15.sp),
-                                                                      decoration: InputDecoration(
-                                                                          focusedBorder: InputBorder.none,
-                                                                          border: InputBorder.none,
-                                                                          hintText: 'Remarks',
-                                                                          hintStyle: TextStyle(
-                                                                              color: Colors.black, fontSize: 15.sp),
-                                                                          contentPadding: EdgeInsets.only(
-                                                                              top: 8.h,
-                                                                              left: 8.w,
-                                                                              bottom: 8.h,
-                                                                              right: 8.w)),
-                                                                    )),
-                                                              ],
-                                                            ),
-                                                          ),
-
-                                                          actionsAlignment: MainAxisAlignment.spaceEvenly,
-                                                          actions: [
-                                                            TextButton(
-                                                              style: TextButton.styleFrom(
-                                                                  backgroundColor: primary
-                                                              ),
-                                                              onPressed:  assignment.isLoad ? null :() {
-
-                                                                _form.currentState!.save();
-                                                                if(_form.currentState!.validate()){
-                                                                  if(_accepted == false && _unaccepted==false){
-                                                                    SnackShow.showFailure(context, 'Please check one of the status box');
-                                                                  }
-                                                                  else {
+                                                                        else {
 
 
 
 
-                                                                    ref.read(statusProvider.notifier).editStatus(
-                                                                        id: status.id,
-                                                                        remarks: remarkController.text.trim(),
-                                                                        status: _accepted == true? 'Accepted' : 'Unaccepted',
-                                                                        notifications: true,
-                                                                        studentAssignment: stud_data.id,
-                                                                        token: auth.user.token
-                                                                    ).then((value) => Navigator.pop(context));
+
+
+                                                                          setState((){
+
+
+                                                                            ref.read(statusProvider.notifier).editStatus(
+                                                                                id: status.id,
+                                                                                remarks: remarkController.text.trim(),
+                                                                                status: _accepted == true? 'Accepted' : 'Unaccepted',
+                                                                                notifications: true,
+                                                                                studentAssignment: stud_data.id,
+                                                                                token: auth.user.token
+                                                                            );
+
+                                                                          });
 
 
 
-                                                                  }
 
-                                                                }
-                                                              },
-                                                              child: assignment.isLoad ? const CircularProgressIndicator() : const Text('submit',style: TextStyle(color: Colors.white),),
-                                                            ),
-                                                            TextButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(context);
-                                                              },
-                                                              child: const Text('Cancel',style: TextStyle(color: Colors.black)),
-                                                            ),
 
-                                                          ],
+
+
+                                                                        }
+
+                                                                      }
+                                                                    },
+                                                                    child:  const Text('submit',style: TextStyle(color: Colors.white),),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: const Text('Cancel',style: TextStyle(color: Colors.black)),
+                                                                  ),
+
+                                                                ],
+                                                              );
+                                                            }
                                                         );
                                                       },
                                                     );

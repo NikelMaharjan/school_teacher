@@ -12,7 +12,7 @@ import '../../main.dart';
 import 'api.dart';
 
 
-final notificationProvider2 = FutureProvider.family<List<NotificationModel>, String>((ref, id) async {
+final notificationProvider2 = FutureProvider.family.autoDispose<List<NotificationModel>, String>((ref, id) async {
   final token = ref.watch(authProvider);
   final notifyService = NotificationService2(token.user.token, id);
   return await notifyService.getNotificationInfo();
@@ -107,6 +107,8 @@ class NotificationService2 {
   final dio = Dio();
 
   Future<List<NotificationModel>> getNotificationInfo() async {
+
+
     try {
       final response = await dio.get('${Api.notificationUrl}$notification_token',
           options: Options(headers: {HttpHeaders.authorizationHeader: 'token $token'}));

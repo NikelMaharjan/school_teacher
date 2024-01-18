@@ -13,6 +13,7 @@ import 'package:eschool_teacher/features/services/feature_services.dart';
 
 import 'package:eschool_teacher/utils/commonWidgets.dart';
 import 'package:eschool_teacher/utils/connectivity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -246,12 +247,12 @@ class _AssignmentPageState extends ConsumerState<AssignmentPage> {
               indent: 15.h,
               endIndent: 15.h,
             ),
-            Container(
+            SizedBox(
               // color: Colors.red,
               height: MediaQuery.of(context).size.height*3/5,
               child: classSubInfo.when(
-                  data: (class_sub_data){
-                    final subInfo =class_sub_data.where((element) => element.id == subjectName.id).toList();
+                  data: (classSubData){
+                    final subInfo =classSubData.where((element) => element.id == subjectName.id).toList();
                     if(subInfo.isNotEmpty){
                       return  assignmentInfo.when(
                         data: (data) {
@@ -267,98 +268,120 @@ class _AssignmentPageState extends ConsumerState<AssignmentPage> {
                             return Column(
                               children: [
                                 Expanded(
-                                  child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      itemCount: assignment_data.length,
-                                      itemBuilder: (context,index){
-
-
-
-
-                                        return Padding(
-                                          padding: const EdgeInsets.only(right: 8.0),
-                                          child: Slidable(
-                                            closeOnScroll: true,
-                                              endActionPane: ActionPane(
-                                                  motion: ScrollMotion(),
-                                                  children: [
-                                                    SlidableAction(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      padding: EdgeInsets.symmetric(horizontal: 5.w),
-                                                      autoClose: true,
-                                                      flex: 1,
-                                                      backgroundColor: primary,
-                                                      foregroundColor: Colors.white,
-                                                      icon: Icons.edit,
-                                                      onPressed: (context) => Get.to(()=> Edit_Assignment(
-                                                          assignment: data[index],
-                                                          classSubject: data[index].classSubject,
-                                                          class_subject_id: data[index].classSubject.id
-                                                      )
-                                                      ),
-
-                                                    ),
-                                                    SizedBox(width: 5.w,),
-                                                    SlidableAction(
-                                                        borderRadius: BorderRadius.circular(10),
-                                                        padding: EdgeInsets.symmetric(horizontal: 5.w),
-                                                        flex: 1,
-                                                        autoClose: true,
-                                                        backgroundColor: abs_color,
-                                                        foregroundColor: Colors.white,
-                                                        icon: Icons.delete,
-                                                        onPressed: (context) =>   showDialog(
-                                                            context: context,
-                                                            builder: (context){
-                                                              return AlertDialog(
-
-                                                                backgroundColor: Colors.white,
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.all(Radius.circular(10.0))
-                                                                ),
-                                                                title: Text('Do you want to delete the assignment',style: TextStyle(color: Colors.black),),
-                                                                actions: [
-                                                                  TextButton(
-                                                                      style: TextButton.styleFrom(
-                                                                          backgroundColor: primary,
-                                                                          foregroundColor: Colors.white
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            itemCount: assignment_data.length,
+                                            itemBuilder: (context,index){
+                                        
+                                        
+                                        
+                                        
+                                              return Padding(
+                                                padding: const EdgeInsets.only(right: 8.0),
+                                                child: Slidable(
+                                                  closeOnScroll: true,
+                                                    endActionPane: ActionPane(
+                                                        motion: ScrollMotion(),
+                                                        children: [
+                                                          SlidableAction(
+                                                            borderRadius: BorderRadius.circular(10),
+                                                            padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                                            autoClose: true,
+                                                            flex: 1,
+                                                            backgroundColor: primary,
+                                                            foregroundColor: Colors.white,
+                                                            icon: Icons.edit,
+                                                            onPressed: (context) => Get.to(()=> Edit_Assignment(
+                                                                assignment: data[index],
+                                                                classSubject: data[index].classSubject,
+                                                                class_subject_id: data[index].classSubject.id
+                                                            )
+                                                            ),
+                                        
+                                                          ),
+                                                          SizedBox(width: 5.w,),
+                                                          SlidableAction(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                                              flex: 1,
+                                                              autoClose: true,
+                                                              backgroundColor: abs_color,
+                                                              foregroundColor: Colors.white,
+                                                              icon: Icons.delete,
+                                                              onPressed: (context) =>   showDialog(
+                                                                  context: context,
+                                                                  builder: (context){
+                                                                    return AlertDialog(
+                                        
+                                                                      backgroundColor: Colors.white,
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.all(Radius.circular(10.0))
                                                                       ),
-                                                                      onPressed: (){
-                                                                        ref.read(assignmentProvider.notifier).delAssignment(assignment_data[index].id, auth.user.token).then((value) => ref.refresh(assignmentList(auth.user.token))).then((value) => Navigator.pop(context));
-                                                                      },
-                                                                      child: Text('Yes')
-                                                                  ),
-                                                                  TextButton(
-                                                                      onPressed: (){
-                                                                        Navigator.pop(context);
-                                                                      },
-                                                                      child: Text('No',style: TextStyle(color: Colors.black),)
-                                                                  )
-                                                                ],
-                                                              );
-                                                            }
-                                                        )
-
-                                                    )
-                                                  ]
-                                              ),
-
-                                              child: NoticeCard2(
-
-
-                                                  onTap:() {
-                                                    Get.to(AssignmentTabs(
-                                                      assignment: assignment_data[index],
-                                                      class_subject_id: assignment_data[index].classSubject.id,
+                                                                      title: Text('Do you want to delete the assignment',style: TextStyle(color: Colors.black),),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                            style: TextButton.styleFrom(
+                                                                                backgroundColor: primary,
+                                                                                foregroundColor: Colors.white
+                                                                            ),
+                                                                            onPressed: (){
+                                                                              ref.read(assignmentProvider.notifier).delAssignment(assignment_data[index].id, auth.user.token).then((value) => ref.refresh(assignmentList(auth.user.token))).then((value) => Navigator.pop(context));
+                                                                            },
+                                                                            child: Text('Yes')
+                                                                        ),
+                                                                        TextButton(
+                                                                            onPressed: (){
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child: Text('No',style: TextStyle(color: Colors.black),)
+                                                                        )
+                                                                      ],
+                                                                    );
+                                                                  }
+                                                              )
+                                        
+                                                          )
+                                                        ]
                                                     ),
-                                                    );
-                                                  },
-                                                  title: assignment_data[index].title,
-                                                  createdAt: DateFormat('MMMM dd').format(DateTime.parse(assignment_data[index].createdAt)))
+                                        
+                                                    child: NoticeCard2(
+                                        
+                                        
+                                                        onTap:() {
+                                                          Get.to(AssignmentTabs(
+                                                            assignment: assignment_data[index],
+                                                            class_subject_id: assignment_data[index].classSubject.id,
+                                                          ),
+                                                          );
+                                                        },
+                                                        title: assignment_data[index].title,
+                                                        createdAt: DateFormat('MMMM dd').format(DateTime.parse(assignment_data[index].createdAt)))
+                                                ),
+                                              );
+                                            }
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 20.0),
+                                        child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: FloatingActionButton(
+                                            backgroundColor: bgColor,
+                                            onPressed: (){
+                                              Get.to(()=>Add_Assignment(classSubject: subInfo.first,));
+
+
+                                            },
+                                            child: Icon(Icons.add, color: Colors.white,),
                                           ),
-                                        );
-                                      }
+                                        ),
+                                      ),
+
+                                    ],
                                   ),
                                 ),
                                 // Align(
@@ -389,7 +412,7 @@ class _AssignmentPageState extends ConsumerState<AssignmentPage> {
                                   TextButton(onPressed: (){
                                     Get.to(()=>Add_Assignment(classSubject: subInfo.first,));
 
-                                  }, child: Text("Add Assignments", style: TextStyle(color: bgColor ),))
+                                  }, child: Text("Add Assignment", style: TextStyle(color: bgColor ),))
                                   // FloatingActionButton.small(
                                   //     backgroundColor: primary,
                                   //     child: Icon(Icons.add,color: Colors.white,),
@@ -426,6 +449,8 @@ class _AssignmentPageState extends ConsumerState<AssignmentPage> {
 
 
             ),
+
+
 
 
 

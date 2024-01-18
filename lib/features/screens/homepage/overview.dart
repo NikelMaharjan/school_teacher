@@ -229,7 +229,7 @@ class _OverviewState extends ConsumerState<Overview> {
                       decoration: BoxDecoration(
                           color: bgColor,
                           borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(25))),
+                          const BorderRadius.vertical(bottom: Radius.circular(25))),
                       child: Container(
                           padding: EdgeInsets.only(left:40.w,right: 30.w,top: 60.h),
                           // color: Colors.red,
@@ -269,6 +269,12 @@ class _OverviewState extends ConsumerState<Overview> {
                                             InkWell(
                                                 onTap: (){
 
+
+                                                  ref.invalidate(notificationProvider2("123"));
+
+
+
+
                                                   Get.to(()=>NotificationPage(notification_token: "123"));
                                                 },
                                                 child: Icon(Icons.notifications, size: 25.sp, color: Colors.white)
@@ -280,7 +286,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                                   child: Container(
                                                     width: 14.w,
                                                     height: 14.h,
-                                                    decoration: BoxDecoration(
+                                                    decoration: const BoxDecoration(
                                                       color: Colors.red,
                                                       shape: BoxShape.circle,
                                                     ),
@@ -314,7 +320,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                             }
                                         );
                                       },
-                                      icon: Icon(Icons.front_hand_rounded,color: Colors.white,)
+                                      icon: const Icon(Icons.front_hand_rounded,color: Colors.white,)
                                   )
                                 ],
                               )
@@ -326,7 +332,7 @@ class _OverviewState extends ConsumerState<Overview> {
                     Container(
                       height: MediaQuery.of(context).size.height * 4 / 5,
                       child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -348,7 +354,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                       onPressed: (){
                                         Get.to(()=>AllClass());
                                       },
-                                      child: Text('View all >',style: TextStyle(color: Colors.grey),)
+                                      child: const Text('View all >',style: TextStyle(color: Colors.grey),)
                                   )
                                 ],
                               ),
@@ -362,7 +368,7 @@ class _OverviewState extends ConsumerState<Overview> {
 
                                     return GridView.builder(
                                         padding: EdgeInsets.zero,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(childAspectRatio: 2.w / 1.3.h, crossAxisCount: 2, mainAxisSpacing: 5.h, crossAxisSpacing: 3.w),
                                         itemCount: data.length == 0 ? data.length : 1 ,
@@ -397,7 +403,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                                 ),
                                               ),
                                               Align(
-                                                alignment: Alignment(-0.20, 0.55),
+                                                alignment: const Alignment(-0.20, 0.55),
                                                 child: Card(
                                                   elevation: 3,
                                                   color: Colors.white,
@@ -422,7 +428,7 @@ class _OverviewState extends ConsumerState<Overview> {
 
                                   },
                                   error: (err, stack) => Center(child: Text('$err')),
-                                  loading: () =>  GridShimmer(),
+                                  loading: () =>  const GridShimmer(),
 
                                 )
                             ),
@@ -447,7 +453,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                     final class_data = data.where((element) => element.classSection.classTeacher.id == info_data.first.id).toList();
                                     return GridView.builder(
                                         padding: EdgeInsets.zero,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(childAspectRatio: 2.w / 1.3.h, crossAxisCount: 2, mainAxisSpacing: 5.h, crossAxisSpacing: 3.w),
                                         itemCount: class_data.length,
@@ -482,7 +488,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                                 ),
                                               ),
                                               Align(
-                                                alignment: Alignment(-0.20, 0.55),
+                                                alignment: const Alignment(-0.20, 0.55),
                                                 child: Card(
                                                   elevation: 3,
                                                   color: Colors.white,
@@ -509,7 +515,7 @@ class _OverviewState extends ConsumerState<Overview> {
 
                                   },
                                   error: (err, stack) => Center(child: Text('$err')),
-                                  loading: () =>  GridShimmer(),
+                                  loading: () =>  const GridShimmer(),
 
                                 )
                             ),
@@ -529,9 +535,9 @@ class _OverviewState extends ConsumerState<Overview> {
                                           color: Colors.black)),
                                   TextButton(
                                       onPressed: (){
-                                        Get.to(()=>NoticeBoard());
+                                        Get.to(()=>const NoticeBoard());
                                       },
-                                      child: Text('View all >',style: TextStyle(color: Colors.grey),)
+                                      child: const Text('View all >',style: TextStyle(color: Colors.grey),)
                                   )
                                 ],
                               ),
@@ -545,7 +551,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                     final allNotice = data.where((element) => element.forAllClass == true).toList();
                                     return ListView.builder(
                                         padding: EdgeInsets.zero,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: allNotice.length == 0 ? 0 : 1,
                                         itemBuilder: (context, index) {
@@ -557,7 +563,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                         });
                                   },
                                   error: (err, stack) => Center(child: Text('$err')),
-                                  loading: () => NoticeShimmer(),
+                                  loading: () => const NoticeShimmer(),
                                 ),
                               ),
                             ),
@@ -569,7 +575,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                 height: MediaQuery.of(context).size.height * 1.2,
                                 // color: Colors.red,
                                 child: ListView(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   padding: EdgeInsets.symmetric(
                                       vertical: 10.h, horizontal: 0.w),
                                   children: [
@@ -607,7 +613,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                     InfoTileWidget(
                                       title: 'Exam',
                                       svgPath: 'assets/icons/exam copy.svg',
-                                      onTap: () => Get.to(() => ExamPage()),
+                                      onTap: () => Get.to(() => const ExamPage()),
                                     ),
                                     // InfoTileWidget(
                                     //   title: 'Results',
@@ -637,8 +643,8 @@ class _OverviewState extends ConsumerState<Overview> {
                   ],
                 );
               },
-              error: (err,stack)=>Center(child: Text('$err',style: TextStyle(color: Colors.black),),),
-              loading: ()=> Center(child: CircularProgressIndicator(),)
+              error: (err,stack)=>Center(child: Text('$err',style: const TextStyle(color: Colors.black),),),
+              loading: ()=> const Center(child: CircularProgressIndicator(),)
           )
 
 

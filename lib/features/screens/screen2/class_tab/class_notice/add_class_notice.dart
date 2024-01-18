@@ -95,27 +95,6 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                     error,
                     style: const TextStyle(color: Colors.red),
                   ),
-                // Container(
-                //     // height: MediaQuery.of(context).size.height * 0.07,
-                //
-                //     child: Row(
-                //       mainAxisAlignment:
-                //       MainAxisAlignment.end,
-                //       children: [
-                //         Text(
-                //           'Send Notifications',
-                //           style: TextStyle(color: Colors.black),
-                //         ),
-                //         Transform.scale(
-                //           scale: 0.8,
-                //           child: CupertinoSwitch(
-                //               activeColor: primary,
-                //               value: isSwitched,
-                //               onChanged: toggleSwitch
-                //           ),
-                //         )
-                //       ],
-                //     )),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -134,7 +113,7 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                         hintStyle: TextStyle(color: Colors.black)),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return SnackShow.showFailure(context, 'Title cannot be empty');
+                        return "title cannot be empty";
                       }
                       return null;
                     },
@@ -158,7 +137,7 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                         hintStyle: TextStyle(color: Colors.black)),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return SnackShow.showFailure(context, 'Description cannot be empty');
+                        return "description cannot be empty";
                       }
                       return null;
                     },
@@ -186,7 +165,7 @@ class _AddNoticeState extends ConsumerState<AddNotice> {
                         description: descriptionController.text,
                         for_all_class: false,
                         image: null,
-                        notification: isSwitched,
+                        notification: true,
                         added_by: widget.teacher_id,
                         notice_type: 1,
 
