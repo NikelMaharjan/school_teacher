@@ -287,7 +287,7 @@ class _AssignmentStatusState extends ConsumerState<AssignmentStatus> {
                                                                     ref.read(statusProvider.notifier).addStatus(
                                                                         remarks: remarkController.text.trim(),
                                                                         status: _accepted == true? 'Accepted' : 'Unaccepted',
-                                                                        notifications: false,
+                                                                        notifications: true,
                                                                         studentAssignment: stud_data.id,
                                                                         token: auth.user.token
                                                                     );

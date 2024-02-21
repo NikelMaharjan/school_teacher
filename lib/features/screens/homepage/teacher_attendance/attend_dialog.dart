@@ -95,7 +95,9 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
                   TextButton(
                     onPressed: (){
 
-                      Get.offAll(()=> Overview());
+                      // Get.offAll(()=> Overview());
+
+                      Get.back();
 
 
 
@@ -153,6 +155,7 @@ class _TeacherAttendanceState extends ConsumerState<TeacherAttendanceDialog> {
                     onPressed: (){
 
                       Get.offAll(()=> Overview());
+
 
                     },
                     child: Text("Ok"),

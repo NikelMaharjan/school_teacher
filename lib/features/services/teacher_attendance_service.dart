@@ -119,7 +119,7 @@ class TeacherAttendanceService{
       return Right(response.data);
     } on DioException catch (err) {
       print("Nkel is ${err.response}");
-      return Left(err.response.toString());
+      return Left(err.response!.data['data']);
     }
   }
 

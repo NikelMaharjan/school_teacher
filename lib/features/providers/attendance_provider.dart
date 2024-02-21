@@ -14,7 +14,7 @@ import '../services/teacher_attendance_service.dart';
 
 
 
-final attendanceProvider = StateNotifierProvider<AttendanceNotifier, AttendanceState>((ref) => AttendanceNotifier(AttendanceState.empty()));
+final attendanceProvider = StateNotifierProvider.autoDispose <AttendanceNotifier, AttendanceState>((ref) => AttendanceNotifier(AttendanceState.empty()));
 
 class AttendanceNotifier extends StateNotifier<AttendanceState>{
   AttendanceNotifier(super.state);
@@ -31,7 +31,7 @@ class AttendanceNotifier extends StateNotifier<AttendanceState>{
 
 
   }) async {
-    state = state.copyWith(isLoad: true, errorMessage: '', isSuccess: false, isAttendanceSuccess: false);
+    state = state.copyWith(isLoad: true, errorMessage: '', isSuccess: false,);
     final response = await TeacherAttendanceService(token).addAttendanceTeacher(
         attendance: attendance,
         ip_address: ip_address,

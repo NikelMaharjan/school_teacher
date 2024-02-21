@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/constants/snack_show.dart';
 import 'package:eschool_teacher/features/authentication/providers/auth_provider.dart';
 import 'package:eschool_teacher/features/providers/attendance_provider.dart';
 import 'package:eschool_teacher/features/services/attendance_services.dart';
@@ -31,6 +32,8 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
     final studentList = ref.watch(classWiseStudentProvider(widget.class_id));
     final attendanceDate = ref.watch(attendanceDateStudent(auth.user.token));
     final attendload = ref.watch(attendanceProvider);
+
+
 
 
     return Scaffold(
@@ -177,8 +180,7 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                               ))),
                       onPressed: () async {
                         for (var i = 0; i < studData.length; i++) {
-                          if (toggleStates[studData[i].student.id
-                          ] == true) {
+                          if (toggleStates[studData[i].student.id] == true) {
                             await ref.read(attendanceProvider.notifier).addAttendanceStudent(
                                 token: auth.user.token,
                                 attendance: attendDate.id,
@@ -195,7 +197,7 @@ class _Attendance_addState extends ConsumerState<Attendance_add> {
                             );
                           }
                         }
-                        Navigator.pop(context);
+                       Navigator.pop(context);
                       },
 
                       child:attendload.isLoad? const CircularProgressIndicator(): Text(

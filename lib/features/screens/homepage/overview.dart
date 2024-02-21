@@ -190,7 +190,7 @@ class _OverviewState extends ConsumerState<Overview> {
     final infoData = ref.watch(employeeList(auth.user.token));
     final noticeData = ref.watch(noticeList(auth.user.token));
 
-    final notificationData = ref.watch(notificationProvider2("222"));
+    final notificationData = ref.watch(notificationProvider2("123"));
     //print('notification token: $notification_token');
 
 
@@ -268,11 +268,6 @@ class _OverviewState extends ConsumerState<Overview> {
                                           children: [
                                             InkWell(
                                                 onTap: (){
-
-
-                                                  ref.invalidate(notificationProvider2("123"));
-
-
 
 
                                                   Get.to(()=>NotificationPage(notification_token: "123"));
@@ -386,6 +381,7 @@ class _OverviewState extends ConsumerState<Overview> {
                                                        sec_name: data[index].classSection.section.sectionName,
                                                        class_level_name: data[index].classSection.className.classLevel.name,
                                                        teacher_id: data[index].classSection.classTeacher.id,
+
                                                        class_teacher: auth.user.userInfo.name == data[index].classSection.classTeacher.employeeName ? true : false,
                                                        class_id: data[index].classSection.className.id,
                                                      )
@@ -610,11 +606,11 @@ class _OverviewState extends ConsumerState<Overview> {
                                       svgPath: 'assets/icons/holiday.svg',
                                       onTap: () => Get.to(() => Calender()),
                                     ),
-                                    InfoTileWidget(
-                                      title: 'Exam',
-                                      svgPath: 'assets/icons/exam copy.svg',
-                                      onTap: () => Get.to(() => const ExamPage()),
-                                    ),
+                                    // InfoTileWidget(
+                                    //   title: 'Exam',
+                                    //   svgPath: 'assets/icons/exam copy.svg',
+                                    //   onTap: () => Get.to(() => const ExamPage()),
+                                    // ),
                                     // InfoTileWidget(
                                     //   title: 'Results',
                                     //   svgPath:  'assets/icons/result copy.svg',

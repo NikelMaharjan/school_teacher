@@ -26,6 +26,6 @@ class AttendanceState {
   }
 
   factory AttendanceState.empty() {
-    return AttendanceState(errorMessage: '', isLoad: false, attendanceErrorMessage: "", isSuccess: false, isAttendanceSuccess: false );
+    return AttendanceState(errorMessage: '', isLoad: false, attendanceErrorMessage: "", isSuccess: false,  );
   }
 }

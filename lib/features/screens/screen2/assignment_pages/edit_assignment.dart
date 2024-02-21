@@ -361,9 +361,7 @@ class _Edit_Assignment_State extends ConsumerState<Edit_Assignment> {
                             controller: linkController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return null; // return null if value is null or empty
-                              } else if (!value.contains('www.')) {
-                                return SnackShow.showFailure(context, 'Link should be properly formatted');
+                                return "Cannot be Empty"; // return null if value is null or empty
                               }
                               return null;
                             },

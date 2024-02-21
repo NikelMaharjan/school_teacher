@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "635164461059",
+    "project_id": "school-ff3bf",
+    "storage_bucket": "school-ff3bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635164461059:android:b48b89908caffb313fa636",
+        "android_client_info": {
+          "package_name": "com.digitalschool_teacher.nepal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCriVXp5kCgFBj0X-HpzFD1EgHR5Y4DMP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635164461059:android:3ca4d6f4248ec2f93fa636",
+        "android_client_info": {
+          "package_name": "com.example.eschool_teacher"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCriVXp5kCgFBj0X-HpzFD1EgHR5Y4DMP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635164461059:android:1bd44d9a9819a5173fa636",
+        "android_client_info": {
+          "package_name": "com.example.student"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCriVXp5kCgFBj0X-HpzFD1EgHR5Y4DMP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

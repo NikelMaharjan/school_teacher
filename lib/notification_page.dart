@@ -143,7 +143,7 @@ class _ClassNoticeBoardState extends ConsumerState<NotificationPage>
         backgroundColor: bgColor,
         child: Icon(Icons.refresh, color: Colors.white,),
           onPressed: (){
-        ref.invalidate(notificationProvider2(widget.notification_token));
+        ref.invalidate(notificationProvider2("123"));
       }),
 
     );
